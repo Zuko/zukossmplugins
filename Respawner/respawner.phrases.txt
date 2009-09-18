@@ -1,0 +1,199 @@
+"Phrases"
+{
+
+	"PluginDisabled"
+	{
+		"en"		"Respawn Plugin is Disabled"
+		"pl"		"Respawn Plugin jest Wyłączony"
+	}
+	
+	"PluginUsage_RP"
+	{
+		"en"		"Usage: sm_rp <#userid | name>"
+		"pl"		"Użycie: sm_rp <#userid | name>"
+	}
+	
+	"PluginUsage_AutoRespawn"
+	{
+		"en"		"Usage: sm_autorespawn <#userid | name> <delay>"
+		"pl"		"Użycie: sm_autorpespawn <#userid | name> <opóźnienie>"
+	}
+	
+	"RespawnDelay1"
+	{
+		"en"		"Delay can't be lower than 0. Do you want respawn before death?"
+		"pl"		"Opóźnienie nie może być mniejsze niż 0. Chcesz się odradzać wcześniej niż umarłeś?"
+	}
+	
+	"RespawnDelay2"
+	{
+		"en"		"Are you kidding? more than 30 seconds? no way!"
+		"pl"		"Żartujesz? więcej niż 30 sekund? Nie ma mowy!"
+	}
+	
+	"RespawnDelay3"
+	{
+		"en"		"Respawn times should be normal now. Maybe nobody noticed that."
+		"pl"		"Czasy odrodzenia powinny być teraz normalne. Może nikt tego nie zauważył."
+	}
+	
+	"RespawnDelay4"
+	{
+		"#format"	"{1:N},{2:i}"
+		"en"		"You set {1} to automatically respawn {2} seconds after death."
+		"pl"		"Ustawiłeś automatyczne odradzanie dla {1} po {2} sekundach po śmierci."
+	}
+	
+	"RespawnDelay5"
+	{
+		"#format"	"{1:i}"
+		"en"		"You will be automatically respawned {1} seconds after death."
+		"pl"		"Będziesz automatycznie odradzany po {1} sekundach po śmierci."
+	}
+	
+	"RespawnDelay6"
+	{
+		"en"		"You will respawn immediately after death."
+		"pl"		"Będziesz natychmiast odradzany po śmierci."
+	}
+
+	"RespawnDelay7"
+	{
+		"#format"	"{1:N}"
+		"en"		"{1} will be respawned immediately after death."
+		"pl"		"{1} będzie natychmiast odradzany po śmierci."
+	}
+	
+	"RespawnDelay8"
+	{
+		"en"		"{1} will be respawned immediately after death."
+		"pl"		"{1} będzie natychmiast odradzany po śmierci."
+	}
+	
+	"PluginLog"
+	{
+		"#format"	"{1:L},{2:L}"
+		"en"		"{1} has respawned {2}"
+		"pl"		"{1} odrodził {2}"
+	}
+	
+	"SpawnPhrase1"
+	{
+		"#format"	"{1:N}"
+		"en"		"{olive}You {default}have been respawned by {olive}{1}."
+		"pl"		"Zostałeś odrodzony przez {olive}{1}."
+	}
+	
+	"SpawnPhrase2"
+	{
+		"#format"	"{1:N},{2:N}"
+		"en"		"{olive}{1} {default}has respawned {olive}{2}"
+		"pl"		"{olive}{1} {default}odrodził {olive}{2}"
+	}
+	
+	"SpawnPhrase3"
+	{
+		"#format"	"{1:N}"
+		"en"		"You have respawned {1}"
+		"pl"		"Odrodziłeś {1}"
+	}
+	
+	"AutoSpawnPhrase1"
+	{
+		"#format"	"{1:N}"
+		"en"		"{olive}{1} {green}enabled {default}auto respawn for {olive}you."
+		"pl"		"{olive}{1} {green}włączył {default}dla ciebie automatyczne odradzanie."
+	}
+	"AutoSpawnPhrase1a"
+	{
+		"#format"	"{1:i}"
+		"en"		"{olive}You {default}will be respawn {green}{1} {default}seconds after death."
+		"pl"		"{default}Będziesz się odradzać po {green}{1} {default}sekundach od śmierci."
+	}
+	
+	"AutoSpawnPhrase2"
+	{
+		"#format"	"{1:N},{2:N}"
+		"en"		"{olive}{1} {green}enabled {default}autorespawn for {olive}{2}{default}."
+		"pl"		"{olive}{1} {green}włączył {default}automatyczne odradzanie dla {olive}{2}{default}."
+	}
+	
+	"AutoSpawnPhrase2a"
+	{
+		"#format"	"{1:i}"
+		"en"		"{olive}He {default}will be respawn {green}{1} {default}seconds after death."
+		"pl"		"{default}Będzie się odradzać po {green}{3} {default}sekundach od śmierci."
+	}
+	
+	"AutoSpawnPhrase3"
+	{
+		"en"		"{olive}You {green}enabled {default}auto respawn for {olive}yourself."
+		"pl"		"{green}Włączyłeś {olive}sobie {default}automatyczne odradzanie."
+	}
+	
+	"AutoSpawnPhrase3a"
+	{
+		"#format"	"{1:i}"
+		"en"		"{olive}You {default}will be respawn {green}{1} {default}seconds after death."
+		"pl"		"{default}Będziesz się odradzać po {green}{1} {default}sekundach od śmierci."
+	}
+	
+	"AutoSpawnPhrase4"
+	{
+		"en"		"{olive}You {green}disabled {default}autorespawn for {olive}yourself{default}."
+		"pl"		"{green}Wyłączyłeś {olive}sobie {default}automatyczne odradzanie."
+	}
+	
+	"AutoSpawnPhrase4a"
+	{
+		"en"		"{olive}You {default}will be respawn {lightgreen}normally."
+		"pl"		"{default}Będziesz się odradzać {lightgreen}normalnie."
+	}
+	
+	"AutoSpawnPhrase5"
+	{
+		"#format"	"{1:N},{2:N}"
+		"en"		"{olive}{1} {green}disabled {default}autorespawn for {olive}{2}{default}."
+		"pl"		"{olive}{1} {green}włączył {default}automatyczne odradzanie dla {olive}{2}{default}."
+	}
+	
+	"AutoSpawnPhrase5a"
+	{
+		"en"		"{default}He will be respawn {lightgreen}normally."
+		"pl"		"{default}Będzie się odradzać {lightgreen}normalnie."
+	}
+		
+	"RespawnPlayer"
+	{
+		"en"		"Respawn Player"
+		"pl"		"Zrespawnuj Gracza"
+	}
+	
+	"ChoosePlayer"
+	{
+		"en"		"Choose Player:"
+		"pl"		"Wybierz Gracza:"
+	}
+	
+	"RespawnMe"
+	{
+		"en"		"You have been respawned."
+		"pl"		"Odrodziłeś się."
+	}
+	
+	"YouAreOnSpectator"
+	{
+		"en"		"You can't be respawn when you are on spectator!"
+		"pl"		"Nie możesz się odrodzić będąc obserwatorem!"
+	}
+	
+	"YouAreAlive"
+	{
+		"en"		"You are alive, ignoring!"
+		"pl"		"Jesteś żywy, spadaj!"
+	}
+	
+}
+
+
+	
