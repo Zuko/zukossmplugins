@@ -1,0 +1,156 @@
+"Phrases"
+{
+	"PluginDisabled"
+	{
+		"en"		"Set Über Plugin is Disabled"
+		"pl"		"Set Über Plugin jest Wyłączony"
+	}
+	
+	"PluginUsage"
+	{
+		"en"		"Usage: sm_setuber <#userid|name> <amount>"
+		"pl"		"Użycie: sm_setuber <#userid|name> <wartość>"
+	}
+	
+	"PluginUsage_SetUber_Me"
+	{
+		"en"		"Usage: sm_sume <amount>"
+		"pl"		"Użycie: sm_sume <wartość>"
+	}
+	
+	"PluginUsage_AutoUber"
+	{
+		"en"		"Usage: sm_autouber <#userid|name> <amount>"
+		"pl"		"Użycie: sm_autouber <#userid|name> <wartość>"
+	}
+	
+	"UberSetOnMe"
+	{
+		"#format"	"{1:i}"
+		"en"		"Über amount set to: {1}%%"
+		"pl"		"Wartość übera została ustawiona na: {1}%%"
+	}
+		
+	"UberAmount1"
+	{
+		"en"		"Über amount must be grater than 0%%, auto-set to 0%%."
+		"pl"		"Wartość übera musi być większa niż 0%%, ustawiono na 0%%."
+	}
+	
+	"UberAmount2"
+	{
+		"en"		"Über amount must be lower than 100%%, auto-set to 100%%"
+		"pl"		"Wartość übera musi być mniejsza niż 100%%, ustawiono na 100%"
+	}
+	
+	"UberPhrase1"
+	{
+		"#format"	"{1:N},{2:i}"
+		"en"		"{olive}[1} {default}set to {olive}you {green}{2}%% {default}of über."
+		"pl"		"{olive}{1} {default}ustawił {olive}ci {green}{2}%% {default}übera."
+	}
+	
+	"UberPhrase2"
+	{
+		"#format"	"{1:N},{2:N},{3:i}"
+		"en"		"{{olive}1} {default}set {green}{3}%% {default}of über for {olive}{2}{default}."
+		"pl"		"{olive}{1} {default}ustawił {green}{3}%% {default}übera dla {olive}{2}{default}.
+	}
+	
+	"UberPhrase3"
+	{
+		"#format"	"{1:N},{2:i}"
+		"en"		"You set {2}%% of über for player: {1}"
+		"pl"		"Ustawiłeś {2}%% übera dla gracza: {1}"
+	}
+	
+	"MustBeMedic"
+	{
+		"en"		"Target must be a Medic to use this command."
+		"pl"		"Celem musi być Medyk by użyć tej komendy."
+	}
+	"MustBeMedic2"
+	{
+		"en"		"You must be a Medic to use this command."
+		"pl"		"Musisz być Medykiem by użyć tej komendy."
+	}
+	
+	"AutoUberReply1"
+	{
+		"en"		"AutoÜber Disabled"
+		"pl"		"AutoÜber Wyłączony"
+	}
+	
+	"AutoUberReply2"
+	{
+		"#format"	"{1:i}"
+		"en"		"You'll got a {1}%% of über on respawn."
+		"pl"		"Będziesz dostawał {1}%% übera po odrodzeniu."
+	}
+	
+	"AutoUberReply3"
+	{
+		"#format"	"{1:N}"
+		"en"		"AutoÜber Disabled for player: {1}"
+		"pl"		"AutoÜber Wyłączony dla gracza: {1}"
+	}
+	"AutoUberReply4"
+	{
+		"#format"	"{1:N},{2:i}"
+		"en"		"{1} will got a {2}%% of über on respawn."
+		"pl"		"{1} będzie dostawał {2}%% übera po odrodzeniu."
+	}
+	
+	"AutoUberPhrase1"
+	{
+		"#format"	"{1:N}"
+		"en"		"{olive}{1} {green}enabled {default}auto über for {olive}you."
+		"pl"		"{olive}{1} {green}włączył {default}dla ciebie automatycznego übera."
+	}
+	"AutoUberPhrase1a"
+	{
+		"#format"	"{1:i}"
+		"en"		"{olive}You {default}will got {green}{1}%% {default}of über on respawn."
+		"pl"		"{default}Będziesz dostawał {green}{1}%% {default}übera po odrodzeniu."
+	}
+	
+	"AutoUberPhrase2"
+	{
+		"#format"	"{1:N},{2:N}"
+		"en"		"{olive}{1} {green}enabled {default}auto über for {olive}{2}{default}."
+		"pl"		"{olive}{1} {green}włączył {default}automatycznego übera dla {olive}{2}{default}."
+	}
+	
+	"AutoUberPhrase2a"
+	{
+		"#format"	"{1:i}"
+		"en"		"{olive}He {default}will got {green}{1}%% {default}of über on respawn."
+		"pl"		"{default}Będzie dostawał {green}{1}%% {default}übera po odrodzeniu."
+	}
+	
+	"AutoUberPhrase3"
+	{
+		"en"		"{olive}You {green}enabled {default}auto über for {olive}yourself."
+		"pl"		"{green}Włączyłeś {olive}sobie {default}automatycznego übera."
+	}
+	
+	"AutoUberPhrase3a"
+	{
+		"#format"	"{1:i}"
+		"en"		"{olive}You {default}will got {green}{1}%% {default}of über on respawn."
+		"pl"		"{default}Będziesz dostawał {green}{1}%% {default}übera po odrodzeniu."
+	}
+	
+	"AutoUberPhrase4"
+	{
+		"en"		"{olive}You {green}disabled {default}auto über for {olive}yourself{default}."
+		"pl"		"{green}Wyłączyłeś {olive}sobie {default}automatycznego übera."
+	}
+	
+	"AutoUberPhrase5"
+	{
+		"#format"	"{1:N},{2:N}"
+		"en"		"{olive}{1} {green}disabled {default}auto über for {olive}{2}{default}."
+		"pl"		"{olive}{1} {green}wyłączył {default}automatycznego übera dla {olive}{2}{default}."
+	}
+}

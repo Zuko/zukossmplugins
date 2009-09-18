@@ -1,0 +1,44 @@
+"Phrases"
+{
+	"VoteMenuTitle"
+	{
+		"en"		"Enable Crit Bonus?"
+		"pl"		"Włączyć Crit Bonus?"
+	}
+	
+	"MenuItem01"
+	{
+		"en"		"No!"
+		"pl"		"Nie!"
+	}
+	
+	"MenuItem02"
+	{
+		"en"		"Yes, for 5 seconds."
+		"pl"		"Tak, 5cio sekundowy."
+	}
+	
+	"MenuItem03"
+	{
+		"en"		"Yes, for 10 sekund."
+		"pl"		"Tak, 10cio sekundowy."
+	}
+	
+	"VoteEnd01"
+	{
+		"en"		"{default}Crit Bonus is {olive}DISABLED"
+		"pl"		"{default}Crit Bonus jest {olive}WYŁACZONY"	
+	}
+	
+	"VoteEnd02"
+	{
+		"en"		"{default}Crit Bonus is {olive}ENABLED {default}for {green}5 {default}seconds."
+		"pl"		"{default}Crit Bonus jest {olive}WŁĄCZONY{default}, trwa {green}5 {default}sekund."	
+	}
+	
+	"VoteEnd03"
+	{
+		"en"		"{default}Crit Bonus is {olive}ENABLED {default}for {green}10 {default}seconds."
+		"pl"		"{default}Crit Bonus jest {olive}WŁĄCZONY{default}, trwa {green}10 {default}sekund."	
+	}
+}

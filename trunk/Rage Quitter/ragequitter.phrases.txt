@@ -1,0 +1,54 @@
+"Phrases"
+{
+	"PluginDisabled"
+	{
+		"en"		"Rage Quitter is DISABLED"
+		"pl"		"Rage Quitter jest WYŁĄCZONY"
+	}
+	
+	"RageBaned"
+	{
+		"#format"	"{1:L}"
+		"en"		"{1} use Rage Quit and he is now Banned."
+		"pl"		"{1} użył Rage Quit i jest teraz Zbanowany."
+	}
+	
+	"RageKicked"
+	{
+		"#format"	"{1:L}"
+		"en"		"{1} use Rage Quit and he was Kicked."
+		"pl"		"{1} użył Rage Quit i został Wykopany."
+	}
+
+	"AdminIsPissedOff"
+	{
+		"en"		"Admin is Pissed Off!!! You Will Be PUNISHED!!!"
+		"pl"		"Wkurwiliście Admina! Czeka was kara!!!"
+	}
+	
+	"UserIsPissedOff"
+	{
+		"#format"	"{1:N}"
+		"en"		"{1} was pissed off and quit the game!!!"
+		"pl"		"{1} się wkurwił i wyszedł z gry!!!"
+	}
+	
+	"PunishCountdown"
+	{
+		"#format"	"{1:i}"
+		"en"		"You Will Be PUNISH in: {1} s"
+		"pl"		"Zostaniesz UKARANY za: {1} s"
+	}	
+	
+	"DIEDIEDIE"
+	{
+		"en"		"DIE, DIE, DIE!!!"
+		"pl"		"GIŃ, GIŃ, GIŃ!!!"
+	}
+		
+	"AlreadyDead"
+	{
+		"en"		"You are already DEAD ;/"
+		"pl"		"Jesteś już MARTWY ;/"
+	}
+}
