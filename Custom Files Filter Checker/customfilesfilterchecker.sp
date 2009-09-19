@@ -14,6 +14,8 @@
  * - Fixed logging
  * Version 1.3
  * - Redone immunity
+ * Version 1.4
+ * - Minor Fixes
  *
  * Zuko / #hlds.pl @ Qnet / zuko.isports.pl /
  *
@@ -23,7 +25,7 @@
 
 new String:logFile[256];
 
-#define PLUGIN_VERSION "1.3"
+#define PLUGIN_VERSION "1.4"
 
 public Plugin:myinfo = 
 {
@@ -69,6 +71,8 @@ public CvarChecking_DownloadFilter(QueryCookie:cookie, client, ConVarQueryResult
 	new String:name[20], String:steamid[100];
 	if ((strcmp(cvarValue,"none",false) == 0) && (GetUserFlagBits(client) != ADMFLAG_ROOT))
 	{
+		GetClientName(client, name, 19);
+		GetClientAuthString(client, steamid, 99);
 		LogToFile(logFile, "%T", "DownloadFilter_Log", LANG_SERVER, name, steamid);
 		KickClient(client, "%t", "DownloadFilter", LANG_SERVER);
 	}
