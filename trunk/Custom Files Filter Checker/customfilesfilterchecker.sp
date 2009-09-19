@@ -46,7 +46,7 @@ public OnPluginStart()
 
 public OnClientPostAdminCheck(client)
 {	
-	if (IsClientConnected(client)
+	if (IsClientConnected(client))
 	{
 		QueryClientConVar(client, "cl_allowdownload", ConVarQueryFinished:CvarChecking_AllowDownload, client);
 	}
@@ -65,7 +65,7 @@ public CvarChecking_AllowDownload(QueryCookie:cookie, client, ConVarQueryResult:
 	}
 	else
 	{
-		if (IsClientConnected(client)
+		if (IsClientConnected(client))
 		{
 			QueryClientConVar(client, "cl_downloadfilter", ConVarQueryFinished:CvarChecking_DownloadFilter, client);
 		}
