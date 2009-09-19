@@ -46,7 +46,10 @@ public OnPluginStart()
 
 public OnClientPostAdminCheck(client)
 {	
-	QueryClientConVar(client, "cl_allowdownload", ConVarQueryFinished:CvarChecking_AllowDownload, client);
+	if (IsClientConnected(client)
+	{
+		QueryClientConVar(client, "cl_allowdownload", ConVarQueryFinished:CvarChecking_AllowDownload, client);
+	}
 }
 
 public CvarChecking_AllowDownload(QueryCookie:cookie, client, ConVarQueryResult:result, const String:cvarName[], const String:cvarValue[])
@@ -62,7 +65,10 @@ public CvarChecking_AllowDownload(QueryCookie:cookie, client, ConVarQueryResult:
 	}
 	else
 	{
-		QueryClientConVar(client, "cl_downloadfilter", ConVarQueryFinished:CvarChecking_DownloadFilter, client);
+		if (IsClientConnected(client)
+		{
+			QueryClientConVar(client, "cl_downloadfilter", ConVarQueryFinished:CvarChecking_DownloadFilter, client);
+		}
 	}
 }
 
