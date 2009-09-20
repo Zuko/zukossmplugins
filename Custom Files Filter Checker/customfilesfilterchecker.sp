@@ -56,7 +56,7 @@ public CvarChecking_AllowDownload(QueryCookie:cookie, client, ConVarQueryResult:
 {
 	new icvarValue = StringToInt(cvarValue)
 	new String:name[20], String:steamid[100];
-	if (((icvarValue) == 0) && (GetUserFlagBits(client) & ADMFLAG_ROOT))
+	if (((icvarValue) == 0) && (GetUserFlagBits(client) & ADMFLAG_ROOT != ADMFLAG_ROOT))
 	{
 		GetClientName(client, name, 19);
 		GetClientAuthString(client, steamid, 99);
@@ -75,7 +75,7 @@ public CvarChecking_AllowDownload(QueryCookie:cookie, client, ConVarQueryResult:
 public CvarChecking_DownloadFilter(QueryCookie:cookie, client, ConVarQueryResult:result, const String:cvarName[], const String:cvarValue[])
 {
 	new String:name[20], String:steamid[100];
-	if ((strcmp(cvarValue,"none",false) == 0) && (GetUserFlagBits(client) & ADMFLAG_ROOT))
+	if ((strcmp(cvarValue,"none",false) == 0) && (GetUserFlagBits(client) & ADMFLAG_ROOT != ADMFLAG_ROOT))
 	{
 		GetClientName(client, name, 19);
 		GetClientAuthString(client, steamid, 99);
