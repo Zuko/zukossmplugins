@@ -1352,7 +1352,7 @@ GetNrReceivedVotes()
 public OnPluginStart_WarningTime()
 {
 	g_Cvar_WarningTime = CreateConVar("sm_mapvote_warningtime", "15.0", "Warning time in seconds.", _, true, 5.0, true, 30.0);
-	g_Cvar_WarningSound = CreateConVar("sm_mapvote_warningsound", "sourcemod/votewarningstart.mp3", "Sound file for warning start.");
+	g_Cvar_WarningSound = CreateConVar("sm_mapvote_warningsound", "ambient/alarms/klaxon1.wav", "Sound file for warning start.");
 }
 
 SetupWarningTimer()
@@ -1363,7 +1363,7 @@ SetupWarningTimer()
 		new startTime = ((GetConVarInt(g_Cvar_StartTime) * 60) + (GetConVarInt(g_Cvar_WarningTime)));
 		if (time - startTime < 0 && GetConVarBool(g_Cvar_EndOfMapVote) && !g_MapVoteCompleted && !g_HasVoteStarted)
 		{
-			return Plugin_Continue;
+			return;
 		}
 		else
 		{
@@ -1388,8 +1388,8 @@ public Action:Timer_WarningTimer(Handle:timer)
 public Action:WarningHintMsg(Handle:timer)
 {
 	decl String:hintboxText[512];
-	Format(hintboxText, sizeof(hintboxText), "WARNING! Map Vote will start in: %i s", WarningCountdown());
-	//Format(hintboxText, sizeof(hintboxText), "%T" ,"WarningCountdown", LANG_SERVER, WarningCountdown());
+	Format(hintboxText, sizeof(hintboxText), "WARNING! Vote will start in: %i s", WarningCountdown());
+	//Format(hintboxText, sizeof(hintboxText), "%T" ,"PunishCountdown", LANG_SERVER, WarningCountdown());
 	PrintHintTextToAll(hintboxText);
 
 	if (WarningCountdown() == 0)
