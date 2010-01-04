@@ -1,0 +1,450 @@
+"Phrases"
+{
+	// Commands
+	"SpawnWeaponUsage"
+	{
+		"en"		"Usage: sm_spawnweapon [weapon_name]"
+		"pl"		"Użycie: sm_spawnweapon [nazwa_broni]"
+	}
+	
+	"SpawnError"
+	{
+		"en"		"Could not find spawn point."
+		"pl"		"Nie można odnaleźć punktu spawnu."
+	}
+	
+	"WrongWeaponName"
+	{
+		"en"		"Error: Wrong Weapon Name"
+		"pl"		"Błąd: Niepoprawna nazwa broni"
+	}
+	
+	"GiveWeaponUsage"
+	{
+		"en"		"Usage: sm_giveweapon <#userid|name> [weapon_name]"
+		"pl"		"Użycie: sm_giveweapon <#userid|name> [nazwa_broni]"
+	}
+	
+	"SpawnZombieUsage"
+	{
+		"en"		"Usage: sm_zspawn [zombie_name]"
+		"pl"		"Użycie: sm_zspawn [nazwa_zombie]"
+	}
+	
+	"MinigunFailed"
+	{
+		"en"		"Failed to create minigun ;("
+		"pl"		"Tworzenie działka nie powiodło się ;("
+	}
+	
+	"RemoveMinigunError_01"
+	{
+		"en"		"You are not looking at any entity or entity is not valid."
+		"pl"		"Nie patrzysz na obiekt lub obiekt jest niepoprawny."
+	}
+
+	"RemoveMinigunError_02"
+	{
+		"en"		"This is not a MiniGun."
+		"pl"		"To nie jest MiniGun."
+	}
+
+	// Menu
+	"WeaponSpawner"
+	{
+		"en"		"Weapon Spawner"
+		"pl"		"Weapon Spawner"
+	}
+	
+	"SpawnWeapon"
+	{
+		"en"		"Spawn Weapon"
+		"pl"		"Spawn Weapon"
+	}
+
+	"DisplayWeaponMenuTitle"
+	{
+		"en"		"Spawn Weapon"
+		"pl"		"Spawn Weapon"
+	}
+	
+	"BulletBasedMenuTitle"
+	{
+		"en"		"Bullet Based Weapons:"
+		"pl"		"Karabiny, Pistolety..."
+	}
+	
+	"ShellBasedMenuTitle"
+	{
+		"en"		"Shell Based Weapons:"
+		"pl"		"Strzelby"
+	}
+	
+	"ExplosiveBasedMenuTitle"
+	{
+		"en"		"Explosive Based Weapons:"
+		"pl"		"Wybuchowe"
+	}
+	
+	"HealthMenuTitle"
+	{
+		"en"		"Health Related:"
+		"pl"		""
+	}
+	
+	"MiscMenuTitle"
+	{
+		"en"		"Misc Weapons/Addons:"
+		"pl"		""
+	}
+	
+	"MeleeMenuTitle"
+	{
+		"en"		"Melee Weapons:"
+		"pl"		""
+	}
+	
+	"WeaponGiveMenuTitle"
+	{
+		"en"		"Give Weapon"
+		"pl"		"Give Weapon"
+	}	
+	
+	// Weapons
+	"BulletBased"
+	{
+		"en"		"Bullet Based"
+		"pl"		"Karabiny, Pistolety..."
+	}
+	
+	"ShellBased"
+	{
+		"en"		"Shell Based"
+		"pl"		"Strzelby"
+	}
+	
+	"ExplosiveBased"
+	{
+		"en"		"Explosive Based"
+		"pl"		"Wybuchowe"
+	}
+	
+	"HealthRelated"
+	{
+		"en"		"Health Related"
+		"pl"		"Apteczki itp."
+	}
+	
+	"Misc"
+	{
+		"en"		"Misc"
+		"pl"		"Różne"
+	}
+	
+	"MeleeWeapons"
+	{
+		"en"		"Melee Weapons"
+		"pl"		"Ręczne"
+	}
+	
+	// Bullet Based
+	"HuntingRifle"
+	{
+		"en"		"Hunting Rifle"
+		"pl"		""
+	}
+	
+	"Pistol"
+	{
+		"en"		"Pistol"
+		"pl"		""
+	}
+	
+	"DesertEagle"
+	{
+		"en"		"Desert Eagle"
+		"pl"		""
+	}
+	
+	"Rifle"
+	{
+		"en"		"Rifle"
+		"pl"		""
+	}
+	
+	"DesertRifle"
+	{
+		"en"		"Desert Rifle"
+		"pl"		""
+	}
+	
+	"SubmachineGun"
+	{
+		"en"		"Submachine Gun"
+		"pl"		""
+	}
+	
+	"SilencedSubmachineGun"
+	{
+		"en"		"Silenced Submachine Gun"
+		"pl"		""
+	}
+	
+	"MilitarySniper"
+	{
+		"en"		"Military Sniper"
+		"pl"		""
+	}
+	
+	"AvtomatKalashnikova"
+	{
+		"en"		"Avtomat Kalashnikova"
+		"pl"		""
+	}
+	
+	"SIGSG550"
+	{
+		"en"		"SIG SG 550"
+		"pl"		""
+	}
+	
+	"SubmachineGunMP5"
+	{
+		"en"		"Submachine Gun MP5"
+		"pl"		""
+	}
+	
+	"AccuracyInternationalArcticWarfare"
+	{
+		"en"		"Accuracy International Arctic Warfare"
+		"pl"		""
+	}
+	
+	"Scout Sniper"
+	{
+		"en"		"Scout Sniper"
+		"pl"		""
+	}
+	
+	// Shell Based
+	"AutoShotgun"
+	{
+		"en"		"Auto Shotgun"
+		"pl"		""
+	}
+	
+	"ChromeShotgun"
+	{
+		"en"		"Chrome Shotgun"
+		"pl"		""
+	}
+	
+	"SpasShotgun"
+	{
+		"en"		"Spas Shotgun"
+		"pl"		""
+	}
+	
+	"PumpShotgun"
+	{
+		"en"		"Pump Shotgun"
+		"pl"		""
+	}
+	
+	// Explosive Based
+	"GranadeLuncher"
+	{
+		"en"		"Granade Luncher"
+		"pl"		""
+	}
+	
+	"FireWorksCrate"
+	{
+		"en"		"Fire Works Crate"
+		"pl"		""
+	}
+	
+	"Gascan"
+	{
+		"en"		"Gascan"
+		"pl"		""
+	}
+	
+	"Molotov"
+	{
+		"en"		"Molotov"
+		"pl"		""
+	}
+	
+	"Oxygen Tank"
+	{
+		"en"		"Oxygen Tank"
+		"pl"		""
+	}
+	
+	"Pipe Bomb"
+	{
+		"en"		"Pipe Bomb"
+		"pl"		""
+	}
+	
+	"PropaneTank"
+	{
+		"en"		"Propane Tank"
+		"pl"		""
+	}
+	
+	// Health Related
+	"Adrenaline"
+	{
+		"en"		"Adrenaline"
+		"pl"		""
+	}
+	
+	"Defibrillator"
+	{
+		"en"		"Defibrillator"
+		"pl"		""
+	}
+	
+	"FirstAidKit"
+	{
+		"en"		"First Aid Kit"
+		"pl"		""
+	}
+	
+	"PainPills"
+	{
+		"en"		"Pain Pills"
+		"pl"		""
+	}
+	
+	// Misc
+	"ChainSaw"
+	{
+		"en"		"Chain Saw"
+		"pl"		""
+	}
+	
+	"AmmoStack"
+	{
+		"en"		"Ammo Stack"
+		"pl"		""
+	}
+	
+	"Explosive Ammo Pack"
+	{
+		"en"		"Explosive Ammo Pack"
+		"pl"		""
+	}
+	
+	"IncendiaryAmmoPack"
+	{
+		"en"		"Incendiary Ammo Pack"
+		"pl"		""
+	}
+	
+	"VomitJar"
+	{
+		"en"		"Vomit Jar"
+		"pl"		""
+	}
+	
+	"Gnome"
+	{
+		"en"		"Gnome"
+		"pl"		""
+	}
+	
+	"Ammo"
+	{
+		"en"		"Ammo"
+		"pl"		""
+	}
+	
+	""
+	{
+		"en"		""
+		"pl"		""
+	}
+	
+	""
+	{
+		"en"		""
+		"pl"		""
+	}
+	
+	""
+	{
+		"en"		""
+		"pl"		""
+	}
+	
+	""
+	{
+		"en"		""
+		"pl"		""
+	}	
+	
+	
+	// Melee
+	"BaseballBat"
+	{
+		"en"		"Baseball Bat"
+		"pl"		""
+	}
+	
+	"CricketBat"
+	{
+		"en"		"Cricket Bat"
+		"pl"		""
+	}
+	
+	"Crowbar"
+	{
+		"en"		"Crowbar"
+		"pl"		""
+	}
+	
+	"ElectricGuitar"
+	{
+		"en"		"Electric Guitar"
+		"pl"		""
+	}
+	
+	"FireAxe"
+	{
+		"en"		"Fire Axe"
+		"pl"		""
+	}
+	
+	"FryingPan"
+	{
+		"en"		"Frying Pan"
+		"pl"		""
+	}
+	
+	"Katana"
+	{
+		"en"		"Katana"
+		"pl"		""
+	}
+	
+	"Machete"
+	{
+		"en"		"Machete"
+		"pl"		""
+	}
+	
+	"Tonfa"
+	{
+		"en"		"Tonfa"
+		"pl"		""
+	}
+	
+	"Knife"
+	{
+		"en"		"Knife"
+		"pl"		""
+	}
+}
