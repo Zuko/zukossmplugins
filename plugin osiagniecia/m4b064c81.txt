@@ -1,0 +1,306 @@
+#include <sourcemod>
+#include <sdktools>
+
+#define Q_SIZE 10240
+
+public Plugin:myinfo = {
+
+	name        = "Unlocker",
+	author      = "CShadowRun",
+	description = "Press button, recieve achievement",
+	version     = "1.0",
+	url         = "http://www.cshadowrun.com"
+
+};
+
+new Handle:hAwardAchievement;
+new Handle:g_hAchievementCfg = INVALID_HANDLE;
+
+new Q_UserIds[Q_SIZE] = {0, ...};
+new Q_AIds[Q_SIZE] = {0, ...};
+new Q_Amounts[Q_SIZE] = {0, ...};
+new lastid = 0;
+new skip_frame = 300;
+
+public OnPluginStart()
+
+{
+
+	StartPrepSDKCall(SDKCall_Player);
+	PrepSDKCall_SetSignature(SDKLibrary_Server, "@_ZN9CTFPlayer16AwardAchievementEii", 0);
+	PrepSDKCall_AddParameter(SDKType_PlainOldData, SDKPass_Plain);
+	PrepSDKCall_AddParameter(SDKType_PlainOldData, SDKPass_Plain);
+	hAwardAchievement = EndPrepSDKCall();
+
+	RegConsoleCmd("unlocker", Command_Unlocker);
+
+	g_hAchievementCfg = CreateKeyValues("Votes");
+
+	decl String:sPath[256];
+
+	BuildPath(Path_SM, sPath, sizeof(sPath), "configs/achievements.cfg");
+
+	
+
+	if (FileExists(sPath)) {
+
+		FileToKeyValues(g_hAchievementCfg, sPath);
+
+		KvGotoFirstSubKey(g_hAchievementCfg);
+
+	} else {
+
+		SetFailState("File Not Found: %s", sPath);
+
+	}
+
+
+}
+
+public Action:Command_Unlocker(client, args)
+{
+	decl String:sText[256];
+
+	new Handle:hMenu = CreateMenu(Handler_UnlockerRoot);
+
+	SetMenuTitle (hMenu, "CShadowRun's Achievement unlocker.\nUSE AT YOUR OWN RISK");
+
+	AddMenuItem (hMenu, "Unlock All", "Unlock All");
+	do
+
+	{
+
+		KvGetSectionName(g_hAchievementCfg, sText, sizeof(sText));
+		AddMenuItem (hMenu, sText, sText);
+	} while (KvGotoNextKey(g_hAchievementCfg));
+	KvRewind(g_hAchievementCfg);
+
+	KvGotoFirstSubKey(g_hAchievementCfg);
+	DisplayMenu(hMenu, client, MENU_TIME_FOREVER);
+
+	return Plugin_Handled;
+}
+
+public Handler_UnlockerRoot(Handle:menu, MenuAction:action, client, param)
+
+{
+
+	if (action == MenuAction_Select)
+
+	{
+		decl String:info[256], String:sText[256];
+		GetMenuItem(menu, param, info, sizeof(info));
+		if (StrEqual(info, "Unlock All")) {
+			new count = -1;
+			new highest;
+			new time = 0;
+			do
+
+			{
+				KvGotoFirstSubKey(g_hAchievementCfg);
+				do
+
+				{
+
+					KvGetString(g_hAchievementCfg, "id", sText, sizeof(sText));
+					new aid = StringToInt(sText);
+					KvGetString(g_hAchievementCfg, "amount", sText, sizeof(sText));
+					new aamount = StringToInt(sText);
+					highest = AddToQueue(client, aid, aamount);
+					count++
+					time += aamount
+				} while (KvGotoNextKey(g_hAchievementCfg));
+				KvGoBack(g_hAchievementCfg);
+			} while (KvGotoNextKey(g_hAchievementCfg));
+			highest++
+			time /= 6600
+			decl String:sTime[256];
+			FriendlyTime(time, sTime);
+			PrintHintText(client, "You are in queue slots %d-%d for your achievements\nThis job will take %s", highest-count, highest, sTime);
+			KvRewind(g_hAchievementCfg);
+
+			KvGotoFirstSubKey(g_hAchievementCfg);
+			return
+		}
+		ShowSubMenu(client, info);
+	}
+}
+
+FriendlyTime(seconds,String:friendlytime[])
+
+{
+	new hours = seconds / 3600;
+
+	seconds -= ((seconds / 3600) * 3600);
+
+	new minutes = seconds / 60;
+
+	seconds -= ((seconds / 60) * 60);
+
+	seconds -= ((seconds / 60) * 60);
+	Format(friendlytime,32,"");
+
+	if (hours > 0)
+
+		Format(friendlytime,32,"%dh ",friendlytime,hours);
+
+	if (minutes > 0)
+
+		Format(friendlytime,32,"%s%dm ",friendlytime,minutes);
+
+	if (seconds > 0)
+
+		Format(friendlytime,32,"%s%ds ",friendlytime,seconds);
+	friendlytime[strlen(friendlytime)-1] = '\x00';
+
+}
+
+ShowSubMenu(client, String:info[]) {
+	decl String:sText[256], String:section[256];
+
+	new Handle:hMenu = CreateMenu(Handler_UnlockerSub);
+
+	SetMenuTitle (hMenu, "CShadowRun's Achievement unlocker.\nUSE AT YOUR OWN RISK");
+	AddMenuItem (hMenu, info, "Unlock All");
+	do
+
+	{
+
+		KvGetSectionName(g_hAchievementCfg, section, sizeof(section));
+		if (StrEqual(section,info)) {
+			KvGotoFirstSubKey(g_hAchievementCfg);
+			do
+
+			{
+
+				KvGetSectionName(g_hAchievementCfg, sText, sizeof(sText));
+				AddMenuItem (hMenu, section, sText);
+			} while (KvGotoNextKey(g_hAchievementCfg));
+			break
+		}
+	} while (KvGotoNextKey(g_hAchievementCfg));
+	KvRewind(g_hAchievementCfg);
+
+	KvGotoFirstSubKey(g_hAchievementCfg);
+	DisplayMenu(hMenu, client, MENU_TIME_FOREVER);
+
+}
+
+public Handler_UnlockerSub(Handle:menu, MenuAction:action, client, param)
+
+{
+
+	if (action == MenuAction_Select)
+
+	{
+		decl String:info[256], String:disp[256], String:sText[256], String:section[256], String:achievement[256];
+		new count, highest;
+		GetMenuItem(menu, param, disp, sizeof(disp), count, info, sizeof(info));
+		count = -1
+		do
+
+		{
+			KvGetSectionName(g_hAchievementCfg, section, sizeof(sText));
+			if (StrEqual(section,disp)) {
+				KvGotoFirstSubKey(g_hAchievementCfg);
+				do
+
+				{
+
+					KvGetSectionName(g_hAchievementCfg, achievement, sizeof(achievement));
+					if (StrEqual(achievement, info) || StrEqual(info, "Unlock All")) {
+						KvGetString(g_hAchievementCfg, "id", sText, sizeof(sText));
+						new aid = StringToInt(sText);
+						KvGetString(g_hAchievementCfg, "amount", sText, sizeof(sText));
+						new aamount = StringToInt(sText);
+						highest = AddToQueue(client, aid, aamount);
+						if (highest == -1) {
+							PrintToChat(client, "Sorry the queue is full. Please try again later");
+							return;
+						}
+						count++
+					}
+				} while (KvGotoNextKey(g_hAchievementCfg));
+				KvGoBack(g_hAchievementCfg);
+			}
+
+		} while (KvGotoNextKey(g_hAchievementCfg));
+		highest++
+		if (count > 1)
+			PrintToChat(client,"You are in queue slots %d-%d for your %s achievements",highest-count,highest,info);
+		else
+			PrintToChat(client, "You are in queue slot %d for your %s achievement", highest, info);
+		KvRewind(g_hAchievementCfg);
+
+		KvGotoFirstSubKey(g_hAchievementCfg);
+	}
+}
+
+AddToQueue(client, achievementid, amount) {
+	for (new i = 0; i <= Q_SIZE; i++) {
+		if (Q_UserIds[i] == 0) {
+			Q_UserIds[i] = GetClientUserId(client);
+			Q_AIds[i] = achievementid;
+			Q_Amounts[i] = amount;
+			decl String:name[64];
+			GetClientName(client, name, sizeof(name));
+			PrintToServer("Doing %d %d times for %s", achievementid, amount, name);
+			return i
+		}
+	}
+	return -1
+}
+
+PopFromQ() {
+	for (new i = 1; i <= Q_SIZE; i++) {
+		decl String:name[64];
+		GetClientName(GetClientOfUserId(Q_UserIds[0]), name, sizeof(name));
+		PrintToServer("Done %d for %s", Q_AIds[0], Q_Amounts[0], name);
+		if (Q_UserIds[i] == 0) {
+			Q_UserIds[i-1] = 0;
+			break
+		}
+		Q_UserIds[i-1] = Q_UserIds[i]
+		Q_AIds[i-1] = Q_AIds[i]
+		Q_Amounts[i-1] = Q_Amounts[i]
+	}
+	if (lastid != Q_UserIds[0] && Q_UserIds[0] != 0) {
+		new client = GetClientOfUserId(lastid);
+		if (client != 0) 
+			PrintHintText(client, "Done giving you your achievements!");
+		lastid = Q_UserIds[0]
+	}
+}
+
+public OnGameFrame() {
+	if (skip_frame <= 300) {
+		skip_frame++;
+		return;
+	}
+	skip_frame = 0;
+	if (Q_UserIds[0] != 0) {
+		new client = GetClientOfUserId(Q_UserIds[0]);
+		if (client != 0) {
+			for (new i = 0; i <= 100; i++) {
+				if (Q_Amounts[0] > 0) {
+					if (Q_Amounts[0] > 16384) {
+						SDKCall(hAwardAchievement, client, Q_AIds[0], 16384);
+						Q_Amounts[0] -= 16384
+					}
+					else {
+						SDKCall(hAwardAchievement, client, Q_AIds[0], Q_Amounts[0]);
+						Q_Amounts[0] -= Q_Amounts[0];
+					}
+				}
+				else {
+					PopFromQ();
+					break;
+				}
+			}
+		}
+		else
+		{
+			PopFromQ();
+		}
+	}
+}
