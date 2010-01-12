@@ -1,44 +1,63 @@
 /*
- * "Simple" plugin which you can spawn any weapon or special zombie where you are looking also you can give weapon to players.
+ * *Simple* plugin which you can spawn any weapon or special zombie where you are looking also you can give weapons to players.
  *
  * ####
  * Commands:
- * 	-	sm_spawnweapon [weapon_name] or sm_sw [weapon_name] 
- *		(eg. sm_sw weapon_chainsaw)
+ * 	-	sm_spawnweapon [weapon_name] <amount> or sm_sw [weapon_name] <amount>
+ *		(eg. sm_sw chainsaw 2)
  *	-	sm_giveweapon <#userid|name> [weapon_name] or sm_gw <#userid|name> [weapon_name] 
  *		(eg. sm_gw @me chainsaw)
  *		Targeting: http://wiki.alliedmods.net/Admin_Commands_%28SourceMod%29#How_to_Target
- *	-	sm_zspawn [special infeted name] 
- *		(eg. sm_zspawn tank)
- *	-	sm_spawnminigun or sm_smg
+ *	-	sm_zspawn [special infeted name] <amount>
+ *		(eg. sm_zspawn tank 3)
+ *	-	sm_spawnmachinegun or sm_smg - Spawn Machine Gun
+ *	-	sm_removemachinegun or sm_rmg - Remove Machine Gun
+ *
+ * ####
+ * ConVars:
+ *	-	sm_spawnweapon_assaultammo 			- How much Ammo for AK74, M4A1, SG552 and Desert Rifle.
+ *	-	sm_spawnweapon_smgammo 				- How much Ammo for SMG, Silenced SMG and MP5
+ *	-	sm_spawnweapon_shotgunammo 			- How much Ammo for Shotgun and Chrome Shotgun.
+ *	-	sm_spawnweapon_autoshotgunammo 		- How much Ammo for Autoshotgun and SPAS.
+ *	-	sm_spawnweapon_sniperrifleammo 		- How much Ammo for the Military Sniper Rifle, AWP and Scout.
+ *	-	sm_spawnweapon_grenadelauncherammo 	- How much Ammo for the Grenade Launcher.
+ *	-	sm_spawnweapon_allowallmeleeweapons	- Allow or Disallow all melee weapons on all campaigns.
  *
  * ####
  * Weapon List: 
- * weapon_adrenaline; weapon_autoshotgun; weapon_chainsaw; weapon_defibrillator; weapon_fireworkcrate; 
- * weapon_first_aid_kit; weapon_gascan; weapon_gnome; weapon_grenade_launcher; weapon_hunting_rifle; 
- * weapon_molotov; weapon_oxygentank; weapon_pain_pills; weapon_pipe_bomb; weapon_pistol; 
- * weapon_pistol_magnum; weapon_propanetank; weapon_pumpshotgun; weapon_rifle; weapon_rifle_ak47; 
- * weapon_rifle_desert; weapon_rifle_sg552; weapon_shotgun_chrome; weapon_shotgun_spas; weapon_smg; 
- * weapon_smg_mp5; weapon_smg_silenced; weapon_sniper_awp; weapon_sniper_military; weapon_sniper_scout; 
- * weapon_vomitjar; weapon_ammo_spawn; weapon_upgradepack_explosive; weapon_upgradepack_incendiary;
+ * adrenaline, autoshotgun, chainsaw, defibrillator, fireworkcrate, 
+ * first_aid_kit, gascan, gnome, grenade_launcher, hunting_rifle, 
+ * molotov, oxygentank, pain_pills, pipe_bomb, pistol, 
+ * pistol_magnum, propanetank, pumpshotgun, rifle, rifle_ak47, 
+ * rifle_desert, rifle_sg552, shotgun_chrome, shotgun_spas, smg, 
+ * smg_mp5, smg_silenced, sniper_awp, sniper_military, sniper_scout, 
+ * vomitjar, ammo_spawn, upgradepack_explosive, upgradepack_incendiary, 
+ * cola_bottles
  *
  * ####
  * Melee Weapons List:
- * baseball_bat; cricket_bat; crowbar; electric_guitar; fireaxe; frying_pan; katana; machete; tonfa;
+ * baseball_bat, cricket_bat, crowbar, electric_guitar, fireaxe, frying_pan, 
+ * katana, machete, tonfa, knife
  *
  * #### 
  * Special Zombie List: 
- * boomer; hunter; smoker; tank; spitter; jockey; charger; zombie; witch
- * *
+ * boomer, hunter, smoker, tank, spitter, jockey, charger, zombie, witch
+ *
  * ####
  * Changelog:
+ * v0.7
+ *	o Added missing stuff in "give menu" from v0.5-beta
+ *	o Fixed Ammo Stack spawning
+ *	o Fixed typos in transaltion file (thx for bearbear)
+ *	o Added second argument to sm_spawnweapon and sm_zspawn - amount of spawned items/zombies
  * v0.6
  *	o Added ammo to spawned weapons (yey!)
- *	o Added max ammo cvars
+ *	o Added ammo cvars
  *	o Automatically adding "weapon_" for sm_sw (eg. sm_sw rifle)
  *	o Added multi-language support
- *	o Added knife to Melee weapons menu (works only when you play with germans)
+ *	o Added cola and knife (knife works only when you play with germans)
  *	o Added command to remove minigun
+ *	o minor fixes
  * v0.5 - Beta
  *	o Added MagineGun spawning
  *	o Added missing witch and vomitjar
@@ -75,7 +94,7 @@
 #undef REQUIRE_PLUGIN
 #include <adminmenu>
 
-#define VERSION "0.6"
+#define VERSION "0.7"
 
 /* TopMenu Handle */
 new Handle:hAdminMenu = INVALID_HANDLE;
@@ -88,17 +107,21 @@ new Handle:AutoShotgunMaxAmmo = INVALID_HANDLE;
 new Handle:HRMaxAmmo = INVALID_HANDLE;
 new Handle:SniperRifleMaxAmmo = INVALID_HANDLE;
 new Handle:GrenadeLauncherMaxAmmo = INVALID_HANDLE;
+new Handle:AllowAllMeleeWeapons = INVALID_HANDLE;
+new Handle:DebugInformations = INVALID_HANDLE;
 
 new String:ChoosedWeapon[MAXPLAYERS+1][56]
 new String:ChoosedMenuSpawn[MAXPLAYERS+1][56]
 new String:ChoosedMenuGive[MAXPLAYERS+1][56]
+new String:Campaign[40]
+new String:MapName[128];
 new Float:g_pos[3];
 
 public Plugin:myinfo = 
 {
 	name = "[L4D2] Weapon/Zombie Spawner",
 	author = "Zuko",
-	description = "Spawns weapons/zombies where your looking or give weapon to player.",
+	description = "Spawns weapons/zombies where your looking or give weapons to players.",
 	version = VERSION,
 	url = "http://zuko.isports.pl"
 }
@@ -116,20 +139,25 @@ public OnPluginStart()
 	RegAdminCmd("sm_zspawn", Command_SpawnZombie, ADMFLAG_SLAY, "Spawns special zombie where you are looking.");
 
 	/* Minugun Commands */
-	RegAdminCmd("sm_spawnminigun", Command_SpawnMinigun, ADMFLAG_SLAY, "Spawns minigun.");
-	RegAdminCmd("sm_smg", Command_SpawnMinigun, ADMFLAG_SLAY, "Spawns minigun.");
-	RegAdminCmd("sm_removeminigun", Command_RemoveMinigun, ADMFLAG_SLAY, "Remove minigun.");
-	RegAdminCmd("sm_rmg", Command_RemoveMinigun, ADMFLAG_SLAY, "Remove minigun.");
+	RegAdminCmd("sm_spawnmachinegun", Command_SpawnMinigun, ADMFLAG_SLAY, "Spawns Machine Gun.");
+	RegAdminCmd("sm_smg", Command_SpawnMinigun, ADMFLAG_SLAY, "Spawns Machine Gun.");
+	RegAdminCmd("sm_removemachinegun", Command_RemoveMinigun, ADMFLAG_SLAY, "Remove Machine Gun.");
+	RegAdminCmd("sm_rmg", Command_RemoveMinigun, ADMFLAG_SLAY, "Remove Machine Gun.");
+
 
 	/* Max Ammo ConVars */
-	AssaultMaxAmmo = CreateConVar("sm_spawnweapon_assaultammo", "360", " How much Ammo for AK74, M4A1 and Desert Rifle ", FCVAR_PLUGIN|FCVAR_NOTIFY);
-	SMGMaxAmmo = CreateConVar("sm_spawnweapon_smgammo", "650", " How much Ammo for SMG and Silenced SMG ", FCVAR_PLUGIN|FCVAR_NOTIFY);
-	ShotgunMaxAmmo = CreateConVar("sm_spawnweapon_shotgunammo", "56", " How much Ammo for Shotgun and Chrome Shotgun ", FCVAR_PLUGIN|FCVAR_NOTIFY);
-	AutoShotgunMaxAmmo = CreateConVar("sm_spawnweapon_autoshotgunammo", "90", " How much Ammo for Autoshottie and SPAS ", FCVAR_PLUGIN|FCVAR_NOTIFY);
-	HRMaxAmmo = CreateConVar("sm_spawnweapon_huntingrifleammo", "150", " How much Ammo for the Hunting Rifle ", FCVAR_PLUGIN|FCVAR_NOTIFY);
-	SniperRifleMaxAmmo = CreateConVar("sm_spawnweapon_sniperrifleammo", "180", " How much Ammo for the Military Sniper Rifle ", FCVAR_PLUGIN|FCVAR_NOTIFY);	
-	GrenadeLauncherMaxAmmo = CreateConVar("sm_spawnweapon_grenadelauncherammo", "30", " How much Ammo for the Grenade Launcher ", FCVAR_PLUGIN|FCVAR_NOTIFY);	
+	AssaultMaxAmmo = CreateConVar("sm_spawnweapon_assaultammo", "360", "How much Ammo for AK74, M4A1, SG552 and Desert Rifle.", FCVAR_PLUGIN, true, 0.0, true, 360.0);
+	SMGMaxAmmo = CreateConVar("sm_spawnweapon_smgammo", "650", "How much Ammo for SMG, Silenced SMG and MP5", FCVAR_PLUGIN, true, 0.0, true, 650.0);
+	ShotgunMaxAmmo = CreateConVar("sm_spawnweapon_shotgunammo", "56", "How much Ammo for Shotgun and Chrome Shotgun.", FCVAR_PLUGIN, true, 0.0, true, 56.0);
+	AutoShotgunMaxAmmo = CreateConVar("sm_spawnweapon_autoshotgunammo", "90", "How much Ammo for Autoshotgun and SPAS.", FCVAR_PLUGIN, true, 0.0, true, 90.0);
+	HRMaxAmmo = CreateConVar("sm_spawnweapon_huntingrifleammo", "150", "How much Ammo for the Hunting Rifle.", FCVAR_PLUGIN, true, 0.0, true, 150.0);
+	SniperRifleMaxAmmo = CreateConVar("sm_spawnweapon_sniperrifleammo", "180", "How much Ammo for the Military Sniper Rifle, AWP and Scout.", FCVAR_PLUGIN, true, 0.0, true, 180.0);
+	GrenadeLauncherMaxAmmo = CreateConVar("sm_spawnweapon_grenadelauncherammo", "30", "How much Ammo for the Grenade Launcher.", FCVAR_PLUGIN, true, 0.0, true, 30.0);
 
+	AllowAllMeleeWeapons = CreateConVar("sm_spawnweapon_allowallmeleeweapons", "0", "Allow or Disallow all melee weapons on all campaigns.", FCVAR_PLUGIN, true, 0.0, true, 1.0);
+	DebugInformations = CreateConVar("sm_spawnweapon_debug", "1", "Enable or Disable Debug Informations.", FCVAR_PLUGIN, true, 0.0, true, 1.0);
+
+	/* Config File */
 	AutoExecConfig(true, "l4d2_weaponspawner");
 	
 	/*Menu Handler */
@@ -144,11 +172,53 @@ public OnPluginStart()
 	LoadTranslations("weaponspawner.phrases");
 }
 
+public OnMapStart()
+{
+	/* Precache Models */
+	PrecacheModel("models/v_models/v_rif_sg552.mdl", true);
+	PrecacheModel("models/w_models/weapons/w_rifle_sg552.mdl", true);
+	PrecacheModel("models/v_models/v_snip_awp.mdl", true);
+	PrecacheModel("models/w_models/weapons/w_sniper_awp.mdl", true);
+	PrecacheModel("models/v_models/v_snip_scout.mdl", true);
+	PrecacheModel("models/w_models/weapons/w_sniper_scout.mdl", true);
+	PrecacheModel("models/v_models/v_smg_mp5.mdl", true);
+	PrecacheModel("models/w_models/weapons/w_smg_mp5.mdl", true);
+	PrecacheModel("models/w_models/weapons/50cal.mdl", true);
+
+	GetCurrentMap(MapName, sizeof(MapName));
+	
+	if (StrContains(MapName,"c1",false))
+	{
+		Campaign = "campaign_deadcenter"
+	}
+	else if (StrContains(MapName,"c2",false))
+	{
+		Campaign = "campaign_darkcarnival"
+	}
+	else if(StrContains(MapName,"c3",false))
+	{
+		Campaign = "campaign_swampfever"
+	}
+	else if(StrContains(MapName,"c4",false))
+	{
+		Campaign = "campaign_hardrain"
+	}
+	else if(StrContains(MapName,"c5",false))
+	{
+		Campaign = "campaign_theparish"
+	}
+	else
+	{
+		Campaign = "campaign_custom"
+	}
+}
+
 /* Spawn Weapon */
 public Action:Command_SpawnWeapon(client, args)
 {
-	decl String:weapon[56];
-	decl String:arg1[56];
+	new amount
+	
+	decl String:weapon[40], String:arg1[40], String:arg2[5];
 	decl maxammo;
 	
 	if (client == 0)
@@ -156,16 +226,24 @@ public Action:Command_SpawnWeapon(client, args)
 		ReplyToCommand(client, "%t", "Command is in-game only", LANG_SERVER);
 		return Plugin_Handled;
 	}
-	
-	if (args != 1)
+
+	if (args == 2)
 	{
-		ReplyToCommand(client, "%t", "SpawnWeaponUsage", LANG_SERVER);
-		return Plugin_Handled;
+		GetCmdArg(1, arg1, sizeof(arg1));
+		GetCmdArg(2, arg2, sizeof(arg2));
+		Format(weapon, sizeof(weapon), "weapon_%s", arg1);
+		amount = StringToInt(arg2);
 	}
-	else
+	else if (args == 1)
 	{
 		GetCmdArg(1, arg1, sizeof(arg1));
 		Format(weapon, sizeof(weapon), "weapon_%s", arg1);
+		amount = 1
+	}
+	else
+	{
+		ReplyToCommand(client, "%t", "SpawnWeaponUsage", LANG_SERVER);
+		return Plugin_Handled;
 	}
 	
 	if(!SetTeleportEndPoint(client))
@@ -173,12 +251,12 @@ public Action:Command_SpawnWeapon(client, args)
 		ReplyToCommand(client, "[SM] %t", "SpawnError", LANG_SERVER);
 		return Plugin_Handled;
 	}
-	
-	if (StrEqual(weapon, "weapon_rifle", false) || StrEqual(weapon, "weapon_rifle_ak47", false) || StrEqual(weapon, "weapon_rifle_desert", false))
+
+	if (StrEqual(weapon, "weapon_rifle", false) || StrEqual(weapon, "weapon_rifle_ak47", false) || StrEqual(weapon, "weapon_rifle_desert", false) || StrEqual(weapon, "weapon_rifle_sg552", false))
 	{
 		maxammo = GetConVarInt(AssaultMaxAmmo);
 	}
-	else if (StrEqual(weapon, "weapon_smg", false) || StrEqual(weapon, "weapon_smg_silenced", false))
+	else if (StrEqual(weapon, "weapon_smg", false) || StrEqual(weapon, "weapon_smg_silenced", false) || StrEqual(weapon, "weapon_smg_mp5", false))
 	{
 		maxammo = GetConVarInt(SMGMaxAmmo);
 	}		
@@ -194,28 +272,35 @@ public Action:Command_SpawnWeapon(client, args)
 	{
 		maxammo = GetConVarInt(HRMaxAmmo);
 	}
-	else if (StrEqual(weapon, "weapon_sniper_military", false))
+	else if (StrEqual(weapon, "weapon_sniper_military", false) || StrEqual(weapon, "weapon_sniper_awp", false) || StrEqual(weapon, "weapon_sniper_scout", false))
 	{
 		maxammo = GetConVarInt(SniperRifleMaxAmmo);
 	}
-	if (StrEqual(weapon, "weapon_grenade_launcher", false))
+	else if (StrEqual(weapon, "weapon_grenade_launcher", false))
 	{
 		maxammo = GetConVarInt(GrenadeLauncherMaxAmmo);
 	}
-	else
+	
+	new i=0
+	while (++i <= amount)
 	{
-		ReplyToCommand(client, "%t", "WrongWeaponName", LANG_SERVER);
-		return Plugin_Handled;
-	}
-	
-	new iWeapon = CreateEntityByName(weapon);
-	
-	if(IsValidEntity(iWeapon))
-	{		
-		DispatchSpawn(iWeapon); //Spawn weapon (entity)
-		SetEntProp(iWeapon, Prop_Send, "m_iExtraPrimaryAmmo", maxammo ,4); //Adds max ammo for weapon
-		g_pos[2] -= 10.0;
-		TeleportEntity(iWeapon, g_pos, NULL_VECTOR, NULL_VECTOR); //Teleport spawned weapon
+		new iWeapon = CreateEntityByName(weapon);
+
+		if(IsValidEntity(iWeapon))
+		{		
+			DispatchSpawn(iWeapon); //Spawn weapon (entity)
+			if (!StrEqual(weapon, "weapon_ammo_spawn", false))
+			{
+				SetEntProp(iWeapon, Prop_Send, "m_iExtraPrimaryAmmo", maxammo ,4); //Adds max ammo for weapon
+			}
+			g_pos[2] -= 10.0-(i*2);
+			TeleportEntity(iWeapon, g_pos, NULL_VECTOR, NULL_VECTOR); //Teleport spawned weapon
+			
+			if (GetConVarInt(DebugInformations))
+			{
+				PrintToChat(client, "You spawned: %s", weapon)
+			}
+		}
 	}
 	return Plugin_Handled;
 }
@@ -277,29 +362,42 @@ public Action:Command_GiveWeapon(client, args)
 /* Spawn Zombie */
 public Action:Command_SpawnZombie(client, args)
 {
-	decl String:zombie[56];
+	new amount
+	decl String:zombie[56], String:arg2[5];
 
 	if (client == 0)
 	{
-		ReplyToCommand(client, "%t", "Command is in-game only", LANG_SERVER);
+		ReplyToCommand(client, "%t", "Command is in-game only", LANG_SERVER)
 		return Plugin_Handled;
 	}
 
-	if (args != 1)
+	if (args == 2)
+	{
+		GetCmdArg(1, zombie, sizeof(zombie));
+		GetCmdArg(2, arg2, sizeof(arg2));
+		amount = StringToInt(arg2);
+	}
+	else if (args == 1)
+	{
+		GetCmdArg(1, zombie, sizeof(zombie));
+		amount = 1
+	}
+	else
 	{
 		ReplyToCommand(client, "%t", "SpawnZombieUsage", LANG_SERVER)
 		return Plugin_Handled;
 	}
-	else
+
+	new i=0
+	while (++i <= amount)
 	{
-		GetCmdArg(1, zombie, sizeof(zombie));
-	}
-	if (IsClientConnected(client) && IsClientInGame(client))
-	{
-		new flags = GetCommandFlags("z_spawn");
-		SetCommandFlags("z_spawn", flags & ~FCVAR_CHEAT);
-		FakeClientCommand(client, "z_spawn %s", zombie);
-		SetCommandFlags("z_spawn", flags|FCVAR_CHEAT);
+		if (IsClientConnected(client) && IsClientInGame(client))
+		{
+			new flags = GetCommandFlags("z_spawn");
+			SetCommandFlags("z_spawn", flags & ~FCVAR_CHEAT);
+			FakeClientCommand(client, "z_spawn %s", zombie);
+			SetCommandFlags("z_spawn", flags|FCVAR_CHEAT);
+		}
 	}
 	return Plugin_Handled;
 }
@@ -350,7 +448,7 @@ public SpawnMiniGun(client)
 
 public Action:Command_RemoveMinigun(client, args)
 {
-	if( !client )
+	if(!client)
 	{
 		ReplyToCommand(client, "%t", "Command is in-game only", LANG_SERVER);
 		return Plugin_Handled;	
@@ -363,7 +461,7 @@ public Action:Command_RemoveMinigun(client, args)
 public RemoveMiniGun(client)
 {
 	decl String:Classname[128];
-	new minigun = GetClientAimTarget (client, false);
+	new minigun = GetClientAimTarget(client, false);
 
 	if ((minigun == -1) || (!IsValidEntity (minigun)))
 	{
@@ -376,7 +474,7 @@ public RemoveMiniGun(client)
 		ReplyToCommand (client, "[SM] %t", "RemoveMinigunError_02");
 	}
 
-	RemoveEdict (minigun);
+	RemoveEdict(minigun);
 }
 /* >>> end of Minigun */
 
@@ -427,7 +525,7 @@ public AdminMenu_WeaponSpawner(Handle:topmenu, TopMenuAction:action, TopMenuObje
 
 DisplayWeaponMenu(client)
 {
-	decl String:bulletbased[100], String:shellbased[100], String:explosivebased[100], String:healthrelated[100], String:misc[100], String:title[100];
+	decl String:bulletbased[40], String:shellbased[40], String:explosivebased[40], String:healthrelated[40], String:misc[40], String:title[40];
 
 	new Handle:menu = CreateMenu(MenuHandler_Weapons)
 
@@ -482,9 +580,9 @@ public MenuHandler_Weapons(Handle:menu, MenuAction:action, param1, param2)
 
 BuildBulletBasedMenu(client)
 {
-	decl String:hunting_rifle[100], String:pistol[100], String:pistol_magnum[100], String:rifle[100], String:rifle_desert[100];
-	decl String:smg[100], String:smg_silenced[100], String:sniper_military[100], String:rifle_ak47[100], String:rifle_sg552[100];
-	decl String:smg_mp5[100], String:sniper_awp[100], String:sniper_scout[100], String:title[100];
+	decl String:hunting_rifle[40], String:pistol[40], String:pistol_magnum[40], String:rifle[40], String:title[40];
+	decl String:rifle_desert[40], String:smg[40], String:smg_silenced[40], String:sniper_military[40], String:rifle_ak47[40];
+	decl String:rifle_sg552[40], String:smg_mp5[40], String:sniper_awp[40], String:sniper_scout[40];
 
 	new Handle:menu = CreateMenu(MenuHandler_SpawnWeapon);
 	
@@ -510,7 +608,7 @@ BuildBulletBasedMenu(client)
 	AddMenuItem(menu, "weapon_rifle_sg552", rifle_sg552)
 	Format(smg_mp5, sizeof(smg_mp5),"%T", "SubmachineGunMP5", LANG_SERVER)
 	AddMenuItem(menu, "weapon_smg_mp5", smg_mp5)
-	Format(sniper_awp, sizeof(sniper_awp),"%T", "AccuracyInternationaLArcticWarfare", LANG_SERVER)
+	Format(sniper_awp, sizeof(sniper_awp),"%T", "AWP", LANG_SERVER)
 	AddMenuItem(menu, "weapon_sniper_awp", sniper_awp)
 	Format(sniper_scout, sizeof(sniper_scout),"%T", "ScoutSniper", LANG_SERVER)
 	AddMenuItem(menu, "weapon_sniper_scout", sniper_scout)
@@ -524,7 +622,7 @@ BuildBulletBasedMenu(client)
 
 BuildShellBasedMenu(client)
 {
-	decl String:autoshotgun[100], String:shotgun_chrome[100], String:shotgun_spas[100], String:pumpshotgun[100], String:title[100]; 
+	decl String:autoshotgun[40], String:shotgun_chrome[40], String:shotgun_spas[40], String:pumpshotgun[40], String:title[40]; 
 	
 	new Handle:menu = CreateMenu(MenuHandler_SpawnWeapon);
 	
@@ -546,14 +644,13 @@ BuildShellBasedMenu(client)
 
 BuildExplosiveBasedMenu(client)
 {
-	decl String:grenade_launcher[100], String:fireworkcrate[100], String:gascan[100], String:molotov[100], String:oxygentank[100];
-	decl String:pipe_bomb[100], String:propanetank[100], String:title[100];
+	decl String:grenade_launcher[40], String:fireworkcrate[40], String:gascan[40], String:molotov[40], String:oxygentank[40], String:pipe_bomb[40], String:propanetank[40], String:title[40];
 
 	new Handle:menu = CreateMenu(MenuHandler_SpawnWeapon);
 	
-	Format(grenade_launcher, sizeof(grenade_launcher),"%T", "GranadeLuncher", LANG_SERVER)
+	Format(grenade_launcher, sizeof(grenade_launcher),"%T", "GrenadeLauncher", LANG_SERVER)
 	AddMenuItem(menu, "weapon_grenade_launcher", grenade_launcher)
-	Format(fireworkcrate, sizeof(fireworkcrate),"%T", "FireWorksCrate", LANG_SERVER)
+	Format(fireworkcrate, sizeof(fireworkcrate),"%T", "FireworksCrate", LANG_SERVER)
 	AddMenuItem(menu, "weapon_fireworkcrate", fireworkcrate)
 	Format(gascan, sizeof(gascan),"%T", "Gascan", LANG_SERVER)
 	AddMenuItem(menu, "weapon_gascan", gascan)
@@ -575,7 +672,7 @@ BuildExplosiveBasedMenu(client)
 
 BuildHealthMenu(client)
 {
-	decl String:adrenaline[100], String:defibrillator[100], String:first_aid_kit[100], String:pain_pills[100], String:title[100]; 
+	decl String:adrenaline[40], String:defibrillator[40], String:first_aid_kit[40], String:pain_pills[40], String:title[40]; 
 
 	new Handle:menu = CreateMenu(MenuHandler_SpawnWeapon);
 	
@@ -597,8 +694,7 @@ BuildHealthMenu(client)
 
 BuildMiscMenu(client)
 {
-	decl String:chainsaw[100], String:ammo_spawn[100], String:upgradepack_explosive[100], String:upgradepack_incendiary[100];
-	decl String:vomitjar[100], String:gnome[100], String:title[100];
+	decl String:chainsaw[40], String:ammo_spawn[40], String:upgradepack_explosive[40], String:upgradepack_incendiary[40], String:vomitjar[40], String:gnome[40], String:cola[40], String:title[40];
 	
 	new Handle:menu = CreateMenu(MenuHandler_SpawnWeapon);
 	
@@ -614,6 +710,8 @@ BuildMiscMenu(client)
 	AddMenuItem(menu, "weapon_vomitjar", vomitjar)
 	Format(gnome, sizeof(gnome),"%T", "Gnome", LANG_SERVER)
 	AddMenuItem(menu, "weapon_gnome", gnome)
+	Format(cola, sizeof(cola),"%T", "Cola", LANG_SERVER)
+	AddMenuItem(menu, "weapon_cola_bottles", cola)	
 	Format(title, sizeof(title),"%T", "MiscMenuTitle", LANG_SERVER)
 	SetMenuTitle(menu, title);
 	SetMenuExitBackButton(menu, true)
@@ -653,7 +751,7 @@ switch(action)
 			{
 				maxammo = GetConVarInt(AssaultMaxAmmo);
 			}
-			else if (StrEqual(weapon, "weapon_smg", false) || StrEqual(weapon, "weapon_smg_silenced", false))
+			else if (StrEqual(weapon, "weapon_smg", false) || StrEqual(weapon, "weapon_smg_silenced", false) || StrEqual(weapon, "weapon_smg_mp5", false))
 			{
 				maxammo = GetConVarInt(SMGMaxAmmo);
 			}		
@@ -673,13 +771,9 @@ switch(action)
 			{
 				maxammo = GetConVarInt(SniperRifleMaxAmmo);
 			}
-			if (StrEqual(weapon, "weapon_grenade_launcher", false))
+			else if (StrEqual(weapon, "weapon_grenade_launcher", false))
 			{
 				maxammo = GetConVarInt(GrenadeLauncherMaxAmmo);
-			}
-			else
-			{
-				PrintToChat(param1, "%T", "WrongWeaponName", LANG_SERVER);
 			}
 
 			new iWeapon = CreateEntityByName(weapon);
@@ -687,9 +781,16 @@ switch(action)
 			if(IsValidEntity(iWeapon))
 			{
 				DispatchSpawn(iWeapon); //Spawn weapon (entity)
-				SetEntProp(iWeapon, Prop_Send, "m_iExtraPrimaryAmmo", maxammo ,4); //Adds max ammo for weapon
+				if (!StrEqual(weapon, "weapon_ammo_spawn", false))
+				{
+					SetEntProp(iWeapon, Prop_Send, "m_iExtraPrimaryAmmo", maxammo ,4); //Adds max ammo for weapon
+				}
 				g_pos[2] -= 10.0;
 				TeleportEntity(iWeapon, g_pos, NULL_VECTOR, NULL_VECTOR); //Teleport spawned weapon
+				if (GetConVarInt(DebugInformations))
+				{
+					PrintToChat(param1, "You spawned: %s", weapon)
+				}
 			}
 			ChoosedSpawnMenuHistory(param1); //Redraw menu after item selection
 		}
@@ -737,8 +838,8 @@ public AdminMenu_WeaponGive(Handle:topmenu, TopMenuAction:action, TopMenuObject:
 
 DisplayWeaponGiveMenu(client)
 {
-	decl String:MeleeGiveMenu[100], String:BulletBasedGiveMenu[100], String:ShellBasedGiveMenu[100];
-	decl String:ExplosiveBasedGiveMenu[100], String:HealthGiveMenu[100], String:MiscGiveMenu[100], String:title[100]; 
+	decl String:MeleeGiveMenu[40], String:BulletBasedGiveMenu[40], String:ShellBasedGiveMenu[40];
+	decl String:ExplosiveBasedGiveMenu[40], String:HealthGiveMenu[40], String:MiscGiveMenu[40], String:title[40]; 
 	
 	new Handle:menu = CreateMenu(MenuHandler_GiveWeapons)
 	
@@ -797,44 +898,200 @@ public MenuHandler_GiveWeapons(Handle:menu, MenuAction:action, param1, param2)
 
 BuildMeleeGiveMenu(client)
 {
-	decl String:baseball_bat[100], String:cricket_bat[100], String:crowbar[100], String:electric_guitar[100], String:fireaxe[100];
-	decl String:frying_pan[100], String:katana[100], String:machete[100], String:tonfa[100], String:knife[100], String:title[100]
-	
-	new Handle:menu = CreateMenu(MenuHandler_GiveWeapon);
+	decl String:baseball_bat[40], String:cricket_bat[40], String:crowbar[40], String:electric_guitar[40], String:fireaxe[40];
+	decl String:frying_pan[40], String:katana[40], String:machete[40], String:tonfa[40], String:knife[40], String:title[40]
 
-	Format(baseball_bat, sizeof(baseball_bat),"%T", "BaseballBat", LANG_SERVER)
-	AddMenuItem(menu, "baseball_bat", baseball_bat)
-	Format(cricket_bat, sizeof(cricket_bat),"%T", "CricketBat", LANG_SERVER)
-	AddMenuItem(menu, "cricket_bat", "Cricket Bat")
-	Format(crowbar, sizeof(crowbar),"%T", "Crowbar", LANG_SERVER)
-	AddMenuItem(menu, "crowbar", crowbar)
-	Format(electric_guitar, sizeof(electric_guitar),"%T", "ElectricGuitar", LANG_SERVER)
-	AddMenuItem(menu, "electric_guitar", electric_guitar)
-	Format(fireaxe, sizeof(fireaxe),"%T", "FireAxe", LANG_SERVER)
-	AddMenuItem(menu, "fireaxe", fireaxe)
-	Format(frying_pan, sizeof(frying_pan),"%T", "Frying Pan", LANG_SERVER)
-	AddMenuItem(menu, "frying_pan", frying_pan)
-	Format(katana, sizeof(katana),"%T", "Katana", LANG_SERVER)
-	AddMenuItem(menu, "katana", katana)
-	Format(machete, sizeof(machete),"%T", "Machete", LANG_SERVER)
-	AddMenuItem(menu, "machete", machete)
-	Format(tonfa, sizeof(tonfa),"%T", "Tonfa", LANG_SERVER)
-	AddMenuItem(menu, "tonfa", tonfa)
-	Format(knife, sizeof(knife),"%T", "Knife", LANG_SERVER)
-	AddMenuItem(menu, "knife", knife)
-	Format(title, sizeof(title),"%T", "MeleeMenuTitle", LANG_SERVER)
-	SetMenuTitle(menu, title);
-	SetMenuExitBackButton(menu, true)
+	if (GetConVarInt(DebugInformations))
+	{
+		PrintToChat(client, "Map Name: %s", MapName)
+	}
 
-	ChoosedMenuGive[client] = "MeleeGiveMenu";
-	DisplayMenu(menu, client, MENU_TIME_FOREVER)
+	if ((GetConVarInt(AllowAllMeleeWeapons) == 0) || (StrEqual(Campaign, "campaign_custom", false)))
+	{
+		if (StrEqual(Campaign, "campaign_deadcenter", false))
+		{
+			new Handle:menu = CreateMenu(MenuHandler_GiveWeapon);
+
+			Format(cricket_bat, sizeof(cricket_bat),"%T", "CricketBat", LANG_SERVER)
+			AddMenuItem(menu, "cricket_bat", "Cricket Bat")
+			Format(crowbar, sizeof(crowbar),"%T", "Crowbar", LANG_SERVER)
+			AddMenuItem(menu, "crowbar", crowbar)
+			Format(fireaxe, sizeof(fireaxe),"%T", "FireAxe", LANG_SERVER)
+			AddMenuItem(menu, "fireaxe", fireaxe)
+			Format(katana, sizeof(katana),"%T", "Katana", LANG_SERVER)
+			AddMenuItem(menu, "katana", katana)
+			Format(baseball_bat, sizeof(baseball_bat),"%T", "BaseballBat", LANG_SERVER)
+			AddMenuItem(menu, "baseball_bat", baseball_bat)
+			Format(knife, sizeof(knife),"%T", "Knife", LANG_SERVER)
+			AddMenuItem(menu, "knife", knife)
+			Format(title, sizeof(title),"%T", "MeleeMenuTitle", LANG_SERVER)
+			SetMenuTitle(menu, title);
+			SetMenuExitBackButton(menu, true)
+
+			ChoosedMenuGive[client] = "MeleeGiveMenu";
+			DisplayMenu(menu, client, MENU_TIME_FOREVER)
+			
+			if (GetConVarInt(DebugInformations))
+			{
+				PrintToChat(client, "Campaign: %s", Campaign)
+			}
+		}
+		else if (StrEqual(Campaign, "campaign_darkcarnival", false))
+		{
+			new Handle:menu = CreateMenu(MenuHandler_GiveWeapon);
+
+			Format(crowbar, sizeof(crowbar),"%T", "Crowbar", LANG_SERVER)
+			AddMenuItem(menu, "crowbar", crowbar)
+			Format(electric_guitar, sizeof(electric_guitar),"%T", "ElectricGuitar", LANG_SERVER)
+			AddMenuItem(menu, "electric_guitar", electric_guitar)
+			Format(fireaxe, sizeof(fireaxe),"%T", "FireAxe", LANG_SERVER)
+			AddMenuItem(menu, "fireaxe", fireaxe)
+			Format(katana, sizeof(katana),"%T", "Katana", LANG_SERVER)
+			AddMenuItem(menu, "katana", katana)
+			Format(baseball_bat, sizeof(baseball_bat),"%T", "BaseballBat", LANG_SERVER)
+			AddMenuItem(menu, "baseball_bat", baseball_bat)
+			Format(knife, sizeof(knife),"%T", "Knife", LANG_SERVER)
+			AddMenuItem(menu, "knife", knife)
+			Format(title, sizeof(title),"%T", "MeleeMenuTitle", LANG_SERVER)
+			SetMenuTitle(menu, title);
+			SetMenuExitBackButton(menu, true)
+
+			ChoosedMenuGive[client] = "MeleeGiveMenu";
+			DisplayMenu(menu, client, MENU_TIME_FOREVER)
+			
+			if (GetConVarInt(DebugInformations))
+			{
+				PrintToChat(client, "Campaign: %s", Campaign)
+			}
+		}
+		else if (StrEqual(Campaign, "campaign_swampfever", false))
+		{
+			new Handle:menu = CreateMenu(MenuHandler_GiveWeapon);
+
+			Format(cricket_bat, sizeof(cricket_bat),"%T", "CricketBat", LANG_SERVER)
+			AddMenuItem(menu, "cricket_bat", "Cricket Bat")
+			Format(fireaxe, sizeof(fireaxe),"%T", "FireAxe", LANG_SERVER)
+			AddMenuItem(menu, "fireaxe", fireaxe)
+			Format(frying_pan, sizeof(frying_pan),"%T", "FryingPan", LANG_SERVER)
+			AddMenuItem(menu, "frying_pan", frying_pan)
+			Format(machete, sizeof(machete),"%T", "Machete", LANG_SERVER)
+			AddMenuItem(menu, "machete", machete)
+			Format(baseball_bat, sizeof(baseball_bat),"%T", "BaseballBat", LANG_SERVER)
+			AddMenuItem(menu, "baseball_bat", baseball_bat)
+			Format(knife, sizeof(knife),"%T", "Knife", LANG_SERVER)
+			AddMenuItem(menu, "knife", knife)
+			Format(title, sizeof(title),"%T", "MeleeMenuTitle", LANG_SERVER)
+			SetMenuTitle(menu, title);
+			SetMenuExitBackButton(menu, true)
+
+			ChoosedMenuGive[client] = "MeleeGiveMenu";
+			DisplayMenu(menu, client, MENU_TIME_FOREVER)
+			
+			if (GetConVarInt(DebugInformations))
+			{
+				PrintToChat(client, "Campaign: %s", Campaign)
+			}
+		}
+		else if (StrEqual(Campaign, "campaign_hardrain", false))
+		{
+			new Handle:menu = CreateMenu(MenuHandler_GiveWeapon);
+
+			Format(crowbar, sizeof(crowbar),"%T", "Crowbar", LANG_SERVER)
+			AddMenuItem(menu, "crowbar", crowbar)
+			Format(fireaxe, sizeof(fireaxe),"%T", "FireAxe", LANG_SERVER)
+			AddMenuItem(menu, "fireaxe", fireaxe)
+			Format(frying_pan, sizeof(frying_pan),"%T", "FryingPan", LANG_SERVER)
+			AddMenuItem(menu, "frying_pan", frying_pan)
+			Format(katana, sizeof(katana),"%T", "Katana", LANG_SERVER)
+			AddMenuItem(menu, "katana", katana)
+			Format(baseball_bat, sizeof(baseball_bat),"%T", "BaseballBat", LANG_SERVER)
+			AddMenuItem(menu, "baseball_bat", baseball_bat)
+			Format(knife, sizeof(knife),"%T", "Knife", LANG_SERVER)
+			AddMenuItem(menu, "knife", knife)
+			Format(title, sizeof(title),"%T", "MeleeMenuTitle", LANG_SERVER)
+			SetMenuTitle(menu, title);
+			SetMenuExitBackButton(menu, true)
+
+			ChoosedMenuGive[client] = "MeleeGiveMenu";
+			DisplayMenu(menu, client, MENU_TIME_FOREVER)
+			
+			if (GetConVarInt(DebugInformations))
+			{
+				PrintToChat(client, "Campaign: %s", Campaign)
+			}
+		}
+		else if (StrEqual(Campaign, "campaign_theparish", false))
+		{
+			new Handle:menu = CreateMenu(MenuHandler_GiveWeapon);
+
+			Format(electric_guitar, sizeof(electric_guitar),"%T", "ElectricGuitar", LANG_SERVER)
+			AddMenuItem(menu, "electric_guitar", electric_guitar)
+			Format(frying_pan, sizeof(frying_pan),"%T", "FryingPan", LANG_SERVER)
+			AddMenuItem(menu, "frying_pan", frying_pan)
+			Format(machete, sizeof(machete),"%T", "Machete", LANG_SERVER)
+			AddMenuItem(menu, "machete", machete)
+			Format(tonfa, sizeof(tonfa),"%T", "Tonfa", LANG_SERVER)
+			AddMenuItem(menu, "tonfa", tonfa)
+			Format(baseball_bat, sizeof(baseball_bat),"%T", "BaseballBat", LANG_SERVER)
+			AddMenuItem(menu, "baseball_bat", baseball_bat)
+			Format(knife, sizeof(knife),"%T", "Knife", LANG_SERVER)
+			AddMenuItem(menu, "knife", knife)
+			Format(title, sizeof(title),"%T", "MeleeMenuTitle", LANG_SERVER)
+			SetMenuTitle(menu, title);
+			SetMenuExitBackButton(menu, true)
+
+			ChoosedMenuGive[client] = "MeleeGiveMenu";
+			DisplayMenu(menu, client, MENU_TIME_FOREVER)
+			
+			if (GetConVarInt(DebugInformations))
+			{
+				PrintToChat(client, "Campaign: %s", Campaign)
+			}
+		}
+	}
+	else
+	{
+		new Handle:menu = CreateMenu(MenuHandler_GiveWeapon);
+
+		Format(baseball_bat, sizeof(baseball_bat),"%T", "BaseballBat", LANG_SERVER)
+		AddMenuItem(menu, "baseball_bat", baseball_bat)
+		Format(cricket_bat, sizeof(cricket_bat),"%T", "CricketBat", LANG_SERVER)
+		AddMenuItem(menu, "cricket_bat", "Cricket Bat")
+		Format(crowbar, sizeof(crowbar),"%T", "Crowbar", LANG_SERVER)
+		AddMenuItem(menu, "crowbar", crowbar)
+		Format(electric_guitar, sizeof(electric_guitar),"%T", "ElectricGuitar", LANG_SERVER)
+		AddMenuItem(menu, "electric_guitar", electric_guitar)
+		Format(fireaxe, sizeof(fireaxe),"%T", "FireAxe", LANG_SERVER)
+		AddMenuItem(menu, "fireaxe", fireaxe)
+		Format(frying_pan, sizeof(frying_pan),"%T", "FryingPan", LANG_SERVER)
+		AddMenuItem(menu, "frying_pan", frying_pan)
+		Format(katana, sizeof(katana),"%T", "Katana", LANG_SERVER)
+		AddMenuItem(menu, "katana", katana)
+		Format(machete, sizeof(machete),"%T", "Machete", LANG_SERVER)
+		AddMenuItem(menu, "machete", machete)
+		Format(tonfa, sizeof(tonfa),"%T", "Tonfa", LANG_SERVER)
+		AddMenuItem(menu, "tonfa", tonfa)
+		Format(knife, sizeof(knife),"%T", "Knife", LANG_SERVER)
+		AddMenuItem(menu, "knife", knife)
+		Format(title, sizeof(title),"%T", "MeleeMenuTitle", LANG_SERVER)
+		SetMenuTitle(menu, title);
+		SetMenuExitBackButton(menu, true)
+
+		ChoosedMenuGive[client] = "MeleeGiveMenu";
+		DisplayMenu(menu, client, MENU_TIME_FOREVER)
+		
+		if (GetConVarInt(DebugInformations))
+		{
+			PrintToChat(client, "Campaign: %s", Campaign)
+		}
+	}
 }
 
 BuildBulletBasedGiveMenu(client)
 {
-	decl String:hunting_rifle[100], String:pistol[100], String:pistol_magnum[100], String:rifle[100], String:rifle_desert[100];
-	decl String:smg[100], String:smg_silenced[100], String:sniper_military[100], String:rifle_ak47[100], String:rifle_sg552[100];
-	decl String:smg_mp5[100], String:sniper_awp[100], String:sniper_scout[100], String:title[100];
+	decl String:hunting_rifle[40], String:pistol[40], String:pistol_magnum[40], String:rifle[40], String:rifle_desert[40];
+	decl String:smg[40], String:smg_silenced[40], String:sniper_military[40], String:rifle_ak47[40], String:rifle_sg552[40];
+	decl String:smg_mp5[40], String:sniper_awp[40], String:sniper_scout[40], String:title[40];
 
 	new Handle:menu = CreateMenu(MenuHandler_GiveWeapon);
 	
@@ -860,7 +1117,7 @@ BuildBulletBasedGiveMenu(client)
 	AddMenuItem(menu, "rifle_sg552", rifle_sg552)
 	Format(smg_mp5, sizeof(smg_mp5),"%T", "SubmachineGunMP5", LANG_SERVER)
 	AddMenuItem(menu, "smg_mp5", smg_mp5)
-	Format(sniper_awp, sizeof(sniper_awp),"%T", "AccuracyInternationaLArcticWarfare", LANG_SERVER)
+	Format(sniper_awp, sizeof(sniper_awp),"%T", "AWP", LANG_SERVER)
 	AddMenuItem(menu, "sniper_awp", sniper_awp)
 	Format(sniper_scout, sizeof(sniper_scout),"%T", "ScoutSniper", LANG_SERVER)
 	AddMenuItem(menu, "sniper_scout", sniper_scout)
@@ -874,7 +1131,7 @@ BuildBulletBasedGiveMenu(client)
 
 BuildShellBasedGiveMenu(client)
 {
-	decl String:autoshotgun[100], String:shotgun_chrome[100], String:shotgun_spas[100], String:pumpshotgun[100], String:title[100]; 
+	decl String:autoshotgun[40], String:shotgun_chrome[40], String:shotgun_spas[40], String:pumpshotgun[40], String:title[40]; 
 	
 	new Handle:menu = CreateMenu(MenuHandler_GiveWeapon);
 	
@@ -896,14 +1153,14 @@ BuildShellBasedGiveMenu(client)
 
 BuildExplosiveBasedGiveMenu(client)
 {
-	decl String:grenade_launcher[100], String:fireworkcrate[100], String:gascan[100], String:molotov[100], String:oxygentank[100];
-	decl String:pipe_bomb[100], String:propanetank[100], String:title[100];
+	decl String:grenade_launcher[40], String:fireworkcrate[40], String:gascan[40], String:molotov[40], String:oxygentank[40];
+	decl String:pipe_bomb[40], String:propanetank[40], String:title[40];
 
 	new Handle:menu = CreateMenu(MenuHandler_GiveWeapon);
 	
-	Format(grenade_launcher, sizeof(grenade_launcher),"%T", "GranadeLuncher", LANG_SERVER)
+	Format(grenade_launcher, sizeof(grenade_launcher),"%T", "GrenadeLauncher", LANG_SERVER)
 	AddMenuItem(menu, "grenade_launcher", grenade_launcher)
-	Format(fireworkcrate, sizeof(fireworkcrate),"%T", "FireWorksCrate", LANG_SERVER)
+	Format(fireworkcrate, sizeof(fireworkcrate),"%T", "FireworksCrate", LANG_SERVER)
 	AddMenuItem(menu, "fireworkcrate", fireworkcrate)
 	Format(gascan, sizeof(gascan),"%T", "Gascan", LANG_SERVER)
 	AddMenuItem(menu, "gascan", gascan)
@@ -925,7 +1182,7 @@ BuildExplosiveBasedGiveMenu(client)
 
 BuildHealthGiveMenu(client)
 {
-	decl String:adrenaline[100], String:defibrillator[100], String:first_aid_kit[100], String:pain_pills[100], String:title[100]; 
+	decl String:adrenaline[40], String:defibrillator[40], String:first_aid_kit[40], String:pain_pills[40], String:title[40]; 
 
 	new Handle:menu = CreateMenu(MenuHandler_GiveWeapon);
 	
@@ -947,8 +1204,9 @@ BuildHealthGiveMenu(client)
 
 BuildMiscGiveMenu(client)
 {
-	decl String:chainsaw[100], String:ammo[100], String:upgradepack_explosive[100], String:upgradepack_incendiary[100];
-	decl String:vomitjar[100], String:gnome[100], String:title[100];
+	decl String:chainsaw[40], String:ammo[40], String:upgradepack_explosive[40], String:upgradepack_incendiary[40];
+	decl String:vomitjar[40], String:gnome[40], String:cola[40], String:title[40];
+	decl String:laser_sight[40], String:explosive_ammo[40], String:incendiary_ammo[40];
 	
 	new Handle:menu = CreateMenu(MenuHandler_GiveWeapon);
 	
@@ -956,6 +1214,12 @@ BuildMiscGiveMenu(client)
 	AddMenuItem(menu, "chainsaw", chainsaw)
 	Format(ammo, sizeof(ammo),"%T", "Ammo", LANG_SERVER)
 	AddMenuItem(menu, "ammo", ammo)
+	Format(laser_sight, sizeof(laser_sight),"%T", "LaserSight", LANG_SERVER)
+	AddMenuItem(menu, "laser_sight", laser_sight)
+	Format(explosive_ammo, sizeof(explosive_ammo),"%T", "ExplosiveAmmo", LANG_SERVER)
+	AddMenuItem(menu, "explosive_ammo", explosive_ammo)
+	Format(incendiary_ammo, sizeof(incendiary_ammo),"%T", "IncendiaryAmmo", LANG_SERVER)
+	AddMenuItem(menu, "incendiary_ammo", incendiary_ammo)
 	Format(upgradepack_explosive, sizeof(upgradepack_explosive),"%T", "ExplosiveAmmoPack", LANG_SERVER)
 	AddMenuItem(menu, "upgradepack_explosive", upgradepack_explosive)
 	Format(upgradepack_incendiary, sizeof(upgradepack_incendiary),"%T", "IncendiaryAmmoPack", LANG_SERVER)
@@ -964,10 +1228,12 @@ BuildMiscGiveMenu(client)
 	AddMenuItem(menu, "vomitjar", vomitjar)
 	Format(gnome, sizeof(gnome),"%T", "Gnome", LANG_SERVER)
 	AddMenuItem(menu, "gnome", gnome)
+	Format(cola, sizeof(cola),"%T", "Cola", LANG_SERVER)
+	AddMenuItem(menu, "weapon_cola_bottles", cola)	
 	Format(title, sizeof(title),"%T", "MiscMenuTitle", LANG_SERVER)
 	SetMenuTitle(menu, title);
 	SetMenuExitBackButton(menu, true)
-	
+
 	ChoosedMenuGive[client] = "MiscGiveMenu";
 	DisplayMenu(menu, client, MENU_TIME_FOREVER)
 }
@@ -1166,12 +1432,16 @@ public AdminMenu_MachineGunSpawnMenu (Handle:topmenu, TopMenuAction:action, TopM
 
 DisplayMinigunMenu(client)
 {
+	decl String:spawnminigun[40], String:removeminigun[40];
+
 	new Handle:menu = CreateMenu(MenuHandler_MiniGun)
 
-	SetMenuExitBackButton(menu, true)
-	AddMenuItem(menu, "prop_minigun", "Spawn MiniGun")
-	SetMenuTitle(menu, "MiniGun Menu")
+	Format(spawnminigun, sizeof(spawnminigun),"%T", "SpawnMiniGun", LANG_SERVER)
+	AddMenuItem(menu, "spawnminigun", spawnminigun)
+	Format(removeminigun, sizeof(removeminigun),"%T", "RemoveMiniGun", LANG_SERVER)
+	AddMenuItem(menu, "removeminigun", removeminigun)
 
+	SetMenuExitBackButton(menu, true)
 	DisplayMenu(menu, client, MENU_TIME_FOREVER)
 }
 
@@ -1190,8 +1460,19 @@ public MenuHandler_MiniGun(Handle:menu, MenuAction:action, param1, param2)
 		}
 		case MenuAction_Select:
 		{
-			SpawnMiniGun(param1)
-			DisplayMinigunMenu(param1)
+			new String:selected_option[32]
+			GetMenuItem(menu, param2, selected_option, sizeof(selected_option));
+			
+			if (StrEqual(selected_option, "spawnminigun", false))
+			{
+				SpawnMiniGun(param1)
+				DisplayMinigunMenu(param1)
+			}
+			else if (StrEqual(selected_option, "removeminigun", false))
+			{
+				RemoveMiniGun(param1)
+				DisplayMinigunMenu(param1)
+			}
 		}
 	}
 }
