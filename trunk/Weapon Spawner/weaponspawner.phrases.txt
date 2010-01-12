@@ -3,7 +3,7 @@
 	// Commands
 	"SpawnWeaponUsage"
 	{
-		"en"		"Usage: sm_spawnweapon [weapon_name]"
+		"en"		"Usage: sm_spawnweapon [weapon_name] <amount>"
 	}
 	
 	"SpawnError"
@@ -18,7 +18,7 @@
 
 	"SpawnZombieUsage"
 	{
-		"en"		"Usage: sm_zspawn [zombie_name]"
+		"en"		"Usage: sm_zspawn [zombie_name] <amount>"
 	}
 
 	"MinigunFailed"

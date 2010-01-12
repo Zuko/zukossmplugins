@@ -50,6 +50,7 @@
  *	o Fixed Ammo Stack spawning
  *	o Fixed typos in transaltion file (thx for bearbear)
  *	o Added second argument to sm_spawnweapon and sm_zspawn - amount of spawned items/zombies
+ *	o Fixed campaigns detection
  * v0.6
  *	o Added ammo to spawned weapons (yey!)
  *	o Added ammo cvars
@@ -57,7 +58,7 @@
  *	o Added multi-language support
  *	o Added cola and knife (knife works only when you play with germans)
  *	o Added command to remove minigun
- *	o minor fixes
+ *	o Minor Fixes
  * v0.5 - Beta
  *	o Added MagineGun spawning
  *	o Added missing witch and vomitjar
@@ -110,10 +111,9 @@ new Handle:GrenadeLauncherMaxAmmo = INVALID_HANDLE;
 new Handle:AllowAllMeleeWeapons = INVALID_HANDLE;
 new Handle:DebugInformations = INVALID_HANDLE;
 
-new String:ChoosedWeapon[MAXPLAYERS+1][56]
-new String:ChoosedMenuSpawn[MAXPLAYERS+1][56]
-new String:ChoosedMenuGive[MAXPLAYERS+1][56]
-new String:Campaign[40]
+new String:ChoosedWeapon[MAXPLAYERS+1][56];
+new String:ChoosedMenuSpawn[MAXPLAYERS+1][56];
+new String:ChoosedMenuGive[MAXPLAYERS+1][56];
 new String:MapName[128];
 new Float:g_pos[3];
 
@@ -186,31 +186,6 @@ public OnMapStart()
 	PrecacheModel("models/w_models/weapons/50cal.mdl", true);
 
 	GetCurrentMap(MapName, sizeof(MapName));
-	
-	if (StrContains(MapName,"c1",false))
-	{
-		Campaign = "campaign_deadcenter"
-	}
-	else if (StrContains(MapName,"c2",false))
-	{
-		Campaign = "campaign_darkcarnival"
-	}
-	else if(StrContains(MapName,"c3",false))
-	{
-		Campaign = "campaign_swampfever"
-	}
-	else if(StrContains(MapName,"c4",false))
-	{
-		Campaign = "campaign_hardrain"
-	}
-	else if(StrContains(MapName,"c5",false))
-	{
-		Campaign = "campaign_theparish"
-	}
-	else
-	{
-		Campaign = "campaign_custom"
-	}
 }
 
 /* Spawn Weapon */
@@ -613,7 +588,7 @@ BuildBulletBasedMenu(client)
 	Format(sniper_scout, sizeof(sniper_scout),"%T", "ScoutSniper", LANG_SERVER)
 	AddMenuItem(menu, "weapon_sniper_scout", sniper_scout)
 	Format(title, sizeof(title),"%T", "BulletBasedMenuTitle", LANG_SERVER)
-	SetMenuTitle(menu, title);
+	SetMenuTitle(menu, title)
 	SetMenuExitBackButton(menu, true)
 
 	ChoosedMenuSpawn[client] = "BulletBasedSpawnMenu";
@@ -635,7 +610,7 @@ BuildShellBasedMenu(client)
 	Format(pumpshotgun, sizeof(pumpshotgun),"%T", "PumpShotgun", LANG_SERVER)
 	AddMenuItem(menu, "weapon_pumpshotgun", pumpshotgun)
 	Format(title, sizeof(title),"%T", "ShellBasedMenuTitle", LANG_SERVER)
-	SetMenuTitle(menu, title);
+	SetMenuTitle(menu, title)
 	SetMenuExitBackButton(menu, true)
 
 	ChoosedMenuSpawn[client] = "ShellBasedSpawnMenu";
@@ -663,7 +638,7 @@ BuildExplosiveBasedMenu(client)
 	Format(propanetank, sizeof(propanetank),"%T", "PropaneTank", LANG_SERVER)
 	AddMenuItem(menu, "weapon_propanetank", propanetank)
 	Format(title, sizeof(title),"%T", "ExplosiveBasedMenuTitle", LANG_SERVER)
-	SetMenuTitle(menu, title);
+	SetMenuTitle(menu, title)
 	SetMenuExitBackButton(menu, true)
 
 	ChoosedMenuSpawn[client] = "ExplosiveBasedSpawnMenu";
@@ -685,7 +660,7 @@ BuildHealthMenu(client)
 	Format(pain_pills, sizeof(pain_pills),"%T", "PainPills", LANG_SERVER)
 	AddMenuItem(menu, "weapon_pain_pills", "Pain Pills")
 	Format(title, sizeof(title),"%T", "HealthMenuTitle", LANG_SERVER)
-	SetMenuTitle(menu, title);
+	SetMenuTitle(menu, title)
 	SetMenuExitBackButton(menu, true)
 
 	ChoosedMenuSpawn[client] = "HealthSpawnMenu";
@@ -713,7 +688,7 @@ BuildMiscMenu(client)
 	Format(cola, sizeof(cola),"%T", "Cola", LANG_SERVER)
 	AddMenuItem(menu, "weapon_cola_bottles", cola)	
 	Format(title, sizeof(title),"%T", "MiscMenuTitle", LANG_SERVER)
-	SetMenuTitle(menu, title);
+	SetMenuTitle(menu, title)
 	SetMenuExitBackButton(menu, true)
 
 	ChoosedMenuSpawn[client] = "MiscSpawnMenu";
@@ -906,9 +881,9 @@ BuildMeleeGiveMenu(client)
 		PrintToChat(client, "Map Name: %s", MapName)
 	}
 
-	if ((GetConVarInt(AllowAllMeleeWeapons) == 0) || (StrEqual(Campaign, "campaign_custom", false)))
+	if (GetConVarInt(AllowAllMeleeWeapons) == 0)
 	{
-		if (StrEqual(Campaign, "campaign_deadcenter", false))
+		if ((StrEqual(MapName, "c1m1_hotel", false)) || (StrEqual(MapName, "c1m2_streets", false)) || (StrEqual(MapName, "c1m3_mall", false)) || (StrEqual(MapName, "c1m4_atrium", false)))
 		{
 			new Handle:menu = CreateMenu(MenuHandler_GiveWeapon);
 
@@ -925,18 +900,18 @@ BuildMeleeGiveMenu(client)
 			Format(knife, sizeof(knife),"%T", "Knife", LANG_SERVER)
 			AddMenuItem(menu, "knife", knife)
 			Format(title, sizeof(title),"%T", "MeleeMenuTitle", LANG_SERVER)
-			SetMenuTitle(menu, title);
+			SetMenuTitle(menu, title)
 			SetMenuExitBackButton(menu, true)
 
 			ChoosedMenuGive[client] = "MeleeGiveMenu";
 			DisplayMenu(menu, client, MENU_TIME_FOREVER)
-			
+				
 			if (GetConVarInt(DebugInformations))
 			{
-				PrintToChat(client, "Campaign: %s", Campaign)
+				PrintToChat(client, "Campaign: Dead Center")
 			}
 		}
-		else if (StrEqual(Campaign, "campaign_darkcarnival", false))
+		else if ((StrEqual(MapName, "c2m1_highway", false)) || (StrEqual(MapName, "c2m2_fairgrounds", false)) || (StrEqual(MapName, "c2m3_coaster", false)) || (StrEqual(MapName, "c2m4_barns", false)) || (StrEqual(MapName, "c2m5_concert", false)))
 		{
 			new Handle:menu = CreateMenu(MenuHandler_GiveWeapon);
 
@@ -953,18 +928,18 @@ BuildMeleeGiveMenu(client)
 			Format(knife, sizeof(knife),"%T", "Knife", LANG_SERVER)
 			AddMenuItem(menu, "knife", knife)
 			Format(title, sizeof(title),"%T", "MeleeMenuTitle", LANG_SERVER)
-			SetMenuTitle(menu, title);
+			SetMenuTitle(menu, title)
 			SetMenuExitBackButton(menu, true)
 
 			ChoosedMenuGive[client] = "MeleeGiveMenu";
 			DisplayMenu(menu, client, MENU_TIME_FOREVER)
-			
+				
 			if (GetConVarInt(DebugInformations))
 			{
-				PrintToChat(client, "Campaign: %s", Campaign)
+				PrintToChat(client, "Campaign: Dark Carnival")
 			}
 		}
-		else if (StrEqual(Campaign, "campaign_swampfever", false))
+		else if ((StrEqual(MapName, "c3m1_plankcountry", false)) || (StrEqual(MapName, "c3m2_swamp", false)) || (StrEqual(MapName, "c3m3_shantytown", false)) || (StrEqual(MapName, "c3m4_plantation", false)))
 		{
 			new Handle:menu = CreateMenu(MenuHandler_GiveWeapon);
 
@@ -981,7 +956,7 @@ BuildMeleeGiveMenu(client)
 			Format(knife, sizeof(knife),"%T", "Knife", LANG_SERVER)
 			AddMenuItem(menu, "knife", knife)
 			Format(title, sizeof(title),"%T", "MeleeMenuTitle", LANG_SERVER)
-			SetMenuTitle(menu, title);
+			SetMenuTitle(menu, title)
 			SetMenuExitBackButton(menu, true)
 
 			ChoosedMenuGive[client] = "MeleeGiveMenu";
@@ -989,10 +964,10 @@ BuildMeleeGiveMenu(client)
 			
 			if (GetConVarInt(DebugInformations))
 			{
-				PrintToChat(client, "Campaign: %s", Campaign)
+				PrintToChat(client, "Campaign: Swamp Fever")
 			}
 		}
-		else if (StrEqual(Campaign, "campaign_hardrain", false))
+		else if ((StrEqual(MapName, "c4m1_milltown_a", false)) || (StrEqual(MapName, "c4m2_sugarmill_a", false)) || (StrEqual(MapName, "c4m3_sugarmill_b", false)) || (StrEqual(MapName, "c4m4_milltown_b", false)) || (StrEqual(MapName, "c4m5_milltown_escape", false)))
 		{
 			new Handle:menu = CreateMenu(MenuHandler_GiveWeapon);
 
@@ -1009,7 +984,7 @@ BuildMeleeGiveMenu(client)
 			Format(knife, sizeof(knife),"%T", "Knife", LANG_SERVER)
 			AddMenuItem(menu, "knife", knife)
 			Format(title, sizeof(title),"%T", "MeleeMenuTitle", LANG_SERVER)
-			SetMenuTitle(menu, title);
+			SetMenuTitle(menu, title)
 			SetMenuExitBackButton(menu, true)
 
 			ChoosedMenuGive[client] = "MeleeGiveMenu";
@@ -1017,10 +992,10 @@ BuildMeleeGiveMenu(client)
 			
 			if (GetConVarInt(DebugInformations))
 			{
-				PrintToChat(client, "Campaign: %s", Campaign)
+				PrintToChat(client, "Campaign: Hard Rain")
 			}
 		}
-		else if (StrEqual(Campaign, "campaign_theparish", false))
+		else if ((StrEqual(MapName, "c5m1_waterfront", false)) || (StrEqual(MapName, "c5m1_waterfront_sndscape", false)) || (StrEqual(MapName, "c5m2_park", false)) || (StrEqual(MapName, "c5m3_cemetery", false)) || (StrEqual(MapName, "c5m4_quarter", false)) || (StrEqual(MapName, "c5m5_bridge", false)))
 		{
 			new Handle:menu = CreateMenu(MenuHandler_GiveWeapon);
 
@@ -1037,7 +1012,7 @@ BuildMeleeGiveMenu(client)
 			Format(knife, sizeof(knife),"%T", "Knife", LANG_SERVER)
 			AddMenuItem(menu, "knife", knife)
 			Format(title, sizeof(title),"%T", "MeleeMenuTitle", LANG_SERVER)
-			SetMenuTitle(menu, title);
+			SetMenuTitle(menu, title)
 			SetMenuExitBackButton(menu, true)
 
 			ChoosedMenuGive[client] = "MeleeGiveMenu";
@@ -1045,7 +1020,43 @@ BuildMeleeGiveMenu(client)
 			
 			if (GetConVarInt(DebugInformations))
 			{
-				PrintToChat(client, "Campaign: %s", Campaign)
+				PrintToChat(client, "Campaign: The Parish")
+			}
+		}
+		else
+		{
+			new Handle:menu = CreateMenu(MenuHandler_GiveWeapon);
+
+			Format(cricket_bat, sizeof(cricket_bat),"%T", "CricketBat", LANG_SERVER)
+			AddMenuItem(menu, "cricket_bat", "Cricket Bat")
+			Format(crowbar, sizeof(crowbar),"%T", "Crowbar", LANG_SERVER)
+			AddMenuItem(menu, "crowbar", crowbar)
+			Format(electric_guitar, sizeof(electric_guitar),"%T", "ElectricGuitar", LANG_SERVER)
+			AddMenuItem(menu, "electric_guitar", electric_guitar)
+			Format(fireaxe, sizeof(fireaxe),"%T", "FireAxe", LANG_SERVER)
+			AddMenuItem(menu, "fireaxe", fireaxe)
+			Format(frying_pan, sizeof(frying_pan),"%T", "FryingPan", LANG_SERVER)
+			AddMenuItem(menu, "frying_pan", frying_pan)
+			Format(katana, sizeof(katana),"%T", "Katana", LANG_SERVER)
+			AddMenuItem(menu, "katana", katana)
+			Format(machete, sizeof(machete),"%T", "Machete", LANG_SERVER)
+			AddMenuItem(menu, "machete", machete)
+			Format(tonfa, sizeof(tonfa),"%T", "Tonfa", LANG_SERVER)
+			AddMenuItem(menu, "tonfa", tonfa)
+			Format(baseball_bat, sizeof(baseball_bat),"%T", "BaseballBat", LANG_SERVER)
+			AddMenuItem(menu, "baseball_bat", baseball_bat)
+			Format(knife, sizeof(knife),"%T", "Knife", LANG_SERVER)
+			AddMenuItem(menu, "knife", knife)
+			Format(title, sizeof(title),"%T", "MeleeMenuTitle", LANG_SERVER)
+			SetMenuTitle(menu, title)
+			SetMenuExitBackButton(menu, true)
+
+			ChoosedMenuGive[client] = "MeleeGiveMenu";
+			DisplayMenu(menu, client, MENU_TIME_FOREVER)
+			
+			if (GetConVarInt(DebugInformations))
+			{
+				PrintToChat(client, "Campaign: Custom")
 			}
 		}
 	}
@@ -1053,8 +1064,6 @@ BuildMeleeGiveMenu(client)
 	{
 		new Handle:menu = CreateMenu(MenuHandler_GiveWeapon);
 
-		Format(baseball_bat, sizeof(baseball_bat),"%T", "BaseballBat", LANG_SERVER)
-		AddMenuItem(menu, "baseball_bat", baseball_bat)
 		Format(cricket_bat, sizeof(cricket_bat),"%T", "CricketBat", LANG_SERVER)
 		AddMenuItem(menu, "cricket_bat", "Cricket Bat")
 		Format(crowbar, sizeof(crowbar),"%T", "Crowbar", LANG_SERVER)
@@ -1071,19 +1080,16 @@ BuildMeleeGiveMenu(client)
 		AddMenuItem(menu, "machete", machete)
 		Format(tonfa, sizeof(tonfa),"%T", "Tonfa", LANG_SERVER)
 		AddMenuItem(menu, "tonfa", tonfa)
+		Format(baseball_bat, sizeof(baseball_bat),"%T", "BaseballBat", LANG_SERVER)
+		AddMenuItem(menu, "baseball_bat", baseball_bat)
 		Format(knife, sizeof(knife),"%T", "Knife", LANG_SERVER)
 		AddMenuItem(menu, "knife", knife)
 		Format(title, sizeof(title),"%T", "MeleeMenuTitle", LANG_SERVER)
-		SetMenuTitle(menu, title);
+		SetMenuTitle(menu, title)
 		SetMenuExitBackButton(menu, true)
 
 		ChoosedMenuGive[client] = "MeleeGiveMenu";
 		DisplayMenu(menu, client, MENU_TIME_FOREVER)
-		
-		if (GetConVarInt(DebugInformations))
-		{
-			PrintToChat(client, "Campaign: %s", Campaign)
-		}
 	}
 }
 
@@ -1122,7 +1128,7 @@ BuildBulletBasedGiveMenu(client)
 	Format(sniper_scout, sizeof(sniper_scout),"%T", "ScoutSniper", LANG_SERVER)
 	AddMenuItem(menu, "sniper_scout", sniper_scout)
 	Format(title, sizeof(title),"%T", "BulletBasedMenuTitle", LANG_SERVER)
-	SetMenuTitle(menu, title);
+	SetMenuTitle(menu, title)
 	SetMenuExitBackButton(menu, true)
 
 	ChoosedMenuGive[client] = "BulletBasedGiveMenu";
@@ -1144,7 +1150,7 @@ BuildShellBasedGiveMenu(client)
 	Format(pumpshotgun, sizeof(pumpshotgun),"%T", "PumpShotgun", LANG_SERVER)
 	AddMenuItem(menu, "pumpshotgun", pumpshotgun)
 	Format(title, sizeof(title),"%T", "ShellBasedMenuTitle", LANG_SERVER)
-	SetMenuTitle(menu, title);
+	SetMenuTitle(menu, title)
 	SetMenuExitBackButton(menu, true)
 	
 	ChoosedMenuGive[client] = "ShellBasedGiveMenu";
@@ -1173,7 +1179,7 @@ BuildExplosiveBasedGiveMenu(client)
 	Format(propanetank, sizeof(propanetank),"%T", "PropaneTank", LANG_SERVER)
 	AddMenuItem(menu, "propanetank", propanetank)
 	Format(title, sizeof(title),"%T", "ExplosiveBasedMenuTitle", LANG_SERVER)
-	SetMenuTitle(menu, title);
+	SetMenuTitle(menu, title)
 	SetMenuExitBackButton(menu, true)
 	
 	ChoosedMenuGive[client] = "ExplosiveBasedGiveMenu";
@@ -1195,7 +1201,7 @@ BuildHealthGiveMenu(client)
 	Format(pain_pills, sizeof(pain_pills),"%T", "PainPills", LANG_SERVER)
 	AddMenuItem(menu, "pain_pills", "Pain Pills")
 	Format(title, sizeof(title),"%T", "HealthMenuTitle", LANG_SERVER)
-	SetMenuTitle(menu, title);
+	SetMenuTitle(menu, title)
 	SetMenuExitBackButton(menu, true)
 	
 	ChoosedMenuGive[client] = "HealthGiveMenu";
@@ -1231,7 +1237,7 @@ BuildMiscGiveMenu(client)
 	Format(cola, sizeof(cola),"%T", "Cola", LANG_SERVER)
 	AddMenuItem(menu, "weapon_cola_bottles", cola)	
 	Format(title, sizeof(title),"%T", "MiscMenuTitle", LANG_SERVER)
-	SetMenuTitle(menu, title);
+	SetMenuTitle(menu, title)
 	SetMenuExitBackButton(menu, true)
 
 	ChoosedMenuGive[client] = "MiscGiveMenu";
