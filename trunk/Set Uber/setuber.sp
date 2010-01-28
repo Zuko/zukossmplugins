@@ -29,6 +29,9 @@
  * - Minor fixes
  * - Minor changes in translations
  *
+ * Version 1.3 (07.01.2010)
+ * - Targeting bug fix
+ *
  * Zuko / #hlds.pl @ Qnet / zuko.isports.pl /
  */
  
@@ -47,11 +50,11 @@ new Float:uber_amount[MAXPLAYERS+1] = 0.0;
 #define _ADMIN_FLAG_ ADMFLAG_KICK
 /* * */
 
-#define PLUGIN_VERSION		"1.2"
+#define PLUGIN_VERSION		"1.3"
 
 public Plugin:myinfo = 
 {
-	name = "Admin Powers: Set Uber Charge Amount",
+	name = "[TF2] Set Uber Charge Amount",
 	author = "Zuko",
 	description = "Set Uber Charge Amount.",
 	version = PLUGIN_VERSION,
@@ -69,6 +72,7 @@ public OnPluginStart()
 	RegAdminCmd("sm_setuber", Command_SetUber, _ADMIN_FLAG_, "sm_setuber <#userid|name> <amount>");
 	RegAdminCmd("sm_sume", Command_SetUberMe, _ADMIN_FLAG_, "sm_sume <amount>");
 	RegAdminCmd("sm_autouber", Command_AutoUber, _ADMIN_FLAG_, "sm_autouber <#userid|name> <amount>");
+	
 	
 	LoadTranslations("common.phrases");
 	LoadTranslations("setuber.phrases");
@@ -204,7 +208,7 @@ public Action:Command_SetUber(client, args)
 	
 	for (new i = 0; i < target_count; i++)
 	{
-		if (GetEntProp(client, Prop_Send, "m_iClass") == 5)
+		if (GetEntProp(target_list[i], Prop_Send, "m_iClass") == 5)
 		{
 			TF_SetUberLevel(target_list[i], nUber);
 		
@@ -286,7 +290,7 @@ public Action:Command_AutoUber(client, args)
 	
 	for (new i = 0; i < target_count; i++)
 	{
-		if (GetEntProp(client, Prop_Send, "m_iClass") == 5)
+		if (GetEntProp(target_list[i], Prop_Send, "m_iClass") == 5)
 		{
 			if (IsClientConnected(target_list[i]) && IsClientInGame(target_list[i]))
 			{
@@ -384,8 +388,10 @@ public Action:EventPlayerSpawn(Handle:event, const String:name[], bool:dontBroad
 		}
 	}
 	else
-	autouber_enabled[client] = false;
-	uber_amount[client] = 0.0;
+	{
+		autouber_enabled[client] = false;
+		uber_amount[client] = 0.0;
+	}
 	return Plugin_Continue;
 }
 /* >>> end of Events */
