@@ -1,0 +1,183 @@
+﻿"Phrases"
+{
+	"PluginDisabled"
+	{
+		"en"		"Set Rage Plugin is Disabled"
+		"pl"		"Set Rage Plugin jest Wyłączony"
+		"fr"		"Le plugin Set Rage est désactivé"
+	}
+	
+	"PluginUsage"
+	{
+		"en"		"Usage: sm_setrage <#userid|name> <amount>"
+		"pl"		"Użycie: sm_setrage <#userid|name> <wartość>"
+		"fr"		"Usage: sm_setrage <#userid|nom> <montant>"
+	}
+	
+	"PluginUsage_SetRage_Me"
+	{
+		"en"		"Usage: sm_rgme <amount>"
+		"pl"		"Użycie: sm_rgme <wartość>"
+		"fr"		"Usage: sm_rgme <montant>"
+	}
+	
+	"PluginUsage_AutoRage"
+	{
+		"en"		"Usage: sm_autorage <#userid|name> <amount>"
+		"pl"		"Użycie: sm_autorage <#userid|name> <wartość>"
+		"fr"		"Usage: sm_autorage <#userid|nom> <montant>"
+	}
+	
+	"RageSetOnMe"
+	{
+		"#format"	"{1:i}"
+		"en"		"Rage amount set to: {1}%%"
+		"pl"		"Wartość wściekłości została ustawiona na: {1}%%"
+		"fr"		"Jauge de rage mise a: {1}%%"
+	}
+		
+	"RageAmount1"
+	{
+		"en"		"Rage amount must be greater than 0%%, auto-set to 0%%."
+		"pl"		"Wartość ściekłości musi być większa niż 0%%, ustawiono na 0%%."
+		"fr"		"La quantité de rage doit etre supérieure a 0%%, rage remise a 0%%"
+	}
+	
+	"RageAmount2"
+	{
+		"en"		"Rage amount must be lower than 100%%, auto-set to 100%%"
+		"pl"		"Wartość wściekłości musi być mniejsza niż 100%%, ustawiono na 100%"
+		"fr"		"La quantité de rage doit etre inférieure a 100%%, rage remise a 100%%"
+	}
+	
+	"RagePhrase1"
+	{
+		"#format"	"{1:N},{2:i}"
+		"en"		"{olive}{1} {default}gave {olive}you {green}{2}%% {default}of rage."
+		"pl"		"{olive}{1} {default}ustawił {olive}ci {green}{2}%% {default}wściekłości."
+		"fr"		"{olive}{1} {default}t'as donné {green}{2}%% {default} de rage."
+	}
+	
+	"RagePhrase2"
+	{
+		"#format"	"{1:N},{2:N},{3:i}"
+		"en"		"{olive}{1} {default}set {green}{3}%% {default}of rage for {olive}{2}{default}."
+		"pl"		"{olive}{1} {default}ustawił {green}{3}%% {default}wściekłości dla {olive}{2}{default}.
+		"fr"		"{olive}{1} {default}a donné {green}{3}%% {default}de rage a {olive}{2}{default}."
+	}
+	
+	"RagePhrase3"
+	{
+		"#format"	"{1:N},{2:i}"
+		"en"		"You set {2}%% of rage for player: {1}"
+		"pl"		"Ustawiłeś {2}%% wściekłości dla gracza: {1}"
+		"fr"		"Vous donnez {2}%% de rage au joueur: {1}"
+	}
+	
+	"MustBeSoldier"
+	{
+		"en"		"Target must be a Soldier to use this command."
+		"pl"		"Celem musi być Żołnież by użyć tej komendy."
+		"fr"		"Le joueur ciblé doit etre un soldier pour utiliser cette commande."
+	}
+	
+	"MustBeSoldier2"
+	{
+		"en"		"You must be a Soldier to use this command."
+		"pl"		"Musisz być Żołnieżem by użyć tej komendy."
+		"fr"		"Tu dois etre un soldier pour utiliser cette commande."
+	}
+	
+	"AutoRageReply1"
+	{
+		"en"		"AutoRage Disabled"
+		"pl"		"AutoRage Wyłączony"
+		"fr"		"AutoRage désactivée"
+	}
+	
+	"AutoRageReply2"
+	{
+		"#format"	"{1:i}"
+		"en"		"You'll get {1}%% of rage on respawn."
+		"pl"		"Będziesz dostawał {1}%% wściekłości po odrodzeniu."
+		"fr"		"Tu obtiendras {1}%% de rage a votre réapparition."
+	}
+	
+	"AutoRageReply3"
+	{
+		"#format"	"{1:N}"
+		"en"		"AutoRage Disabled for player: {1}"
+		"pl"		"AutoRage Wyłączony dla gracza: {1}"
+		"fr"		"AutoRage désactivée pour le joueur: {1}"
+	}
+	
+	"AutoRageReply4"
+	{
+		"#format"	"{1:N},{2:i}"
+		"en"		"{1} will get {2}%% of rage on respawn."
+		"pl"		"{1} będzie dostawał {2}%% wściekłości po odrodzeniu."
+		"fr"		"{1} obtiendra {2}%% de rage a sa réapparition."
+	}
+	
+	"AutoRagePhrase1"
+	{
+		"#format"	"{1:N}"
+		"en"		"{olive}{1} {green}enabled {default}auto rage for {olive}you."
+		"pl"		"{olive}{1} {green}włączył {default}dla ciebie automatyczne ładowanie wściekłości."
+		"fr"		"{olive}{1} {green}a activé {default}l'auto-rage pour {olive}toi{default}."
+	}
+	
+	"AutoRagePhrase1a"
+	{
+		"#format"	"{1:i}"
+		"en"		"{olive}You {default}will get {green}{1}%% {default}of rage on respawn."
+		"pl"		"{default}Będziesz dostawał {green}{1}%% {default}wściekłości po odrodzeniu."
+		"fr"		"{olive}Tu {default}obtiendras {green}{1}%% {default}de rage a ta réapparition."
+	}
+	
+	"AutoRagePhrase2"
+	{
+		"#format"	"{1:N},{2:N}"
+		"en"		"{olive}{1} {green}enabled {default}auto rage for {olive}{2}{default}."
+		"pl"		"{olive}{1} {green}włączył {default}automatyczne łądowanie wściekłości dla {olive}{2}{default}."
+		"fr"		"{olive}{1} {green}a activé {default}l'auto-rage pour {olive}{2}{default}."
+	}
+	
+	"AutoRagePhrase2a"
+	{
+		"#format"	"{1:i}"
+		"en"		"{olive}He {default}will get {green}{1}%% {default}of rage on respawn."
+		"pl"		"{default}Będzie dostawał {green}{1}%% {default}wściekłości po odrodzeniu."
+		"fr"		"{olive}Il {defaut}obtiendra {green}{1}%% {default}de rage a sa réapparition."
+	}
+	
+	"AutoRagePhrase3"
+	{
+		"en"		"{olive}You {green}enabled {default}auto rage for {olive}yourself."
+		"pl"		"{green}Włączyłeś {olive}sobie {default}automatyczne ładowanie wściekłości."
+		"fr"		"{olive}Tu {default}as {green}activé {default}l'auto-rage pour {olive}toi-meme."
+	}
+	
+	"AutoRagePhrase3a"
+	{
+		"#format"	"{1:i}"
+		"en"		"{olive}You {default}will get {green}{1}%% {default}of rage on respawn."
+		"pl"		"{default}Będziesz dostawał {green}{1}%% {default}wściekłości po odrodzeniu."
+		"fr"		"{olive}Tu {default}obtiendras {green}{1}%% {default}de rage a ta réapparition."
+	}
+	
+	"AutoRagePhrase4"
+	{
+		"en"		"{olive}You {green}disabled {default}auto rage for {olive}yourself{default}."
+		"pl"		"{green}Wyłączyłeś {olive}sobie {default}automatyczne ładowanie wściekłości."
+		"fr"		"{olive}Tu {default}as {green}désactivé {default}l'auto-rage pour {olive}toi-meme."
+	}
+	
+	"AutoRagePhrase5"
+	{
+		"#format"	"{1:N},{2:N}"
+		"en"		"{olive}{1} {green}disabled {default}auto rage for {olive}{2}{default}."
+		"pl"		"{olive}{1} {green}wyłączył {default}automatyczne ładowanie wściekłości dla {olive}{2}{default}."
+		"fr"		"{olive}{1} {default}a {green}désactivé {default}l'auto-rage pour {olive}{2}{default}."
+	}
+}
