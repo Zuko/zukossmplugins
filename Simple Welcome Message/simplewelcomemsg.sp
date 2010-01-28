@@ -531,5 +531,8 @@ public NullMenuHandler(Handle:menu, MenuAction:action, param1, param2)
 
 HintMessageDisplay(client)
 {
-	PrintHintText(client, "%T", "HintMessage", LANG_SERVER);
+	if (IsClientConnected(client) && IsClientInGame(client))
+	{
+		PrintHintText(client, "%T", "HintMessage", LANG_SERVER);
+	}
 }

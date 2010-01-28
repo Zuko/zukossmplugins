@@ -11,10 +11,10 @@
  * sm_rme:						Respawn Admin
  * 
  * ConVars:
- * sm_respawner_enable: 			Enable/Disable Respawn Player Plugin. 	0-Disable | 1-Enable 					Default: "1" - Enable
- * sm_respawner_chat_notify: 		Respawn chat notifications. 			0-Off | 1-Target | 2-All				Default: "1" - Notify to target
- * sm_autorespawn_chat_notify:	Auto Respawn chat notifications. 		0-Off | 1-Target | 2-All				Default: "1" - Notify to target
- * sm_respawner_log: 				Enable/Disable Respawn Actions Logging.	0-Off | 1-Separate File | 2-SM Logs 	Default: "1" - Logging to Separate File
+ * sm_rplayer_enable: 			Enable/Disable Respawn Player Plugin. 	0-Disable | 1-Enable 					Default: "1" - Enable
+ * sm_rplayer_chat_notify: 		Respawn chat notifications. 			0-Off | 1-Target | 2-All				Default: "1" - Notify to target
+ * sm_autorplayer_chat_notify:	Auto Respawn chat notifications. 		0-Off | 1-Target | 2-All				Default: "1" - Notify to target
+ * sm_rplayer_log: 				Enable/Disable Respawn Actions Logging.	0-Off | 1-Separate File | 2-SM Logs 	Default: "1" - Logging to Separate File
  * 
  * Changelog:
  * Version 1.0 (18/07/09) /Starman2098 (Approved but does not work :X)
@@ -100,14 +100,14 @@ public OnPluginStart()
 {
 	CreateConVar("respawner_version", PLUGIN_VERSION, "Respawn Player Plugin Version", FCVAR_PLUGIN|FCVAR_SPONLY|FCVAR_REPLICATED|FCVAR_NOTIFY);
 	
-	g_Cvar_PluginEnable = CreateConVar("sm_respawner_enable", "1", "Enable/Disable Respawn Player Plugin", _, true, 0.0, true, 1.0);
-	g_Cvar_ChatNotify = CreateConVar("sm_respawner_chat_notify", "1", "Respawn Chat Notifications", _, true, 0.0, true, 2.0);
-	g_Cvar_ChatNotify_AutoRespawn = CreateConVar("sm_autorespawn_chat_notify", 	"1", "Auto Respawn Chat Notifications",	_, true, 0.0, true, 2.0);
-	g_Cvar_Log = CreateConVar("sm_respawner_log",	"1", "Respawn Actions Logging", _, true, 0.0, true, 2.0);
+	g_Cvar_PluginEnable = 					CreateConVar("sm_respawner_enable", 			"1", "Enable/Disable Respawn Player Plugin", 	_, true, 0.0, true, 1.0);
+	g_Cvar_ChatNotify = 					CreateConVar("sm_respawner_chat_notify", 	"1", "Respawn Chat Notifications", 				_, true, 0.0, true, 2.0);
+	g_Cvar_ChatNotify_AutoRespawn = 		CreateConVar("sm_autorespawn_chat_notify", 	"1", "Auto Respawn Chat Notifications",		 	_, true, 0.0, true, 2.0);
+	g_Cvar_Log = 								CreateConVar("sm_respawner_log", 			"1", "Respawn Actions Logging", 				_, true, 0.0, true, 2.0);
 	
-	RegAdminCmd("sm_rp", Command_Rplayer, _ADMIN_FLAG_, "sm_rp <#userid | name>");
-	RegAdminCmd("sm_autorespawn", Command_AutoRplayer, _ADMIN_FLAG_, "sm_autorespawn <#userid | name> <delay>");
-	RegAdminCmd("sm_rme", Command_RespawnMe, _ADMIN_FLAG_, "Respawn yourself");
+	RegAdminCmd("sm_rp", 			Command_Rplayer, 			_ADMIN_FLAG_, "sm_rp <#userid | name>");
+	RegAdminCmd("sm_autorespawn", 	Command_AutoRplayer,		_ADMIN_FLAG_, "sm_autorespawn <#userid | name> <delay>");
+	RegAdminCmd("sm_rme", 			Command_RespawnMe, 			_ADMIN_FLAG_, "Respawn yourself");
 	
 	LoadTranslations("common.phrases");
 	LoadTranslations("respawner.phrases");
