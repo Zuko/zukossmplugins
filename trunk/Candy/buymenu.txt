@@ -1,0 +1,131 @@
+// Klasy:
+// 1 - Scout
+// 2 - Sniper
+// 3 - Soldier
+// 4 - Demoman
+// 5 - Medic
+// 6 - Heavy
+// 7 - Pyro
+// 8 - Spy
+// 9 - Engineer
+
+// Grupy:
+// dowolny znak
+
+"Buymenu"
+{
+	"1"
+	{
+		"title"		"100% Krytów (10sek)"
+		"price"		"100"
+		"oncmd"		"sm_candy_buy_crit ? 1"
+		"offcmd"	"sm_candy_buy_crit ? 0"
+		"time"		"10"
+		"group"		"a"
+	}
+
+	"2"
+	{
+		"title"		"Nieśmiertelność (10sek)"
+		"price"		"200"
+		"oncmd"		"sm_candy_buy_invincible ? 1"
+		"offcmd"	"sm_candy_buy_invincible ? 0"
+		"time"		"10"
+		"group"		"a"
+	}
+
+	"3"
+	{
+		"title"		"100% Ubera (Dla Medyka)"
+		"price"		"100"
+		"oncmd"		"sm_candy_buy_uber ? 100"
+		"offcmd"	""
+		"time"		"0"
+		"class"		"5"
+	}
+
+	"4"
+	{
+		"title"		"200% Ubera (Dla Medyka)"
+		"price"		"300"
+		"oncmd"		"sm_candy_buy_uber ? 200"
+		"offcmd"	""
+		"time"		"10"
+		"class"		"5"
+	}
+
+	"5"
+	{
+		"title"		"400% Ubera (Dla Medyka)"
+		"price"		"1000"
+		"oncmd"		"sm_candy_buy_uber ? 400"
+		"offcmd"	""
+		"time"		"0"
+		"class"		"5"
+	}
+
+	"6"
+	{
+		"title"		"100% Wściekłości (Dla Żołnierza)"
+		"price"		"100"
+		"oncmd"		"sm_setrage | 100"
+		"offcmd"	""
+		"time"		"0"
+		"class"		"3"
+	}
+	
+	"7"
+	{
+		"title"		"200 Metalu (Dla Inżyniera)"
+		"price"		"100"
+		"oncmd"		"sm_setmetal | 200"
+		"offcmd"	""
+		"time"		"0"
+		"class"		"9"
+	}	
+	
+	"9"
+	{
+		"title"		"Zgładź gracza!"
+		"price"		"1000"
+		"oncmd"		"sm_candy_buy_slay ? "
+		"offcmd"	""
+		"time"		"0"
+	}
+	
+	"10"
+	{
+		"title"		"Leczenie + Amunicja"
+		"price"		"50"
+		"oncmd"		"sm_candy_buy_regen ?"
+		"offcmd"	""
+		"time"		""
+	}
+	
+	"11"
+	{
+		"title"		"Rezerwacja slotu - 1 tydzień"
+		"price"		"20000"
+		"oncmd"		"sm_addtimedreserved ? 604800"
+		"offcmd"	""
+		"time"		""
+	}
+	
+	"12"
+	{
+		"title"		"Rezerwacja slotu - 2 tygodnie"
+		"price"		"40000"
+		"oncmd"		"sm_addtimedreserved ? 1209600"
+		"offcmd"	""
+		"time"		""
+	}
+	
+    "13"
+    {
+        "title"		"Rezerwacja slotu - 4 tygodnie"
+        "price"     "100000"
+        "oncmd"     "sm_addtimedreserved ? 2419200"
+        "offcmd"    ""
+        "time"      ""
+    }
+}
