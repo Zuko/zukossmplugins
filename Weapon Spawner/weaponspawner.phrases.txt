@@ -252,6 +252,11 @@
 	}
 	
 	// Health Related
+	"FullHealth"
+	{
+		"en"		"Full Health"
+	}
+	
 	"Adrenaline"
 	{
 		"en"		"Adrenaline"
