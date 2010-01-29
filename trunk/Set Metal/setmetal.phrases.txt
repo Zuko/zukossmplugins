@@ -1,0 +1,156 @@
+﻿"Phrases"
+{
+	"PluginDisabled"
+	{
+		"en"		"Set Metal Plugin is Disabled"
+		"pl"		"Set Metal Plugin jest Wyłączony"
+	}
+	
+	"PluginUsage"
+	{
+		"en"		"Usage: sm_setmetal <#userid|name> <amount>"
+		"pl"		"Użycie: sm_setmetal <#userid|name> <wartość>"
+	}
+	
+	"PluginUsage_SetMetal_Me"
+	{
+		"en"		"Usage: sm_smme <amount>"
+		"pl"		"Użycie: sm_smme <wartość>"
+	}
+	
+	"PluginUsage_AutoMetal"
+	{
+		"en"		"Usage: sm_autometal <#userid|name> <amount>"
+		"pl"		"Użycie: sm_autometal <#userid|name> <wartość>"
+	}
+	
+	"MetalSetOnMe"
+	{
+		"#format"	"{1:i}"
+		"en"		"Metal amount set to: {1}"
+		"pl"		"Ilość metalu została ustawiona na: {1}"
+	}
+		
+	"MetalAmount1"
+	{
+		"en"		"Metal amount must be grater than 0, auto-set to 0."
+		"pl"		"Ilość metalu musi być większa niż 0, ustawiono na 0."
+	}
+	
+	"MetalAmount2"
+	{
+		"en"		"Metal amount must be lower than 200, auto-set to 200"
+		"pl"		"Ilość metalu musi być mniejsza niż 200, ustawiono na 200"
+	}
+	
+	"MetalPhrase1"
+	{
+		"#format"	"{1:N},{2:i}"
+		"en"		"{olive}[1} {default}set to {olive}you {green}{2} {default} of metal."
+		"pl"		"{olive}{1} {default}ustawił {olive}ci {green}{2} {default} metalu."
+	}
+	
+	"MetalPhrase2"
+	{
+		"#format"	"{1:N},{2:N},{3:i}"
+		"en"		"{{olive}1} {default}set {green}{3} {default} of metal for {olive}{2}{default}."
+		"pl"		"{olive}{1} {default}ustawił {green}{3} {default} metalu dla {olive}{2}{default}.
+	}
+	
+	"MetalPhrase3"
+	{
+		"#format"	"{1:N},{2:i}"
+		"en"		"You set {2} of metal for player: {1}"
+		"pl"		"Ustawiłeś {2} metalu dla gracza: {1}"
+	}
+	
+	"MustBeEngineer"
+	{
+		"en"		"Target must be a Engineer to use this command."
+		"pl"		"Celem musi być Inżynier by użyć tej komendy."
+	}
+	"MustBeEngineer2"
+	{
+		"en"		"You must be a Engineer to use this command."
+		"pl"		"Musisz być Inżynierem by użyć tej komendy."
+	}
+	
+	"AutoMetalReply1"
+	{
+		"en"		"AutoMetal Disabled"
+		"pl"		"AutoMetal Wyłączony"
+	}
+	
+	"AutoMetalReply2"
+	{
+		"#format"	"{1:i}"
+		"en"		"You'll got a {1} of metal on respawn."
+		"pl"		"Będziesz dostawał {1} metalu po odrodzeniu."
+	}
+	
+	"AutoMetalReply3"
+	{
+		"#format"	"{1:N}"
+		"en"		"AutoMetal Disabled for player: {1}"
+		"pl"		"AutoMetal Wyłączony dla gracza: {1}"
+	}
+	"AutoMetalReply4"
+	{
+		"#format"	"{1:N},{2:i}"
+		"en"		"{1} will got a {2} of metal on respawn."
+		"pl"		"{1} będzie dostawał {2} metalu po odrodzeniu."
+	}
+	
+	"AutoMetalPhrase1"
+	{
+		"#format"	"{1:N}"
+		"en"		"{olive}{1} {green}enabled {default}auto metal for {olive}you."
+		"pl"		"{olive}{1} {green}włączył {default}dla ciebie automatyczny metal."
+	}
+	"AutoMetalPhrase1a"
+	{
+		"#format"	"{1:i}"
+		"en"		"{olive}You {default}will got {green}{1} {default}of metal on respawn."
+		"pl"		"{default}Będziesz dostawał {green}{1} {default}metalu po odrodzeniu."
+	}
+	
+	"AutoMetalPhrase2"
+	{
+		"#format"	"{1:N},{2:N}"
+		"en"		"{olive}{1} {green}enabled {default}auto metal for {olive}{2}{default}."
+		"pl"		"{olive}{1} {green}włączył {default}automatyczny metal dla {olive}{2}{default}."
+	}
+	
+	"AutoMetalPhrase2a"
+	{
+		"#format"	"{1:i}"
+		"en"		"{olive}He {default}will got {green}{1} {default}of metal on respawn."
+		"pl"		"{default}Będzie dostawał {green}{1} {default}metalu po odrodzeniu."
+	}
+	
+	"AutoMetalPhrase3"
+	{
+		"en"		"{olive}You {green}enabled {default}auto metal for {olive}yourself."
+		"pl"		"{green}Włączyłeś {olive}sobie {default}automatyczny metal."
+	}
+	
+	"AutoMetalPhrase3a"
+	{
+		"#format"	"{1:i}"
+		"en"		"{olive}You {default}will got {green}{1} {default}of metal on respawn."
+		"pl"		"{default}Będziesz dostawał {green}{1} {default} metalu po odrodzeniu."
+	}
+	
+	"AutoMetalPhrase4"
+	{
+		"en"		"{olive}You {green}disabled {default}auto metal for {olive}yourself{default}."
+		"pl"		"{green}Wyłączyłeś {olive}sobie {default}automatyczny metal."
+	}
+	
+	"AutoMetalPhrase5"
+	{
+		"#format"	"{1:N},{2:N}"
+		"en"		"{olive}{1} {green}disabled {default}auto metal for {olive}{2}{default}."
+		"pl"		"{olive}{1} {green}wyłączył {default}automatyczny metal dla {olive}{2}{default}."
+	}
+}
