@@ -151,7 +151,7 @@ public Action:cBuyInvincible(cclient, args)
 	else
 	{
 		SetEntProp(client, Prop_Data, "m_takedamage", 2, 1);
-		SetEntityRenderColor(client, 0, 0, 0, 0)
+		SetEntityRenderColor(client, 255, 255, 255, 0)
 		if (noise == 2)
 		{
 			PrintToChat(client, "Koniec zabawy! Już nie jeteś SuperManem ;]");
