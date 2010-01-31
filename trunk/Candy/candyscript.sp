@@ -2,7 +2,7 @@
 #include <tf2_stocks>
 
 /* defines */
-#define PLUGIN_VERSION "0.6.3"
+#define PLUGIN_VERSION "0.6.4"
 //#define DEBUG "1"
 #define NULLNAME "$$NULL##"
 
@@ -31,6 +31,7 @@ new Handle:cvCustomChatTriggerBuyMenu1;
 new Handle:cvCustomChatTriggerBuyMenu2;
 new Handle:cvCustomChatTriggerPlayerStats1;
 new Handle:cvCustomChatTriggerPlayerStats2;
+new Handle:cvDelay;
 
 new Handle:dbConnection = INVALID_HANDLE;
 
@@ -41,6 +42,7 @@ new String:sCurrentDB[64];
 new iKills[MAXPLAYERS];
 
 new String:sGroups[MAXPLAYERS][256];
+new bool:CantBuy[MAXPLAYERS];
 
 new String:sConnectingClients[34][128]; // Store SteamId for sql callbacks
 new iPushArray[34];
@@ -135,6 +137,7 @@ public InitializeConvars()
 	cvCustomChatTriggerBuyMenu2 = CreateConVar("sm_candy_chat_buy2", "", "Custom chat trigger for the buy menu", FCVAR_PLUGIN);
 	cvCustomChatTriggerPlayerStats1 = CreateConVar("sm_candy_chat_stats1", "", "Custom chat trigger for the player stats", FCVAR_PLUGIN);
 	cvCustomChatTriggerPlayerStats2 = CreateConVar("sm_candy_chat_stats2", "", "Custom chat trigger for the player stats", FCVAR_PLUGIN);
+	cvDelay = CreateConVar("sm_candy_delay", "0.0", "Delay between buying", FCVAR_PLUGIN);
 	
 	PrintDebug("AutoExecConfig");
 	AutoExecConfig();
@@ -400,11 +403,19 @@ public Action:cSay(client, args)
 		|| ((strcmp(sCustChatTriggerBuy2, "", false) != 0) && (strcmp(text, sCustChatTriggerBuy2, false) == 0)))
 	{
 		PrintDebug("Someone wants to buy something");
-		new String:qGetUsersCandy[255], String:sSteamId[32];
-		GetClientAuthString(client, sSteamId, sizeof(sSteamId));
-		Format(qGetUsersCandy, sizeof(qGetUsersCandy), "SELECT candy FROM %scandydata WHERE steamid = '%s';", sTablePrefix, sSteamId);
-		SQL_TQuery(dbConnection, cBuyMenuSQLCallback, qGetUsersCandy, client);
-		
+		if (CantBuy[client] == false)
+		{
+			new String:qGetUsersCandy[255], String:sSteamId[32];
+			GetClientAuthString(client, sSteamId, sizeof(sSteamId));
+			Format(qGetUsersCandy, sizeof(qGetUsersCandy), "SELECT candy FROM %scandydata WHERE steamid = '%s';", sTablePrefix, sSteamId);
+			SQL_TQuery(dbConnection, cBuyMenuSQLCallback, qGetUsersCandy, client);
+		}
+		else
+		{
+			new String:reply[128];
+			Format(reply, sizeof(reply), "[%s] Nie możesz teraz niczego kupić.", sChatTag);
+			PrintNoise(reply, 2, client);
+		}		
 		return Plugin_Handled;
 	}
 	else if ((strcmp(text, "!cstats", false) == 0)
@@ -1172,6 +1183,11 @@ public cBuyMenuCallbackSQLCallback(Handle:owner, Handle:hndl, String:error[], an
 		ReplaceChar("|", sQuotedName, sOnCmd);
 		
 		RemoveCandy(data, iPrice);
+		if (GetConVarFloat(cvDelay) != 0.0)
+		{
+			CantBuy[data] = true;
+			CreateTimer(GetConVarFloat(cvDelay), tDelay, data);
+		}
 		PrintDebug("Running OnCmd");
 		ServerCommand(sOnCmd);
 		
@@ -1310,6 +1326,11 @@ public cResetDBMenuCallback(Handle:menu, MenuAction:action, client, item)
 	{
 		CloseHandle(menu)
 	}
+}
+
+public Action:tDelay(Handle:timer, any:data)
+{
+	CantBuy[data] = false;
 }
 
 /**
