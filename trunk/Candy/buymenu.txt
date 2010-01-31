@@ -63,18 +63,8 @@
 		"time"		"0"
 		"class"		"5"
 	}
-
-	"6"
-	{
-		"title"		"100% Wściekłości (Dla Żołnierza)"
-		"price"		"200"
-		"oncmd"		"sm_setrage | 100"
-		"offcmd"	""
-		"time"		"0"
-		"class"		"3"
-	}
 	
-	"7"
+	"6"
 	{
 		"title"		"200 Metalu (Dla Inżyniera)"
 		"price"		"200"
@@ -84,16 +74,7 @@
 		"class"		"9"
 	}	
 	
-	"9"
-	{
-		"title"		"Zgładź gracza!"
-		"price"		"1000"
-		"oncmd"		"sm_candy_buy_slay ?"
-		"offcmd"	""
-		"time"		"0"
-	}
-	
-	"10"
+	"7"
 	{
 		"title"		"Leczenie"
 		"price"		"50"
@@ -102,7 +83,7 @@
 		"time"		""
 	}
 	
-	"11"
+	"8"
 	{
 		"title"		"Rezerwacja slotu - 1 tydzień"
 		"price"		"15000"
@@ -111,7 +92,7 @@
 		"time"		""
 	}
 	
-	"12"
+	"9"
 	{
 		"title"		"Rezerwacja slotu - 2 tygodnie"
 		"price"		"30000"
@@ -120,7 +101,7 @@
 		"time"		""
 	}
 	
-	"13"
+	"10"
 	{
 		"title"		"Rezerwacja slotu - 4 tygodnie"
 		"price"		"60000"
@@ -129,7 +110,7 @@
 		"time"		""
 	}
 	
-	"14"
+	"11"
 	{
 		"title"		"Auto Respawn (po 5 sek)"
 		"price"		"500"
@@ -138,7 +119,7 @@
 		"time"		""
 	}
 	
-	"15"
+	"12"
 	{
 		"title"		"Auto Respawn (od razu)"
 		"price"		"700"
@@ -147,7 +128,7 @@
 		"time"		""
 	}
 	
-	"16"
+	"13"
 	{
 		"title"		"Auto Uber (50%)"
 		"price"		"500"
@@ -157,7 +138,7 @@
 		"class"		"5"
 	}
 	
-	"17"
+	"14"
 	{
 		"title"		"Auto Uber (25%)"
 		"price"		"250"
@@ -165,35 +146,5 @@
 		"offcmd"	""
 		"time"		""
 		"class"		"5"
-	}
-	
-	"18"
-	{
-		"title"		"50% Wściekłości (Dla Żołnierza)"
-		"price"		"150"
-		"oncmd"		"sm_setrage ? 50"
-		"offcmd"	""
-		"time"		"0"
-		"class"		"3"
-	}
-	
-	"19"
-	{
-		"title"		"Auto 50% Wściekłości (Dla Żołnierza)"
-		"price"		"350"
-		"oncmd"		"sm_autorage ? 50"
-		"offcmd"	""
-		"time"		"0"
-		"class"		"3"
-	}
-	
-	"20"
-	{
-		"title"		"Auto 25% Wściekłości (Dla Żołnierza)"
-		"price"		"150"
-		"oncmd"		"sm_autorage ? 25"
-		"offcmd"	""
-		"time"		"0"
-		"class"		"3"
 	}
 }
