@@ -88,7 +88,7 @@
 	{
 		"title"		"Zgładź gracza!"
 		"price"		"1000"
-		"oncmd"		"sm_candy_buy_slay ? "
+		"oncmd"		"sm_candy_buy_slay ?"
 		"offcmd"	""
 		"time"		"0"
 	}
@@ -171,7 +171,7 @@
 	{
 		"title"		"50% Wściekłości (Dla Żołnierza)"
 		"price"		"150"
-		"oncmd"		"sm_setrage | 50"
+		"oncmd"		"sm_setrage ? 50"
 		"offcmd"	""
 		"time"		"0"
 		"class"		"3"
@@ -181,7 +181,7 @@
 	{
 		"title"		"Auto 50% Wściekłości (Dla Żołnierza)"
 		"price"		"350"
-		"oncmd"		"sm_autorage | 50"
+		"oncmd"		"sm_autorage ? 50"
 		"offcmd"	""
 		"time"		"0"
 		"class"		"3"
@@ -191,7 +191,7 @@
 	{
 		"title"		"Auto 25% Wściekłości (Dla Żołnierza)"
 		"price"		"150"
-		"oncmd"		"sm_autorage | 25"
+		"oncmd"		"sm_autorage ? 25"
 		"offcmd"	""
 		"time"		"0"
 		"class"		"3"
