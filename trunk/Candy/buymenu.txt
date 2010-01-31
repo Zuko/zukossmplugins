@@ -133,7 +133,7 @@
 	{
 		"title"		"Auto Respawn (po 5 sek)"
 		"price"		"500"
-		"oncmd"		"sm_autorespawn ? 5"
+		"oncmd"		"sm_autorespawn | 5"
 		"offcmd"	""
 		"time"		""
 	}
@@ -142,7 +142,7 @@
 	{
 		"title"		"Auto Respawn (od razu)"
 		"price"		"700"
-		"oncmd"		"sm_autorespawn ? 0"
+		"oncmd"		"sm_autorespawn | 0"
 		"offcmd"	""
 		"time"		""
 	}
@@ -151,7 +151,7 @@
 	{
 		"title"		"Auto Uber (50%)"
 		"price"		"500"
-		"oncmd"		"sm_autouber ? 50"
+		"oncmd"		"sm_autouber | 50"
 		"offcmd"	""
 		"time"		""
 		"class"		"5"
@@ -161,7 +161,7 @@
 	{
 		"title"		"Auto Uber (25%)"
 		"price"		"250"
-		"oncmd"		"sm_autouber ? 25"
+		"oncmd"		"sm_autouber | 25"
 		"offcmd"	""
 		"time"		""
 		"class"		"5"
