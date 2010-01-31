@@ -190,7 +190,7 @@ public Action:Command_SetMetal(client, args)
 	
 	for (new i = 0; i < target_count; i++)
 	{
-		if (1 == 1)//(GetEntProp(target_list[i], Prop_Send, "m_iClass") == 9)
+		if (GetEntProp(target_list[i], Prop_Send, "m_iClass") == 9)
 		{
 			TF_SetMetalAmount(target_list[i], nMetal);
 		
