@@ -120,12 +120,80 @@
 		"time"		""
 	}
 	
-    "13"
-    {
-        "title"		"Rezerwacja slotu - 4 tygodnie"
-        "price"     "100000"
-        "oncmd"     "sm_addtimedreserved ? 2419200"
-        "offcmd"    ""
-        "time"      ""
-    }
+	"13"
+	{
+		"title"		"Rezerwacja slotu - 4 tygodnie"
+		"price"		"100000"
+		"oncmd"		"sm_addtimedreserved ? 2419200"
+		"offcmd"	""
+		"time"		""
+	}
+	
+	"14"
+	{
+		"title"		"Auto Respawn (po 5 sek)"
+		"price"		"500"
+		"oncmd"		"sm_autorespawn ? 5"
+		"offcmd"	""
+		"time"		""
+	}
+	
+	"15"
+	{
+		"title"		"Auto Respawn (od razu)"
+		"price"		"700"
+		"oncmd"		"sm_autorespawn ? 0"
+		"offcmd"	""
+		"time"		""
+	}
+	
+	"16"
+	{
+		"title"		"Auto Uber (50%)"
+		"price"		"500"
+		"oncmd"		"sm_autouber ? 50"
+		"offcmd"	""
+		"time"		""
+		"class"		"5"
+	}
+	
+	"17"
+	{
+		"title"		"Auto Uber (25%)"
+		"price"		"250"
+		"oncmd"		"sm_autouber ? 25"
+		"offcmd"	""
+		"time"		""
+		"class"		"5"
+	}
+	
+	"18"
+	{
+		"title"		"50% Wściekłości (Dla Żołnierza)"
+		"price"		"150"
+		"oncmd"		"sm_setrage | 50"
+		"offcmd"	""
+		"time"		"0"
+		"class"		"3"
+	}
+	
+	"19"
+	{
+		"title"		"Auto 50% Wściekłości (Dla Żołnierza)"
+		"price"		"350"
+		"oncmd"		"sm_autorage | 50"
+		"offcmd"	""
+		"time"		"0"
+		"class"		"3"
+	}
+	
+	"20"
+	{
+		"title"		"Auto 25% Wściekłości (Dla Żołnierza)"
+		"price"		"150"
+		"oncmd"		"sm_autorage | 25"
+		"offcmd"	""
+		"time"		"0"
+		"class"		"3"
+	}
 }

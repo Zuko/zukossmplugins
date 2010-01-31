@@ -8,7 +8,7 @@
 public Plugin:myinfo = 
 {
 	name = "Fun package for Candy",
-	author = "GachL",
+	author = "GachL, Zuko",
 	description = "This plugin is a pack of functions that work well with Candy for TF2.",
 	version = PLUGIN_VERSION,
 	url = "http://bloodisgood.org"
@@ -136,6 +136,7 @@ public Action:cBuyInvincible(cclient, args)
 	if (onoff == 1)
 	{
 		SetEntProp(client, Prop_Data, "m_takedamage", 0, 1);
+		SetEntityRenderColor(client, 0, 255, 0, 0)
 		if (noise == 2)
 		{
 			PrintToChat(client, "Poczuj się jak SuperMan! Nieśmiertelność włączona!");
@@ -150,6 +151,7 @@ public Action:cBuyInvincible(cclient, args)
 	else
 	{
 		SetEntProp(client, Prop_Data, "m_takedamage", 2, 1);
+		SetEntityRenderColor(client, 0, 0, 0, 0)
 		if (noise == 2)
 		{
 			PrintToChat(client, "Koniec zabawy! Już nie jeteś SuperManem ;]");
