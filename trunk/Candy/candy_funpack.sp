@@ -226,13 +226,13 @@ public Action:cBuyRegen(cclient, args)
 	SetEntityHealth(client, iClassHealth[GetEntProp(client, Prop_Send, "m_iClass")]);
 	if (noise == 2)
 	{
-		PrintToChat(client, "Szybkie leczenie i pełen zestaw amunicji!");
+		PrintToChat(client, "Szybkie leczenie!"); //nie daje amunicji, tylko HP
 	}
 	else if (noise == 3)
 	{
 		new String:name[128];
 		GetClientName(client, name, sizeof(name));
-		PrintToChatAll("%s kupił zestaw apteczek i amunicji!", name);
+		PrintToChatAll("%s kupił zestaw apteczek!", name);
 	}
 	return Plugin_Handled;
 }

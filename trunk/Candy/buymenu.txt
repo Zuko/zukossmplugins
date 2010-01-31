@@ -16,28 +16,28 @@
 {
 	"1"
 	{
-		"title"		"100% Krytów (10sek)"
-		"price"		"100"
+		"title"		"100% Krytów (5 sek)"
+		"price"		"150"
 		"oncmd"		"sm_candy_buy_crit ? 1"
 		"offcmd"	"sm_candy_buy_crit ? 0"
-		"time"		"10"
+		"time"		"5"
 		"group"		"a"
 	}
 
 	"2"
 	{
-		"title"		"Nieśmiertelność (10sek)"
-		"price"		"200"
+		"title"		"Nieśmiertelność (5 sek)"
+		"price"		"250"
 		"oncmd"		"sm_candy_buy_invincible ? 1"
 		"offcmd"	"sm_candy_buy_invincible ? 0"
-		"time"		"10"
+		"time"		"5"
 		"group"		"a"
 	}
 
 	"3"
 	{
 		"title"		"100% Ubera (Dla Medyka)"
-		"price"		"100"
+		"price"		"200"
 		"oncmd"		"sm_candy_buy_uber ? 100"
 		"offcmd"	""
 		"time"		"0"
@@ -47,7 +47,7 @@
 	"4"
 	{
 		"title"		"200% Ubera (Dla Medyka)"
-		"price"		"300"
+		"price"		"400"
 		"oncmd"		"sm_candy_buy_uber ? 200"
 		"offcmd"	""
 		"time"		"10"
@@ -67,7 +67,7 @@
 	"6"
 	{
 		"title"		"100% Wściekłości (Dla Żołnierza)"
-		"price"		"100"
+		"price"		"200"
 		"oncmd"		"sm_setrage | 100"
 		"offcmd"	""
 		"time"		"0"
@@ -77,7 +77,7 @@
 	"7"
 	{
 		"title"		"200 Metalu (Dla Inżyniera)"
-		"price"		"100"
+		"price"		"200"
 		"oncmd"		"sm_setmetal | 200"
 		"offcmd"	""
 		"time"		"0"
@@ -95,7 +95,7 @@
 	
 	"10"
 	{
-		"title"		"Leczenie + Amunicja"
+		"title"		"Leczenie"
 		"price"		"50"
 		"oncmd"		"sm_candy_buy_regen ?"
 		"offcmd"	""
