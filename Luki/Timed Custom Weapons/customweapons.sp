@@ -1,7 +1,4 @@
 #include <sourcemod>
-#define REQUIRE_EXTENSIONS
-#include <tf2items>
-#include <sdktools>
 
 #define PLUGIN_VERSION "1.0"
 
