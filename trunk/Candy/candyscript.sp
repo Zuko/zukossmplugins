@@ -2,7 +2,7 @@
 #include <tf2_stocks>
 
 /* defines */
-#define PLUGIN_VERSION "0.6.4"
+#define PLUGIN_VERSION "0.6.5"
 //#define DEBUG "1"
 #define NULLNAME "$$NULL##"
 
@@ -53,6 +53,8 @@ new String:sNames[512][128];
 new iCosts[512];
 new Float:iStopTimes[512];
 
+new String:logfile[255];
+
 public OnPluginStart()
 {
 	PrintDebug("Creating convars");
@@ -68,6 +70,8 @@ public OnPluginStart()
 
 	for (new i = 0; i < sizeof(sNames); i++)
 		sNames[i] = NULLNAME;
+		
+	BuildPath(Path_SM, logfile, sizeof(logfile), "logs/candy.log");
 }
 
 public OnConfigsExecuted()
@@ -1166,6 +1170,9 @@ public cBuyMenuCallbackSQLCallback(Handle:owner, Handle:hndl, String:error[], an
 			// U faild n00b!!
 			PrintDebug("Insufficient funds!");
 			PrintToChat(data, "[%s] Nie posiadasz wystarczającej ilości punktów by to kupić!(Wymagane: %i)", sChatTag, iPrice);
+			new sName[128];
+			GetClientName(data, sName, sizeof(sName));
+			LogToFile(logfile, "[%s] %s ma za mało punktów (%i) żeby kupić %s (%i pkt).", sChatTag, sName, iCurrentMoney, sTitle, iPrice);
 			return;
 		}
 
@@ -1181,7 +1188,9 @@ public cBuyMenuCallbackSQLCallback(Handle:owner, Handle:hndl, String:error[], an
 		ReplaceChar("#", sIndex, sOnCmd);
 		ReplaceChar("~", sSteamId, sOnCmd);
 		ReplaceChar("|", sQuotedName, sOnCmd);
-		
+
+		LogToFile(logfile, "[%s] %s (%i pkt) kupił %s (%i pkt).", sChatTag, sName, iCurrentMoney, sTitle, iPrice);
+			
 		RemoveCandy(data, iPrice);
 		if (GetConVarFloat(cvDelay) != 0.0)
 		{
