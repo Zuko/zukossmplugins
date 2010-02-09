@@ -43,6 +43,7 @@ new iKills[MAXPLAYERS];
 
 new String:sGroups[MAXPLAYERS][256];
 new bool:CantBuy[MAXPLAYERS];
+new bool:Buying[MAXPLAYERS];
 
 new String:sConnectingClients[34][128]; // Store SteamId for sql callbacks
 new iPushArray[34];
@@ -407,7 +408,7 @@ public Action:cSay(client, args)
 		|| ((strcmp(sCustChatTriggerBuy2, "", false) != 0) && (strcmp(text, sCustChatTriggerBuy2, false) == 0)))
 	{
 		PrintDebug("Someone wants to buy something");
-		if (CantBuy[client] == false)
+		if (CantBuy[client] == false && Buying[client] == false)
 		{
 			new String:qGetUsersCandy[255], String:sSteamId[32];
 			GetClientAuthString(client, sSteamId, sizeof(sSteamId));
@@ -417,7 +418,10 @@ public Action:cSay(client, args)
 		else
 		{
 			new String:reply[128];
-			Format(reply, sizeof(reply), "[%s] Nie możesz teraz niczego kupić.", sChatTag);
+			if (Buying[client])
+				Format(reply, sizeof(reply), "[%s] Poczekaj na realizację poprzedniego zakupu.", sChatTag);
+			else
+				Format(reply, sizeof(reply), "[%s] Nie możesz teraz niczego kupić.", sChatTag);
 			PrintNoise(reply, 2, client);
 		}		
 		return Plugin_Handled;
@@ -1104,11 +1108,20 @@ public cBuyMenu(Handle:menu, MenuAction:action, param1, param2)
 {
 	if (action == MenuAction_Select)
 	{
+		if (Buying[param1] == true)
+		{
+			new String:reply[128];
+			Format(reply, sizeof(reply), "[%s] Poczekaj na realizację poprzedniego zakupu.", sChatTag);
+			PrintNoise(reply, 2, param1);
+			return;
+		}
+			
 		new String:info[32]
 		GetMenuItem(menu, param2, info, sizeof(info))
 		
 		new String:qGetUsersCandy[255], String:sSteamId[32];
 		GetClientAuthString(param1, sSteamId, sizeof(sSteamId));
+		Buying[param1] = true;
 		Format(qGetUsersCandy, sizeof(qGetUsersCandy), "SELECT candy, '%s' FROM %scandydata WHERE steamid = '%s';", info, sTablePrefix, sSteamId);
 		SQL_TQuery(dbConnection, cBuyMenuCallbackSQLCallback, qGetUsersCandy, param1);
 	}
@@ -1136,6 +1149,8 @@ public cBuyMenuCallbackSQLCallback(Handle:owner, Handle:hndl, String:error[], an
 	new String:sBuyEntry[32];
 	SQL_FetchString(hndl, 1, sBuyEntry, sizeof(sBuyEntry));
 	new iBuyEntry = StringToInt(sBuyEntry);
+	
+	Buying[data] = false;
 	
 	if (iBuyEntry < 1024)
 	{
