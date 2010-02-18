@@ -667,6 +667,7 @@ public Handler_MapVoteFinished(Handle:menu,
 	{
 		LogError("No Votes recorded yet Advanced callback fired - Tell pRED* to fix this");
 		VoteEnded("Vote failed"); // $ added
+		SoundVoteEnd(); // $ added
 		return;
 	}
 
@@ -674,9 +675,6 @@ public Handler_MapVoteFinished(Handle:menu,
 	GetMenuItem(menu, item_info[0][VOTEINFO_ITEM_INDEX], map, sizeof(map));
 
 	/* $ added */
-	SoundVoteEnd();
-
-	
 	decl String:buffer[255];
 	if(strcmp(map, VOTE_EXTEND, false) == 0 || strcmp(map, VOTE_DONTCHANGE, false) == 0)
 	{
@@ -688,7 +686,7 @@ public Handler_MapVoteFinished(Handle:menu,
 		Format(buffer, sizeof(buffer), "%t", "Next Map", map);
 	}
 	VoteEnded(buffer);
-	EmitSoundToAll(g_EndSound);
+	SoundVoteEnd();
 	/* end of $ added */
 
 	if (strcmp(map, VOTE_EXTEND, false) == 0)
