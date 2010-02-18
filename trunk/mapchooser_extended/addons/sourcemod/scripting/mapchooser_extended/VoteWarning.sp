@@ -66,19 +66,19 @@ public Action:WarningHintMsg(Handle:timer)
 	}
 }
 
-SetupWarningTimer2()
+SetupWarningTimer2(mapChange, hndl)
 {
 	PrintToServer("wykonuje SetupWarningTimer()");
 	//pobieram aktualny czas na serwerze
 	g_WarningTimeStart = GetTime();
 	//robie zapetlonego timera ktory odlicza czas ostrzezenia, po jego zakonczeniu inicjalizuje glosowanie
 	//native Handle:CreateTimer(Float:interval, Timer:func, any:data=INVALID_HANDLE, flags=0);
-	g_WarningTimer = CreateTimer(GetConVarFloat(g_Cvar_WarningTime), WarningHintMsg, _, TIMER_REPEAT | TIMER_FLAG_NO_MAPCHANGE);
+	g_WarningTimer = CreateTimer(GetConVarFloat(g_Cvar_WarningTime), WarningHintMsg2, _, TIMER_REPEAT | TIMER_FLAG_NO_MAPCHANGE);
 	//dzwiek ostrzegajacy o glosowaniu
 	EmitSoundToAll(g_WarningSound);
 }
 
-public Action:WarningHintMsg(Handle:timer)
+public Action:WarningHintMsg2(Handle:timer)
 {
 	decl String:hintboxText[512];
 	Format(hintboxText, sizeof(hintboxText), "WARNING! Vote will start in: %i s", WarningCountdown());

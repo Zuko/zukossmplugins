@@ -352,7 +352,7 @@ public Action:Timer_StartMapVote(Handle:timer, Handle:data)
 	new MapChange:mapChange = MapChange:ReadPackCell(data);
 	new Handle:hndl = Handle:ReadPackCell(data);
 
-	SetupWarningTimer2()
+	SetupWarningTimer2(mapChange, hndl)
 	//InitiateVote(mapChange, hndl);
 
 	return Plugin_Stop;
