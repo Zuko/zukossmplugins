@@ -87,7 +87,7 @@ public Action:WarningHintMsg(Handle:timer)
 	if (WarningCountdown() == 0)
 	{
 		KillTimer(g_WarningTimer);
-		InitiateVote(MapChange_MapEnd, INVALID_HANDLE);
+		InitiateVote(mapChange, hndl);
 	}
 }
 
