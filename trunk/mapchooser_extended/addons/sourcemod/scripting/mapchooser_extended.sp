@@ -666,6 +666,7 @@ public Handler_MapVoteFinished(Handle:menu,
 	if (num_votes == 0)
 	{
 		LogError("No Votes recorded yet Advanced callback fired - Tell pRED* to fix this");
+		VoteEnded("Vote failed"); // $ added
 		return;
 	}
 

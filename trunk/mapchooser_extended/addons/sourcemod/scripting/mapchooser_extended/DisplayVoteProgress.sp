@@ -135,7 +135,7 @@ public Action:ShowVoteProgress(Handle:timer, Handle:menu)
 	decl String:formatBuffer[96];
 
 	// <title> - <timeleft>
-	GetMenuTitle(menu, hintboxText, sizeof(hintboxText) );
+	GetMenuTitle(menu, hintboxText, sizeof(hintboxText));
 	Format(hintboxText, sizeof(hintboxText), "%s (%i/%i) - %i s", hintboxText, GetNrReceivedVotes(), GetArraySize(g_AllowedVoters), VoteTimeRemaining() );
 
 	// <X>. <option>
