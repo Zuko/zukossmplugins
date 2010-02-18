@@ -673,7 +673,23 @@ public Handler_MapVoteFinished(Handle:menu,
 	decl String:map[32];
 	GetMenuItem(menu, item_info[0][VOTEINFO_ITEM_INDEX], map, sizeof(map));
 
+	/* $ added */
 	SoundVoteEnd();
+
+	
+	decl String:buffer[255];
+	if(strcmp(map, VOTE_EXTEND, false) == 0 || strcmp(map, VOTE_DONTCHANGE, false) == 0)
+	{
+		// this should be equal to fetching the translations
+		GetMenuItem(menu, item_info[0][VOTEINFO_ITEM_INDEX], buffer, 0, _, buffer, sizeof(buffer));
+	}
+	else
+	{
+		Format(buffer, sizeof(buffer), "%t", "Next Map", map);
+	}
+	VoteEnded(buffer);
+	EmitSoundToAll(g_EndSound);
+	/* end of $ added */
 
 	if (strcmp(map, VOTE_EXTEND, false) == 0)
 	{

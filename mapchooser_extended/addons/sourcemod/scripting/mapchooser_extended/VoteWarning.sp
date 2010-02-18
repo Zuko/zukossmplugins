@@ -43,6 +43,7 @@ public OnConfigsExecuted_VoteWarning()
 
 SetupWarningTimer()
 {
+	PrintToServer("wykonuje SetupWarningTimer()")
 	//pobieram aktualny czas na serwerze
 	g_WarningTimeStart = GetTime();
 	//robie zapetlonego timera ktory odlicza czas ostrzezenia, po jego zakonczeniu inicjalizuje glosowanie
