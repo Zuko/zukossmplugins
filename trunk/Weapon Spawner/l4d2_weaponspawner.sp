@@ -270,6 +270,7 @@ public Action:Command_SpawnWeapon(client, args)
 			if (!StrEqual(weapon, "weapon_ammo_spawn", false))
 			{
 				SetEntProp(iWeapon, Prop_Send, "m_iExtraPrimaryAmmo", maxammo ,4); //Adds max ammo for weapon
+				AcceptEntityInput(iWeapon, "RemoveHealth");
 			}
 			g_pos[2] -= 10.0-(i*2);
 			TeleportEntity(iWeapon, g_pos, NULL_VECTOR, NULL_VECTOR); //Teleport spawned weapon
