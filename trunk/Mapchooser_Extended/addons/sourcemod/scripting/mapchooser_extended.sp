@@ -185,7 +185,7 @@ public OnConfigsExecuted()
 {
 	OnConfigsExecuted_VoteSound(); // $ added
 	OnConfigsExecuted_VoteWarning(); // $ added
-	OnConfigExecuted_RemoveNormalMapchooser(); // $ added
+	OnConfigsExecuted_Rem_MapCh(); // $ added
 	if (ReadMapList(g_MapList,
 					 g_mapFileSerial,
 					 "mapchooser",
