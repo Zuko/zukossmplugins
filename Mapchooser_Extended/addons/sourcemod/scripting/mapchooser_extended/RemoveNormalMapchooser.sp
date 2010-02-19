@@ -1,6 +1,6 @@
 #include <sourcemod>
 
-public OnConfigExecuted_RemoveNormalMapchooser()
+public OnConfigsExecuted_Rem_MapCh()
 {
 	decl String:filename[200];
 	BuildPath(Path_SM, filename, sizeof(filename), "plugins/mapchooser.smx");
@@ -12,6 +12,6 @@ public OnConfigExecuted_RemoveNormalMapchooser()
 		if(FileExists(newfilename))
 			DeleteFile(newfilename);
 		RenameFile(newfilename, filename);
-		LogToFile(logFile, "plugins/basebans.smx was unloaded and moved to plugins/disabled/mapchooser.smx");
+		LogMessage("plugins/basebans.smx was unloaded and moved to plugins/disabled/mapchooser.smx");
 	}
 }
