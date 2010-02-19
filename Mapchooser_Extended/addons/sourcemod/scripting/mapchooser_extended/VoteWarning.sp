@@ -43,7 +43,6 @@ public OnConfigsExecuted_VoteWarning()
 
 SetupWarningTimer()
 {
-	PrintToServer("wykonuje SetupWarningTimer()");
 	//pobieram aktualny czas na serwerze
 	g_WarningTimeStart = GetTime();
 	//robie zapetlonego timera ktory odlicza czas ostrzezenia, po jego zakonczeniu inicjalizuje glosowanie
@@ -63,6 +62,34 @@ public Action:WarningHintMsg(Handle:timer)
 	{
 		KillTimer(g_WarningTimer);
 		InitiateVote(MapChange_MapEnd, INVALID_HANDLE);
+	}
+}
+
+SetupWarningTimer2()
+{
+	//pobieram aktualny czas na serwerze
+	g_WarningTimeStart = GetTime();
+	//robie zapetlonego timera ktory odlicza czas ostrzezenia, po jego zakonczeniu inicjalizuje glosowanie
+	//native Handle:CreateTimer(Float:interval, Timer:func, any:data=INVALID_HANDLE, flags=0);
+	g_WarningTimer = CreateTimer(GetConVarFloat(g_Cvar_WarningTime), WarningHintMsg2, _, TIMER_REPEAT | TIMER_FLAG_NO_MAPCHANGE);
+	//dzwiek ostrzegajacy o glosowaniu
+	EmitSoundToAll(g_WarningSound);
+}
+
+public Action:WarningHintMsg2(Handle:timer)
+{
+	decl String:hintboxText[512];
+	Format(hintboxText, sizeof(hintboxText), "WARNING! Vote will start in: %i s", WarningCountdown());
+	PrintHintTextToAll(hintboxText);
+
+	if (WarningCountdown() == 0)
+	{
+		KillTimer(g_WarningTimer);
+		
+		new MapChange:mapChange = MapChange:ReadPackCell(data);
+		new Handle:hndl = Handle:ReadPackCell(data);
+
+		InitiateVote(mapChange, hndl);
 	}
 }
 

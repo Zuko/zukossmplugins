@@ -228,7 +228,7 @@ public OnConfigsExecuted()
 
 public OnMapEnd()
 {
-	OnMapEnd_DisplayVote();	// $ added
+	OnMapEnd_DisplayVote(); // $ added
 	g_HasVoteStarted = false;
 	g_WaitingForVote = false;
 	g_ChangeMapAtRoundEnd = false;
@@ -348,12 +348,13 @@ public Action:Timer_StartMapVote(Handle:timer, Handle:data)
 	{
 		return Plugin_Stop;
 	}
-
-	new MapChange:mapChange = MapChange:ReadPackCell(data);
-	new Handle:hndl = Handle:ReadPackCell(data);
+	
+	SetupWarningTimer2()
+	//new MapChange:mapChange = MapChange:ReadPackCell(data);
+	//new Handle:hndl = Handle:ReadPackCell(data);
 
 	//InitiateVote(mapChange, hndl);
-
+	
 	return Plugin_Stop;
 }
 
