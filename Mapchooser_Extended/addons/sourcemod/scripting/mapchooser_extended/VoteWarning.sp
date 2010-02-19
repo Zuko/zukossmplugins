@@ -5,6 +5,7 @@
 #pragma semicolon 1
 
 new g_WarningTimeStart;
+new g_WarningTimeStart2;
 new Time2;
 new Handle:g_Cvar_WarningTime  = INVALID_HANDLE;
 new Handle:g_WarningTimer = INVALID_HANDLE;
@@ -57,9 +58,25 @@ public Action:WarningHintMsg(Handle:timer)
 	}
 }
 
+/**
+ * @return        timeleft (remaining) of warning.
+ */
+WarningCountdown()
+{
+	new WarningTime = g_WarningTimeStart + GetConVarInt(g_Cvar_WarningTime) - GetTime();
+	if (WarningTime < 0)
+	{
+		return 0;
+	}
+	else
+	{
+		return WarningTime;
+	}
+}
+
 SetupWarningTimer2()
 {
-	g_WarningTimeStart = GetTime();
+	g_WarningTimeStart2 = GetTime();
 	g_WarningTimerForTimeVote = CreateTimer(float(Time2 - GetConVarInt(g_Cvar_WarningTime)), WarningHintMsgForTimeVote, _, TIMER_REPEAT | TIMER_FLAG_NO_MAPCHANGE);
 	EmitSoundToAll(g_WarningSound);
 }
@@ -70,7 +87,7 @@ public Action:WarningHintMsgForTimeVote(Handle:timer)
 	//testowy debug bo cos sie jebie
 	LogMessage("g_WarningTimeStart: %i", g_WarningTimeStart);
 	//
-	Format(hintboxText, sizeof(hintboxText), "WARNING! Vote will start in: %i s", WarningCountdown());
+	Format(hintboxText, sizeof(hintboxText), "WARNING! Vote will start in: %i s", WarningCountdown2());
 	PrintHintTextToAll(hintboxText);
 
 	if (WarningCountdown() == 0)
@@ -82,9 +99,9 @@ public Action:WarningHintMsgForTimeVote(Handle:timer)
 /**
  * @return        timeleft (remaining) of warning.
  */
-WarningCountdown()
+WarningCountdown2()
 {
-	new WarningTime = g_WarningTimeStart + GetConVarInt(g_Cvar_WarningTime); - GetTime();
+	new WarningTime = g_WarningTimeStart2 + GetConVarInt(g_Cvar_WarningTime) - GetTime();
 	//debug
 	new one = GetConVarInt(g_Cvar_WarningTime);
 	LogMessage("g_Cvar_WarningTime: %i", one);
