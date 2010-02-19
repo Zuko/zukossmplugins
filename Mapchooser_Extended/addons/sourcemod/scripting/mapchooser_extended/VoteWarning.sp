@@ -5,6 +5,7 @@
 #pragma semicolon 1
 
 new g_WarningTimeStart;
+new Time2;
 new Handle:g_Cvar_WarningTime  = INVALID_HANDLE;
 new Handle:g_WarningTimer = INVALID_HANDLE;
 new Handle:g_WarningTimerForTimeVote = INVALID_HANDLE;
@@ -38,12 +39,8 @@ public OnConfigsExecuted_VoteWarning()
 
 SetupWarningTimer()
 {
-	//pobieram aktualny czas na serwerze
 	g_WarningTimeStart = GetTime();
-	//robie zapetlonego timera ktory odlicza czas ostrzezenia, po jego zakonczeniu inicjalizuje glosowanie
-	//native Handle:CreateTimer(Float:interval, Timer:func, any:data=INVALID_HANDLE, flags=0);
 	g_WarningTimer = CreateTimer(GetConVarFloat(g_Cvar_WarningTime), WarningHintMsg, _, TIMER_REPEAT | TIMER_FLAG_NO_MAPCHANGE);
-	//dzwiek ostrzegajacy o glosowaniu
 	EmitSoundToAll(g_WarningSound);
 }
 
@@ -58,6 +55,13 @@ public Action:WarningHintMsg(Handle:timer)
 		KillTimer(g_WarningTimer);
 		InitiateVote(MapChange_MapEnd, INVALID_HANDLE);
 	}
+}
+
+SetupWarningTimer2()
+{
+	g_WarningTimeStart = GetTime();
+	g_WarningTimerForTimeVote = CreateTimer(float(Time2 - GetConVarInt(g_Cvar_WarningTime)), WarningHintMsgForTimeVote, _, TIMER_REPEAT | TIMER_FLAG_NO_MAPCHANGE);
+	EmitSoundToAll(g_WarningSound);
 }
 
 public Action:WarningHintMsgForTimeVote(Handle:timer)
