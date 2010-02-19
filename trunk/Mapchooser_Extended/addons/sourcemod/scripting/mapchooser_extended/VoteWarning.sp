@@ -72,7 +72,7 @@ public Action:WarningHintMsgForTimeVote(Handle:timer)
 
 	if (WarningCountdown() == 0)
 	{
-		KillTimer(g_WarningTimer);
+		KillTimer(g_WarningTimerForTimeVote);
 	}
 }
 
