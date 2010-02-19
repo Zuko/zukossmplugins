@@ -76,7 +76,7 @@ SetupWarningTimer2(data)
 	EmitSoundToAll(g_WarningSound);
 }
 
-public Action:WarningHintMsg2(Handle:timer, data)
+public Action:WarningHintMsg2(Handle:timer, Handle:data)
 {
 	decl String:hintboxText[512];
 	Format(hintboxText, sizeof(hintboxText), "WARNING! Vote will start in: %i s", WarningCountdown());
