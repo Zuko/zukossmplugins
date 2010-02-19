@@ -304,7 +304,7 @@ public OnMapTimeLeftChanged()
 		/* $ added */
 		if (g_WarningTimerForTimeVote != INVALID_HANDLE)
 		{
-			KillTimer(g_WarningTimerForTimeVote); // $ added
+			KillTimer(g_WarningTimerForTimeVote);
 		}
 		/* end */
 		SetupTimeleftTimer();
