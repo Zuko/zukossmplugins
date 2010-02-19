@@ -12,6 +12,6 @@ public OnConfigsExecuted_Rem_MapCh()
 		if(FileExists(newfilename))
 			DeleteFile(newfilename);
 		RenameFile(newfilename, filename);
-		LogMessage("plugins/basebans.smx was unloaded and moved to plugins/disabled/mapchooser.smx");
+		LogMessage("plugins/mapchooser.smx was unloaded and moved to plugins/disabled/mapchooser.smx");
 	}
 }
