@@ -333,8 +333,11 @@ SetupTimeleftTimer()
 			//g_VoteTimer = CreateTimer(float(time - startTime), Timer_StartMapVote, _, TIMER_FLAG_NO_MAPCHANGE);
 			new Handle:data;
 			g_VoteTimer = CreateDataTimer(float(time - startTime), Timer_StartMapVote, data, TIMER_FLAG_NO_MAPCHANGE);
-			Time2 = (time - startTime); // $ added
-			SetupWarningTimer2(); // $ added
+			/* $ added */
+			g_WarningTimeStart = GetTime();
+			new warningtime = GetConVarInt(g_Cvar_WarningTime);
+			g_WarningTimerForTimeVote = CreateTimer(float(time - startTime - warningtime), WarningHintMsgForTimeVote, _, TIMER_REPEAT | TIMER_FLAG_NO_MAPCHANGE);
+			/* end */
 			WritePackCell(data, _:MapChange_MapEnd);
 			WritePackCell(data, _:INVALID_HANDLE);
 			ResetPack(data);
@@ -528,6 +531,11 @@ public Action:Command_Mapvote(client, args)
  */
 InitiateVote(MapChange:when, Handle:inputlist=INVALID_HANDLE)
 {
+	new NumClients = 0;
+	for (new i = 1; i <= MaxClients; i++)
+	if (IsClientInGame(i) && !IsFakeClient(i)) NumClients++;
+	if (!NumClients) return;
+
 	g_WaitingForVote = true;
 
 	if (IsVoteInProgress())
