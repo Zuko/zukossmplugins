@@ -14,18 +14,14 @@ new String:g_WarningSound[PLATFORM_MAX_PATH];
 public OnPluginStart_VoteWarning()
 {
 	g_Cvar_WarningTime = CreateConVar("sm_mapvote_warningtime", "15.0", "Warning time in seconds.", _, true, 0.0, true, 30.0);
-	g_Cvar_WarningSound = CreateConVar("sm_mapvote_warningsound", "ambient/alarms/klaxon1.wav", "Sound file for warning start.");
+	g_Cvar_WarningSound = CreateConVar("sm_mapvote_warningsound", "sourcemod/mapchooser/klaxon1.mp3", "Sound file for warning start.");
 }
 
 // LoadWarningSound
 public OnConfigsExecuted_VoteWarning()
 {
-	//GetConVarString(g_Cvar_WarningSound, g_WarningSound, PLATFORM_MAX_PATH);
-	//GetConVarString(g_cvars_sound[Sound_VoteStart], sound, sizeof(sound));
-	//native GetConVarString(Handle:convar, String:value[], maxlength);
-	
 	decl String:sound[255], String:filePath[255];
-	
+
 	GetConVarString(g_Cvar_WarningSound, sound, sizeof(sound));
 	if(strlen(sound) > 0)
 	{
@@ -67,6 +63,9 @@ public Action:WarningHintMsg(Handle:timer)
 public Action:WarningHintMsgForTimeVote(Handle:timer)
 {
 	decl String:hintboxText[512];
+	//testowy debug bo cos sie jebie
+	LogMessage("g_WarningTimeStart: %i", g_WarningTimeStart);
+	//
 	Format(hintboxText, sizeof(hintboxText), "WARNING! Vote will start in: %i s", WarningCountdown());
 	PrintHintTextToAll(hintboxText);
 
@@ -82,7 +81,9 @@ public Action:WarningHintMsgForTimeVote(Handle:timer)
 WarningCountdown()
 {
 	new WarningTime = g_WarningTimeStart + GetConVarInt(g_Cvar_WarningTime) - GetTime();
-	if(WarningTime < 0)
+	//debug
+	LogMessage("WarningTime: %i", WarningTime);
+	if (WarningTime < 0)
 	{
 		return 0;
 	}
