@@ -1,5 +1,7 @@
 #include <sourcemod>
 
+#pragma semicolon 1
+
 public OnConfigsExecuted_Rem_MapCh()
 {
 	decl String:filename[200];
