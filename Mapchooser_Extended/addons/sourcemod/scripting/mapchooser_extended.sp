@@ -856,7 +856,7 @@ public Handler_MapVoteMenu(Handle:menu, MenuAction:action, param1, param2)
 				}
 
 				/* $ added */
-				if(strcmp(map, VOTE_DONTCHANGE, false) == 0)
+				if (strcmp(map, VOTE_DONTCHANGE, false) == 0)
 				{
 					Format(buffer, sizeof(buffer), "%t", "Dont Change",param1);
 				}
@@ -868,7 +868,12 @@ public Handler_MapVoteMenu(Handle:menu, MenuAction:action, param1, param2)
 				}
 				SoundVoteEnd();
 				LogMessage("No votes received, randomly selected %s as nextmap.", map);
-				/* end of $ added */
+				/* $ added */
+				if (g_WarningTimerForTimeVote != INVALID_HANDLE)
+				{
+					KillTimer(g_WarningTimerForTimeVote);
+				}
+				/* end */
 
 				//SetNextMap(map);
 			}

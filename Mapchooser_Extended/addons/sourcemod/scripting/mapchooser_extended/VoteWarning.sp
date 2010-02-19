@@ -80,9 +80,14 @@ public Action:WarningHintMsgForTimeVote(Handle:timer)
  */
 WarningCountdown()
 {
-	new WarningTime = GetTime() - g_WarningTimeStart + GetConVarInt(g_Cvar_WarningTime);
+	new WarningTime = g_WarningTimeStart + GetConVarInt(g_Cvar_WarningTime); - GetTime();
 	//debug
-	LogMessage("WarningTime: %i", WarningTime);
+	new one = GetConVarInt(g_Cvar_WarningTime);
+	LogMessage("g_Cvar_WarningTime: %i", one);
+	new two = GetTime();
+	LogMessage("GetTime z WarningCountdown: %i", two);
+	LogMessage("g_WarningTimeStart: %i", g_WarningTimeStart);
+	
 	if (WarningTime < 0)
 	{
 		return 0;
