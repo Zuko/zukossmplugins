@@ -39,6 +39,7 @@
 #include "mapchooser_extended/VoteSound.sp"
 #include "mapchooser_extended/VoteWarning.sp"
 #include "mapchooser_extended/DisplayVoteProgress.sp"
+#include "mapchooser_extended/RemoveNormalMapchooser.sp"
 
 public Plugin:myinfo =
 {
@@ -184,6 +185,7 @@ public OnConfigsExecuted()
 {
 	OnConfigsExecuted_VoteSound(); // $ added
 	OnConfigsExecuted_VoteWarning(); // $ added
+	OnConfigExecuted_RemoveNormalMapchooser(); // $ added
 	if (ReadMapList(g_MapList,
 					 g_mapFileSerial,
 					 "mapchooser",
