@@ -361,12 +361,12 @@ public Action:Timer_StartMapVote(Handle:timer, Handle:data)
 	{
 		return Plugin_Stop;
 	}
-	
+
 	new MapChange:mapChange = MapChange:ReadPackCell(data);
 	new Handle:hndl = Handle:ReadPackCell(data);
-	
+
 	InitiateVote(mapChange, hndl);
-	
+
 	return Plugin_Stop;
 }
 
@@ -744,7 +744,7 @@ public Handler_MapVoteFinished(Handle:menu,
 
 		PrintToChatAll("[SM] %t", "Current Map Extended", RoundToFloor(float(item_info[0][VOTEINFO_ITEM_VOTES])/float(num_votes)*100), num_votes);
 		LogMessage("Voting for next map has finished. The current map has been extended.");
-		
+		SoundVoteEnd();
 		// We extended, so we'll have to vote again.
 		g_HasVoteStarted = false;
 		CreateNextVote();
@@ -762,6 +762,20 @@ public Handler_MapVoteFinished(Handle:menu,
 	}
 	else
 	{
+		/* $ moved */
+		NextMap(map); 
+
+		PrintCenterTextAll("%t", "Next Map", map);
+
+		PrintToChatAll("[SM] %t", "Nextmap Voting Finished", map, RoundToFloor(float(item_info[0][VOTEINFO_ITEM_VOTES])/float(num_votes)*100), num_votes);
+		LogMessage("Voting for next map has finished. Nextmap: %s.", map);
+		SoundVoteEnd();
+	}
+}
+
+NextMap(const String:map[]) 
+/* end */
+{
 		if (g_ChangeTime == MapChange_MapEnd)
 		{
 			SetNextMap(map);
@@ -781,10 +795,6 @@ public Handler_MapVoteFinished(Handle:menu,
 
 		g_HasVoteStarted = false;
 		g_MapVoteCompleted = true;
-
-		PrintToChatAll("[SM] %t", "Nextmap Voting Finished", map, RoundToFloor(float(item_info[0][VOTEINFO_ITEM_VOTES])/float(num_votes)*100), num_votes);
-		LogMessage("Voting for next map has finished. Nextmap: %s.", map);
-	}
 }
 
 public Handler_MapVoteMenu(Handle:menu, MenuAction:action, param1, param2)
@@ -828,6 +838,9 @@ public Handler_MapVoteMenu(Handle:menu, MenuAction:action, param1, param2)
 
 		case MenuAction_VoteCancel:
 		{
+
+			decl String:buffer[255]; // $ added
+
 			// If we receive 0 votes, pick at random.
 			if (param1 == VoteCancel_NoVotes && GetConVarBool(g_Cvar_NoVoteMode))
 			{
@@ -841,13 +854,28 @@ public Handler_MapVoteMenu(Handle:menu, MenuAction:action, param1, param2)
 					item = GetRandomInt(0, count - 1);
 					GetMenuItem(menu, item, map, sizeof(map));
 				}
+
+				/* $ added */
+				if(strcmp(map, VOTE_DONTCHANGE, false) == 0)
+				{
+					Format(buffer, sizeof(buffer), "%t", "Dont Change",param1);
+				}
+				else
+				{
+					Format(buffer, sizeof(buffer), "%t", "Next Map", map);
+					NextMap(map);
+					g_MapVoteCompleted = true; // $ moved
+				}
 				SoundVoteEnd();
-				
-				SetNextMap(map);
+				LogMessage("No votes received, randomly selected %s as nextmap.", map);
+				/* end of $ added */
+
+				//SetNextMap(map);
 			}
 			else
 			{
 				// We were actually cancelled. I guess we do nothing.
+				Format(buffer, sizeof(buffer), "%t", "Cancelled Vote",param1); // $ added
 			}
 
 			g_HasVoteStarted = false;
