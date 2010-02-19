@@ -329,7 +329,7 @@ SetupTimeleftTimer()
 			/* $ added */
 			g_WarningTimeStart = GetTime();
 			new warningtime = GetConVarInt(g_Cvar_WarningTime);
-			g_WarningTimerForTimeVote = CreateTimer(float(time - startTime + warningtime), WarningHintMsgForTimeVote, data, TIMER_REPEAT | TIMER_FLAG_NO_MAPCHANGE);
+			g_WarningTimerForTimeVote = CreateTimer(float(time - startTime - warningtime), WarningHintMsgForTimeVote, data, TIMER_REPEAT | TIMER_FLAG_NO_MAPCHANGE);
 			/* end */
 			WritePackCell(data, _:MapChange_MapEnd);
 			WritePackCell(data, _:INVALID_HANDLE);
