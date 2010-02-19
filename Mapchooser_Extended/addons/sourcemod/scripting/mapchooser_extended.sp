@@ -301,7 +301,12 @@ public OnMapTimeLeftChanged()
 {
 	if (GetArraySize(g_MapList))
 	{
-		KillTimer(g_WarningTimerForTimeVote); // $ added
+		/* $ added */
+		if (g_WarningTimerForTimeVote != INVALID_HANDLE)
+		{
+			KillTimer(g_WarningTimerForTimeVote); // $ added
+		}
+		/* end */
 		SetupTimeleftTimer();
 	}
 }
