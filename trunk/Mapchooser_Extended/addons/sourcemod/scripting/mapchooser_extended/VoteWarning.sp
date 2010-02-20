@@ -38,7 +38,7 @@ public OnConfigsExecuted_VoteWarning()
 
 SetupWarningTimer()
 {
-	g_WarningTimeStart = GetTime();
+	//g_WarningTimeStart = GetTime();
 	g_WarningTimer = CreateTimer(GetConVarFloat(g_Cvar_WarningTime), WarningHintMsg, _, TIMER_REPEAT | TIMER_FLAG_NO_MAPCHANGE);
 	EmitSoundToAll(g_WarningSound);
 }
