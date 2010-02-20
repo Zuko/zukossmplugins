@@ -332,20 +332,22 @@ SetupTimeleftTimer()
 
 			//g_VoteTimer = CreateTimer(float(time - startTime), Timer_StartMapVote, _, TIMER_FLAG_NO_MAPCHANGE);
 			new Handle:data;
-			g_VoteTimer = CreateDataTimer(float(time - startTime), Timer_StartMapVote, data, TIMER_FLAG_NO_MAPCHANGE);
+			//g_VoteTimer = CreateDataTimer(float(time - startTime), Timer_StartMapVote, data, TIMER_FLAG_NO_MAPCHANGE);
+			g_VoteTimer = CreateTimer(float(time - startTime), Timer_StartMapVote, _, TIMER_FLAG_NO_MAPCHANGE);
 			/* $ added */
 			//new warningtime = GetConVarInt(g_Cvar_WarningTime);
 			//g_WarningTimeStart = (GetTime() + (time - startTime - warningtime));
 			//g_WarningTimerForTimeVote = CreateTimer(float(time - startTime - warningtime), WarningHintMsgForTimeVote, _, TIMER_REPEAT | TIMER_FLAG_NO_MAPCHANGE);
 			/* end */
-			WritePackCell(data, _:MapChange_MapEnd);
-			WritePackCell(data, _:INVALID_HANDLE);
-			ResetPack(data);
+			//WritePackCell(data, _:MapChange_MapEnd);
+			//WritePackCell(data, _:INVALID_HANDLE);
+			//ResetPack(data);
 		}
 	}
 }
 
-public Action:Timer_StartMapVote(Handle:timer, Handle:data)
+//public Action:Timer_StartMapVote(Handle:timer, Handle:data)
+public Action:Timer_StartMapVote(Handle:timer)
 {
 	if (timer == g_RetryTimer)
 	{
@@ -361,12 +363,11 @@ public Action:Timer_StartMapVote(Handle:timer, Handle:data)
 	{
 		return Plugin_Stop;
 	}
-	SetupWarningTimer2(Handle:data);
 	//new MapChange:mapChange = MapChange:ReadPackCell(data);
 	//new Handle:hndl = Handle:ReadPackCell(data);
 
 	//InitiateVote(mapChange, hndl);
-
+	SetupWarningTimer();
 	return Plugin_Stop;
 }
 
