@@ -7,7 +7,6 @@
 new g_WarningTimeStart;
 new Handle:g_Cvar_WarningTime  = INVALID_HANDLE;
 new Handle:g_WarningTimer = INVALID_HANDLE;
-new Handle:g_WarningTimer2 = INVALID_HANDLE;
 //new Handle:g_WarningTimerForTimeVote = INVALID_HANDLE;
 new Handle:g_Cvar_WarningSound = INVALID_HANDLE;
 new String:g_WarningSound[PLATFORM_MAX_PATH];
@@ -54,29 +53,6 @@ public Action:WarningHintMsg(Handle:timer)
 	{
 		KillTimer(g_WarningTimer);
 		InitiateVote(MapChange_MapEnd, INVALID_HANDLE);
-	}
-}
-
-SetupWarningTimer2(Handle:data)
-{
-	g_WarningTimeStart = GetTime();
-	g_WarningTimer2 = CreateDataTimer(GetConVarFloat(g_Cvar_WarningTime), WarningHintMsg2, data, TIMER_REPEAT | TIMER_FLAG_NO_MAPCHANGE);
-	EmitSoundToAll(g_WarningSound);
-}
-
-public Action:WarningHintMsg2(Handle:timer, Handle:data)
-{
-	decl String:hintboxText[512];
-	Format(hintboxText, sizeof(hintboxText), "WARNING! Vote will start in: %i s", WarningCountdown());
-	PrintHintTextToAll(hintboxText);
-
-	if (WarningCountdown() == 0)
-	{
-		KillTimer(g_WarningTimer2);
-		new MapChange:mapChange = MapChange:ReadPackCell(data);
-		new Handle:hndl = Handle:ReadPackCell(data);
-		
-		InitiateVote(mapChange, hndl);
 	}
 }
 
