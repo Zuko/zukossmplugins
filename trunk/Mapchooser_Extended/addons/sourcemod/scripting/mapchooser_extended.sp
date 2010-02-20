@@ -334,8 +334,8 @@ SetupTimeleftTimer()
 			new Handle:data;
 			g_VoteTimer = CreateDataTimer(float(time - startTime), Timer_StartMapVote, data, TIMER_FLAG_NO_MAPCHANGE);
 			/* $ added */
-			g_WarningTimeStart = (GetTime() + startTime + warningtime);
 			new warningtime = GetConVarInt(g_Cvar_WarningTime);
+			g_WarningTimeStart = (GetTime() + startTime + warningtime);
 			g_WarningTimerForTimeVote = CreateTimer(float(time - startTime - warningtime), WarningHintMsgForTimeVote, _, TIMER_REPEAT | TIMER_FLAG_NO_MAPCHANGE);
 			/* end */
 			WritePackCell(data, _:MapChange_MapEnd);
