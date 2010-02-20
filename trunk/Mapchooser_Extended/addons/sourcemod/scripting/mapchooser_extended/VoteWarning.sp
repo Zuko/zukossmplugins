@@ -7,7 +7,8 @@
 new g_WarningTimeStart;
 new Handle:g_Cvar_WarningTime  = INVALID_HANDLE;
 new Handle:g_WarningTimer = INVALID_HANDLE;
-new Handle:g_WarningTimerForTimeVote = INVALID_HANDLE;
+new Handle:g_WarningTimer2 = INVALID_HANDLE;
+//new Handle:g_WarningTimerForTimeVote = INVALID_HANDLE;
 new Handle:g_Cvar_WarningSound = INVALID_HANDLE;
 new String:g_WarningSound[PLATFORM_MAX_PATH];
 
@@ -56,6 +57,30 @@ public Action:WarningHintMsg(Handle:timer)
 	}
 }
 
+SetupWarningTimer2(Handle:data)
+{
+	g_WarningTimeStart = GetTime();
+	g_WarningTimer2 = CreateDataTimer(GetConVarFloat(g_Cvar_WarningTime), WarningHintMsg2, data, TIMER_REPEAT | TIMER_FLAG_NO_MAPCHANGE);
+	EmitSoundToAll(g_WarningSound);
+}
+
+public Action:WarningHintMsg2(Handle:timer, Handle:data)
+{
+	decl String:hintboxText[512];
+	Format(hintboxText, sizeof(hintboxText), "WARNING! Vote will start in: %i s", WarningCountdown());
+	PrintHintTextToAll(hintboxText);
+
+	if (WarningCountdown() == 0)
+	{
+		KillTimer(g_WarningTimer2);
+		new MapChange:mapChange = MapChange:ReadPackCell(data);
+		new Handle:hndl = Handle:ReadPackCell(data);
+		
+		InitiateVote(mapChange, hndl);
+	}
+}
+
+/*
 public Action:WarningHintMsgForTimeVote(Handle:timer)
 {
 	decl String:hintboxText[512];
@@ -67,21 +92,21 @@ public Action:WarningHintMsgForTimeVote(Handle:timer)
 		KillTimer(g_WarningTimerForTimeVote);
 	}
 }
-
+*/
 /**
  * @return        timeleft (remaining) of warning.
  */
 WarningCountdown()
 {
-	LogMessage("g_WarningTimeStart: %i", g_WarningTimeStart);
-	new one = GetConVarInt(g_Cvar_WarningTime);
-	new two = GetTime();
-	new three = g_WarningTimeStart - two;
-	new dupa = g_WarningTimeStart + one;
-	LogMessage("g_WarningTimeStart + g_Cvar_WarningTime: %i", dupa);
-	LogMessage("g_Cvar_WarningTime: %i", one);
-	LogMessage("Time from loop: %i", two);
-	LogMessage("g_WarningTimeStart - Time from loop: %i", three);
+	//LogMessage("g_WarningTimeStart: %i", g_WarningTimeStart);
+	//new one = GetConVarInt(g_Cvar_WarningTime);
+	//new two = GetTime();
+	//new three = g_WarningTimeStart - two;
+	//new dupa = g_WarningTimeStart + one;
+	//LogMessage("g_WarningTimeStart + g_Cvar_WarningTime: %i", dupa);
+	//LogMessage("g_Cvar_WarningTime: %i", one);
+	//LogMessage("Time from loop: %i", two);
+	//LogMessage("g_WarningTimeStart - Time from loop: %i", three);
 
 	new WarningTime = g_WarningTimeStart + GetConVarInt(g_Cvar_WarningTime) - GetTime();
 	LogMessage("WarningTime: %i", WarningTime);
