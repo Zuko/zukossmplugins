@@ -301,12 +301,6 @@ public OnMapTimeLeftChanged()
 {
 	if (GetArraySize(g_MapList))
 	{
-		/* $ added */
-		//if (g_WarningTimerForTimeVote != INVALID_HANDLE)
-		//{
-		//	KillTimer(g_WarningTimerForTimeVote);
-		//}
-		/* end */
 		SetupTimeleftTimer();
 	}
 }
@@ -320,7 +314,6 @@ SetupTimeleftTimer()
 		if (time - startTime < 0 && GetConVarBool(g_Cvar_EndOfMapVote) && !g_MapVoteCompleted && !g_HasVoteStarted)
 		{
 			SetupWarningTimer();
-			//InitiateVote(MapChange_MapEnd, INVALID_HANDLE);
 		}
 		else
 		{
@@ -329,24 +322,11 @@ SetupTimeleftTimer()
 				KillTimer(g_VoteTimer);
 				g_VoteTimer = INVALID_HANDLE;
 			}
-
-			//g_VoteTimer = CreateTimer(float(time - startTime), Timer_StartMapVote, _, TIMER_FLAG_NO_MAPCHANGE);
-			//new Handle:data;
-			//g_VoteTimer = CreateDataTimer(float(time - startTime), Timer_StartMapVote, data, TIMER_FLAG_NO_MAPCHANGE);
 			g_VoteTimer = CreateTimer(float(time - startTime), Timer_StartMapVote, _, TIMER_FLAG_NO_MAPCHANGE);
-			/* $ added */
-			//new warningtime = GetConVarInt(g_Cvar_WarningTime);
-			//g_WarningTimeStart = (GetTime() + (time - startTime - warningtime));
-			//g_WarningTimerForTimeVote = CreateTimer(float(time - startTime - warningtime), WarningHintMsgForTimeVote, _, TIMER_REPEAT | TIMER_FLAG_NO_MAPCHANGE);
-			/* end */
-			//WritePackCell(data, _:MapChange_MapEnd);
-			//WritePackCell(data, _:INVALID_HANDLE);
-			//ResetPack(data);
 		}
 	}
 }
 
-//public Action:Timer_StartMapVote(Handle:timer, Handle:data)
 public Action:Timer_StartMapVote(Handle:timer)
 {
 	if (timer == g_RetryTimer)
@@ -363,10 +343,7 @@ public Action:Timer_StartMapVote(Handle:timer)
 	{
 		return Plugin_Stop;
 	}
-	//new MapChange:mapChange = MapChange:ReadPackCell(data);
-	//new Handle:hndl = Handle:ReadPackCell(data);
 
-	//InitiateVote(mapChange, hndl);
 	SetupWarningTimer();
 	return Plugin_Stop;
 }
@@ -463,7 +440,6 @@ public CheckWinLimit(winner_score)
 			if (winner_score >= (winlimit - GetConVarInt(g_Cvar_StartRounds)))
 			{
 				SetupWarningTimer();
-				//InitiateVote(MapChange_MapEnd, INVALID_HANDLE);
 			}
 		}
 	}
@@ -479,7 +455,6 @@ public CheckMaxRounds(roundcount)
 			if (roundcount >= (maxrounds - GetConVarInt(g_Cvar_StartRounds)))
 			{
 				SetupWarningTimer();
-				//InitiateVote(MapChange_MapEnd, INVALID_HANDLE);
 			}
 		}
 	}
@@ -512,14 +487,12 @@ public Event_PlayerDeath(Handle:event, const String:name[], bool:dontBroadcast)
 	if (GetClientFrags(fragger) >= (GetConVarInt(g_Cvar_Fraglimit) - GetConVarInt(g_Cvar_StartFrags)))
 	{
 		SetupWarningTimer();
-		//InitiateVote(MapChange_MapEnd, INVALID_HANDLE);
 	}
 }
 
 public Action:Command_Mapvote(client, args)
 {
 	SetupWarningTimer();
-	//InitiateVote(MapChange_MapEnd, INVALID_HANDLE);
 
 	return Plugin_Handled;
 }
