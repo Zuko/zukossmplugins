@@ -873,6 +873,7 @@ public Handler_MapVoteMenu(Handle:menu, MenuAction:action, param1, param2)
 				}
 				SoundVoteEnd();
 				LogMessage("No votes received, randomly selected %s as nextmap.", map);
+				VoteEnded("No votes received, randomly selected %s as nextmap.");
 				/* end of $ added */
 
 				//SetNextMap(map);
