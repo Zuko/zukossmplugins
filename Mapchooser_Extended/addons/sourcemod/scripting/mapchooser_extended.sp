@@ -302,10 +302,10 @@ public OnMapTimeLeftChanged()
 	if (GetArraySize(g_MapList))
 	{
 		/* $ added */
-		if (g_WarningTimerForTimeVote != INVALID_HANDLE)
-		{
-			KillTimer(g_WarningTimerForTimeVote);
-		}
+		//if (g_WarningTimerForTimeVote != INVALID_HANDLE)
+		//{
+		//	KillTimer(g_WarningTimerForTimeVote);
+		//}
 		/* end */
 		SetupTimeleftTimer();
 	}
@@ -334,9 +334,9 @@ SetupTimeleftTimer()
 			new Handle:data;
 			g_VoteTimer = CreateDataTimer(float(time - startTime), Timer_StartMapVote, data, TIMER_FLAG_NO_MAPCHANGE);
 			/* $ added */
-			new warningtime = GetConVarInt(g_Cvar_WarningTime);
-			g_WarningTimeStart = (GetTime() + (time - startTime - warningtime));
-			g_WarningTimerForTimeVote = CreateTimer(float(time - startTime - warningtime), WarningHintMsgForTimeVote, _, TIMER_REPEAT | TIMER_FLAG_NO_MAPCHANGE);
+			//new warningtime = GetConVarInt(g_Cvar_WarningTime);
+			//g_WarningTimeStart = (GetTime() + (time - startTime - warningtime));
+			//g_WarningTimerForTimeVote = CreateTimer(float(time - startTime - warningtime), WarningHintMsgForTimeVote, _, TIMER_REPEAT | TIMER_FLAG_NO_MAPCHANGE);
 			/* end */
 			WritePackCell(data, _:MapChange_MapEnd);
 			WritePackCell(data, _:INVALID_HANDLE);
@@ -361,11 +361,11 @@ public Action:Timer_StartMapVote(Handle:timer, Handle:data)
 	{
 		return Plugin_Stop;
 	}
+	SetupWarningTimer2(Handle:data);
+	//new MapChange:mapChange = MapChange:ReadPackCell(data);
+	//new Handle:hndl = Handle:ReadPackCell(data);
 
-	new MapChange:mapChange = MapChange:ReadPackCell(data);
-	new Handle:hndl = Handle:ReadPackCell(data);
-
-	InitiateVote(mapChange, hndl);
+	//InitiateVote(mapChange, hndl);
 
 	return Plugin_Stop;
 }
