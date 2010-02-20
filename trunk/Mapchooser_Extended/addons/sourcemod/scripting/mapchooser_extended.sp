@@ -334,7 +334,7 @@ SetupTimeleftTimer()
 			new Handle:data;
 			g_VoteTimer = CreateDataTimer(float(time - startTime), Timer_StartMapVote, data, TIMER_FLAG_NO_MAPCHANGE);
 			/* $ added */
-			g_WarningTimeStart = GetTime();
+			g_WarningTimeStart = GetTime() + (time - startTime);
 			new warningtime = GetConVarInt(g_Cvar_WarningTime);
 			g_WarningTimerForTimeVote = CreateTimer(float(time - startTime - warningtime), WarningHintMsgForTimeVote, _, TIMER_REPEAT | TIMER_FLAG_NO_MAPCHANGE);
 			/* end */
@@ -873,7 +873,6 @@ public Handler_MapVoteMenu(Handle:menu, MenuAction:action, param1, param2)
 				}
 				SoundVoteEnd();
 				LogMessage("No votes received, randomly selected %s as nextmap.", map);
-				VoteEnded("No votes received, randomly selected %s as nextmap.");
 				/* end of $ added */
 
 				//SetNextMap(map);
