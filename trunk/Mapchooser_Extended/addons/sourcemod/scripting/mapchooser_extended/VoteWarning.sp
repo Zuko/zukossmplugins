@@ -75,13 +75,16 @@ WarningCountdown()
 {
 	LogMessage("g_WarningTimeStart: %i", g_WarningTimeStart);
 	new one = GetConVarInt(g_Cvar_WarningTime);
-	LogMessage("g_Cvar_WarningTime: %i", one);
 	new two = GetTime();
-	LogMessage("Time from loop: %i", two);
 	new three = g_WarningTimeStart - two;
+	new dupa = g_WarningTimeStart + one;
+	LogMessage("g_WarningTimeStart + g_Cvar_WarningTime: %i", dupa);
+	LogMessage("g_Cvar_WarningTime: %i", one);
+	LogMessage("Time from loop: %i", two);
 	LogMessage("g_WarningTimeStart - Time from loop: %i", three);
-	
+
 	new WarningTime = g_WarningTimeStart + GetConVarInt(g_Cvar_WarningTime) - GetTime();
+	LogMessage("WarningTime: %i", WarningTime);
 	if (WarningTime < 0)
 	{
 		return 0;
