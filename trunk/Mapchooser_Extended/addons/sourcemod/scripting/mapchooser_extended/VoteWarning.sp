@@ -11,6 +11,15 @@ new g_WarningTimeStart;
 new Handle:g_Cvar_WarningTime  = INVALID_HANDLE;
 new Handle:g_WarningTimer = INVALID_HANDLE;
 new Handle:g_Cvar_WarningSound = INVALID_HANDLE;
+new Handle:g_WarningSound_1 = INVALID_HANDLE;
+new Handle:g_WarningSound_2 = INVALID_HANDLE;
+new Handle:g_WarningSound_3 = INVALID_HANDLE;
+new Handle:g_WarningSound_4 = INVALID_HANDLE;
+new Handle:g_WarningSound_5 = INVALID_HANDLE;
+new Handle:g_WarningSound_6 = INVALID_HANDLE;
+new Handle:g_WarningSound_7 = INVALID_HANDLE;
+new Handle:g_WarningSound_8 = INVALID_HANDLE;
+new Handle:g_WarningSound_9 = INVALID_HANDLE;
 
 public OnPluginStart_VoteWarning()
 {
