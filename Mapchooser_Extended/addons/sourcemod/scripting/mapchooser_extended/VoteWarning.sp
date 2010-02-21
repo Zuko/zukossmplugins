@@ -221,7 +221,7 @@ public SoundVoteWarning()
 SetupWarningTimer()
 {
 	g_WarningTimeStart = GetTime();
-	g_WarningTimer = CreateTimer(0.95, WarningHintMsg, _, TIMER_REPEAT | TIMER_FLAG_NO_MAPCHANGE);
+	g_WarningTimer = CreateTimer(1, WarningHintMsg, _, TIMER_REPEAT | TIMER_FLAG_NO_MAPCHANGE);
 	
 	SoundVoteWarning();
 }
@@ -257,7 +257,7 @@ WarningCountdown()
 	}
 	else
 	{
-		return WarningTime + 1;
+		return WarningTime;
 	}
 }
 
