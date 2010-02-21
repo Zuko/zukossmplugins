@@ -4,13 +4,12 @@
 
 #pragma semicolon 1
 
-#define NUMSOUNDS 9
-
 new String:game_mod[32];
 new g_WarningTimeStart;
 new Handle:g_Cvar_WarningTime  = INVALID_HANDLE;
 new Handle:g_WarningTimer = INVALID_HANDLE;
 new Handle:g_Cvar_WarningSound = INVALID_HANDLE;
+new Handle:g_Cvar_CounterSounds = INVALID_HANDLE;
 new Handle:g_WarningSound_1 = INVALID_HANDLE;
 new Handle:g_WarningSound_2 = INVALID_HANDLE;
 new Handle:g_WarningSound_3 = INVALID_HANDLE;
@@ -36,29 +35,36 @@ public OnConfigsExecuted_VoteWarning()
 		LogAction(0, -1, "Team Fortress 2 Sound Settings.");
 		g_Cvar_WarningSound = CreateConVar("sm_mapvote_warningsound", "vo/announcer_warning.wav", "Sound file for warning start. (relative to $basedir/sound/)");
 		
-		g_WarningSound_1 = CreateConVar("sm_mapvote_warningsound_one", "vo/announcer_ends_1sec.wav", "Sound file for warning counter: one. (relative to $basedir/sound/)");
-		g_WarningSound_2 = CreateConVar("sm_mapvote_warningsound_two", "vo/announcer_ends_2sec.wav", "Sound file for warning counter: one. (relative to $basedir/sound/)");
-		g_WarningSound_3 = CreateConVar("sm_mapvote_warningsound_three", "vo/announcer_ends_3sec.wav", "Sound file for warning counter: one. (relative to $basedir/sound/)");
-		g_WarningSound_4 = CreateConVar("sm_mapvote_warningsound_four", "vo/announcer_ends_4sec.wav", "Sound file for warning counter: one. (relative to $basedir/sound/)");
-		g_WarningSound_5 = CreateConVar("sm_mapvote_warningsound_five", "vo/announcer_ends_5sec.wav", "Sound file for warning counter: one. (relative to $basedir/sound/)");
-		g_WarningSound_6 = CreateConVar("sm_mapvote_warningsound_six", "vo/announcer_ends_6sec.wav", "Sound file for warning counter: one. (relative to $basedir/sound/)");
-		g_WarningSound_7 = CreateConVar("sm_mapvote_warningsound_seven", "vo/announcer_ends_7sec.wav", "Sound file for warning counter: one. (relative to $basedir/sound/)");
-		g_WarningSound_8 = CreateConVar("sm_mapvote_warningsound_eight", "vo/announcer_ends_8sec.wav", "Sound file for warning counter: one. (relative to $basedir/sound/)");
-		g_WarningSound_9 = CreateConVar("sm_mapvote_warningsound_nine", "vo/announcer_ends_9sec.wav", "Sound file for warning counter: one. (relative to $basedir/sound/)");
+		if (GetConVarInt(g_Cvar_CounterSounds))
+		{
+			g_WarningSound_1 = CreateConVar("sm_mapvote_warningsound_one", "vo/announcer_ends_1sec.wav", "Sound file for warning counter: one. (relative to $basedir/sound/)");
+			g_WarningSound_2 = CreateConVar("sm_mapvote_warningsound_two", "vo/announcer_ends_2sec.wav", "Sound file for warning counter: one. (relative to $basedir/sound/)");
+			g_WarningSound_3 = CreateConVar("sm_mapvote_warningsound_three", "vo/announcer_ends_3sec.wav", "Sound file for warning counter: one. (relative to $basedir/sound/)");
+			g_WarningSound_4 = CreateConVar("sm_mapvote_warningsound_four", "vo/announcer_ends_4sec.wav", "Sound file for warning counter: one. (relative to $basedir/sound/)");
+			g_WarningSound_5 = CreateConVar("sm_mapvote_warningsound_five", "vo/announcer_ends_5sec.wav", "Sound file for warning counter: one. (relative to $basedir/sound/)");
+			g_WarningSound_6 = CreateConVar("sm_mapvote_warningsound_six", "vo/announcer_ends_6sec.wav", "Sound file for warning counter: one. (relative to $basedir/sound/)");
+			g_WarningSound_7 = CreateConVar("sm_mapvote_warningsound_seven", "vo/announcer_ends_7sec.wav", "Sound file for warning counter: one. (relative to $basedir/sound/)");
+			g_WarningSound_8 = CreateConVar("sm_mapvote_warningsound_eight", "vo/announcer_ends_8sec.wav", "Sound file for warning counter: one. (relative to $basedir/sound/)");
+			g_WarningSound_9 = CreateConVar("sm_mapvote_warningsound_nine", "vo/announcer_ends_9sec.wav", "Sound file for warning counter: one. (relative to $basedir/sound/)");
+		}
 	}	
 	else
 	{
 		LogAction(0, -1, "Other Mods Sound Settings.");
 		g_Cvar_WarningSound = CreateConVar("sm_mapvote_warningsound", "sourcemod/mapchooser/cstrike/warning.wav", "Sound file for warning start. (relative to $basedir/sound/)");
-		g_WarningSound_1 = CreateConVar("sm_mapvote_warningsound_one", "vo/announcer_ends_1sec.wav", "Sound file for warning counter: one. (relative to $basedir/sound/)");
-		g_WarningSound_2 = CreateConVar("sm_mapvote_warningsound_two", "vo/announcer_ends_2sec.wav", "Sound file for warning counter: one. (relative to $basedir/sound/)");
-		g_WarningSound_3 = CreateConVar("sm_mapvote_warningsound_three", "vo/announcer_ends_3sec.wav", "Sound file for warning counter: one. (relative to $basedir/sound/)");
-		g_WarningSound_4 = CreateConVar("sm_mapvote_warningsound_four", "vo/announcer_ends_4sec.wav", "Sound file for warning counter: one. (relative to $basedir/sound/)");
-		g_WarningSound_5 = CreateConVar("sm_mapvote_warningsound_five", "vo/announcer_ends_5sec.wav", "Sound file for warning counter: one. (relative to $basedir/sound/)");
-		g_WarningSound_6 = CreateConVar("sm_mapvote_warningsound_six", "vo/announcer_ends_6sec.wav", "Sound file for warning counter: one. (relative to $basedir/sound/)");
-		g_WarningSound_7 = CreateConVar("sm_mapvote_warningsound_seven", "vo/announcer_ends_7sec.wav", "Sound file for warning counter: one. (relative to $basedir/sound/)");
-		g_WarningSound_8 = CreateConVar("sm_mapvote_warningsound_eight", "vo/announcer_ends_8sec.wav", "Sound file for warning counter: one. (relative to $basedir/sound/)");
-		g_WarningSound_9 = CreateConVar("sm_mapvote_warningsound_nine", "vo/announcer_ends_9sec.wav", "Sound file for warning counter: one. (relative to $basedir/sound/)");
+		
+		if (GetConVarInt(g_Cvar_CounterSounds))
+		{
+			g_WarningSound_1 = CreateConVar("sm_mapvote_warningsound_one", "vo/announcer_ends_1sec.wav", "Sound file for warning counter: one. (relative to $basedir/sound/)");
+			g_WarningSound_2 = CreateConVar("sm_mapvote_warningsound_two", "vo/announcer_ends_2sec.wav", "Sound file for warning counter: one. (relative to $basedir/sound/)");
+			g_WarningSound_3 = CreateConVar("sm_mapvote_warningsound_three", "vo/announcer_ends_3sec.wav", "Sound file for warning counter: one. (relative to $basedir/sound/)");
+			g_WarningSound_4 = CreateConVar("sm_mapvote_warningsound_four", "vo/announcer_ends_4sec.wav", "Sound file for warning counter: one. (relative to $basedir/sound/)");
+			g_WarningSound_5 = CreateConVar("sm_mapvote_warningsound_five", "vo/announcer_ends_5sec.wav", "Sound file for warning counter: one. (relative to $basedir/sound/)");
+			g_WarningSound_6 = CreateConVar("sm_mapvote_warningsound_six", "vo/announcer_ends_6sec.wav", "Sound file for warning counter: one. (relative to $basedir/sound/)");
+			g_WarningSound_7 = CreateConVar("sm_mapvote_warningsound_seven", "vo/announcer_ends_7sec.wav", "Sound file for warning counter: one. (relative to $basedir/sound/)");
+			g_WarningSound_8 = CreateConVar("sm_mapvote_warningsound_eight", "vo/announcer_ends_8sec.wav", "Sound file for warning counter: one. (relative to $basedir/sound/)");
+			g_WarningSound_9 = CreateConVar("sm_mapvote_warningsound_nine", "vo/announcer_ends_9sec.wav", "Sound file for warning counter: one. (relative to $basedir/sound/)");
+		}
 	}
 
 	decl String:sound[255], String:filePath[255];
@@ -76,21 +82,124 @@ public OnConfigsExecuted_VoteWarning()
 			LogError("failed to precache sound file %s", sound);
 	}
 	
-	decl String:counter_sound[64], String:counterfilePath[255];
-	for (new i = 1; i<= NUMSOUNDS; i++)
+	if (GetConVarInt(g_Cvar_CounterSounds))
 	{
-		new String:buffer[64];
-		Format(buffer, sizeof(buffer), "g_WarningSound_%i", i);
-		GetConVarString(buffer, sound, sizeof(sound));
-		Format(filePath, sizeof(filePath), "sound/%s", sound);
-		AddFileToDownloadsTable(filePath);
-		PrecacheSound(sound, true);
-		LogMessage("Precache: %s", sound);
-		
-		if(!FileExists(filePath))
-			LogError("sound file %s does not exist.", sound);
-		else if(!IsSoundPrecached(filePath))
-			LogError("failed to precache sound file %s", sound);
+		GetConVarString(g_WarningSound_1, sound, sizeof(sound));
+		if(strlen(sound) > 0)
+		{
+			Format(filePath, sizeof(filePath), "sound/%s", sound);
+			AddFileToDownloadsTable(filePath);
+			PrecacheSound(sound, true);
+			
+			if(!FileExists(filePath))
+				LogError("sound file %s does not exist.", sound);
+			else if(!IsSoundPrecached(filePath))
+				LogError("failed to precache sound file %s", sound);
+		}
+				
+		GetConVarString(g_WarningSound_2, sound, sizeof(sound));
+		if(strlen(sound) > 0)
+		{
+			Format(filePath, sizeof(filePath), "sound/%s", sound);
+			AddFileToDownloadsTable(filePath);
+			PrecacheSound(sound, true);
+			
+			if(!FileExists(filePath))
+				LogError("sound file %s does not exist.", sound);
+			else if(!IsSoundPrecached(filePath))
+				LogError("failed to precache sound file %s", sound);
+		}
+				
+		GetConVarString(g_WarningSound_3, sound, sizeof(sound));
+		if(strlen(sound) > 0)
+		{
+			Format(filePath, sizeof(filePath), "sound/%s", sound);
+			AddFileToDownloadsTable(filePath);
+			PrecacheSound(sound, true);
+			
+			if(!FileExists(filePath))
+				LogError("sound file %s does not exist.", sound);
+			else if(!IsSoundPrecached(filePath))
+				LogError("failed to precache sound file %s", sound);
+		}
+				
+		GetConVarString(g_WarningSound_4, sound, sizeof(sound));
+		if(strlen(sound) > 0)
+		{
+			Format(filePath, sizeof(filePath), "sound/%s", sound);
+			AddFileToDownloadsTable(filePath);
+			PrecacheSound(sound, true);
+			
+			if(!FileExists(filePath))
+				LogError("sound file %s does not exist.", sound);
+			else if(!IsSoundPrecached(filePath))
+				LogError("failed to precache sound file %s", sound);
+		}
+				
+		GetConVarString(g_WarningSound_5, sound, sizeof(sound));
+		if(strlen(sound) > 0)
+		{
+			Format(filePath, sizeof(filePath), "sound/%s", sound);
+			AddFileToDownloadsTable(filePath);
+			PrecacheSound(sound, true);
+			
+			if(!FileExists(filePath))
+				LogError("sound file %s does not exist.", sound);
+			else if(!IsSoundPrecached(filePath))
+				LogError("failed to precache sound file %s", sound);
+		}
+				
+		GetConVarString(g_WarningSound_6, sound, sizeof(sound));
+		if(strlen(sound) > 0)
+		{
+			Format(filePath, sizeof(filePath), "sound/%s", sound);
+			AddFileToDownloadsTable(filePath);
+			PrecacheSound(sound, true);
+			
+			if(!FileExists(filePath))
+				LogError("sound file %s does not exist.", sound);
+			else if(!IsSoundPrecached(filePath))
+				LogError("failed to precache sound file %s", sound);
+		}
+				
+		GetConVarString(g_WarningSound_7, sound, sizeof(sound));
+		if(strlen(sound) > 0)
+		{
+			Format(filePath, sizeof(filePath), "sound/%s", sound);
+			AddFileToDownloadsTable(filePath);
+			PrecacheSound(sound, true);
+			
+			if(!FileExists(filePath))
+				LogError("sound file %s does not exist.", sound);
+			else if(!IsSoundPrecached(filePath))
+				LogError("failed to precache sound file %s", sound);
+		}
+				
+		GetConVarString(g_WarningSound_8, sound, sizeof(sound));
+		if(strlen(sound) > 0)
+		{
+			Format(filePath, sizeof(filePath), "sound/%s", sound);
+			AddFileToDownloadsTable(filePath);
+			PrecacheSound(sound, true);
+			
+			if(!FileExists(filePath))
+				LogError("sound file %s does not exist.", sound);
+			else if(!IsSoundPrecached(filePath))
+				LogError("failed to precache sound file %s", sound);
+		}
+				
+		GetConVarString(g_WarningSound_9, sound, sizeof(sound));
+		if(strlen(sound) > 0)
+		{
+			Format(filePath, sizeof(filePath), "sound/%s", sound);
+			AddFileToDownloadsTable(filePath);
+			PrecacheSound(sound, true);
+			
+			if(!FileExists(filePath))
+				LogError("sound file %s does not exist.", sound);
+			else if(!IsSoundPrecached(filePath))
+				LogError("failed to precache sound file %s", sound);
+		}
 	}
 }
 
@@ -116,6 +225,11 @@ public Action:WarningHintMsg(Handle:timer)
 	Format(hintboxText, sizeof(hintboxText), "WARNING! Vote will start in: %i s", WarningCountdown());
 	PrintHintTextToAll(hintboxText);
 
+	if (GetConVarInt(g_Cvar_CounterSounds))
+	{
+		CountdownSounds();
+	}
+	
 	if (WarningCountdown() == 0)
 	{
 		KillTimer(g_WarningTimer);
@@ -137,68 +251,60 @@ WarningCountdown()
 	else
 	{
 		return WarningTime;
-		CountdownSounds()
 	}
 }
 
 CountdownSounds()
 {
-	switch(WarningTime)
+	decl String:sound[255];
+	switch(WarningCountdown())
 	{
 		case 0:
 			return;
 		case 1:
 		{
-			decl String:sound[255];
-			GetConVarString(g_WarningSound_One, sound, sizeof(sound));	
+			GetConVarString(g_WarningSound_1, sound, sizeof(sound));	
 			EmitSoundToAll(sound);
 		}
 		case 2:
 		{
-			decl String:sound[255];
-			GetConVarString(g_WarningSound_Two, sound, sizeof(sound));	
+			GetConVarString(g_WarningSound_2, sound, sizeof(sound));	
 			EmitSoundToAll(sound);
 		}
 		case 3:
 		{
-			decl String:sound[255];
-			GetConVarString(g_WarningSound_Three, sound, sizeof(sound));	
+			GetConVarString(g_WarningSound_3, sound, sizeof(sound));	
 			EmitSoundToAll(sound);
 		}	
 		case 4:
 		{
-			decl String:sound[255];
-			GetConVarString(g_WarningSound_Four, sound, sizeof(sound));	
+			GetConVarString(g_WarningSound_4, sound, sizeof(sound));	
 			EmitSoundToAll(sound);
 		}	
 		case 5:
 		{
-			decl String:sound[255];
-			GetConVarString(g_WarningSound_, sound, sizeof(sound));	
+			GetConVarString(g_WarningSound_5, sound, sizeof(sound));	
 			EmitSoundToAll(sound);
 		}
 		case 6:
 		{
-			decl String:sound[255];
-			GetConVarString(g_WarningSound_Two, sound, sizeof(sound));	
+			GetConVarString(g_WarningSound_6, sound, sizeof(sound));	
 			EmitSoundToAll(sound);
 		}
 		case 7:
 		{
-			decl String:sound[255];
-			GetConVarString(g_WarningSound_Two, sound, sizeof(sound));	
+			GetConVarString(g_WarningSound_7, sound, sizeof(sound));	
 			EmitSoundToAll(sound);
 		}
 		case 8:
 		{
-			decl String:sound[255];
-			GetConVarString(g_WarningSound_Two, sound, sizeof(sound));	
+			GetConVarString(g_WarningSound_8, sound, sizeof(sound));	
 			EmitSoundToAll(sound);
 		}
 		case 9:
 		{
-			decl String:sound[255];
-			GetConVarString(g_WarningSound_Two, sound, sizeof(sound));	
+			GetConVarString(g_WarningSound_9, sound, sizeof(sound));	
 			EmitSoundToAll(sound);
 		}
+	}
 }
