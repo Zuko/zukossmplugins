@@ -41,7 +41,7 @@ public OnPluginStart_VoteWarning()
 		g_WarningSound_7 = CreateConVar("sm_mapvote_warningsound_seven", "vo/announcer_ends_7sec.wav", "Sound file for warning counter: seven. (relative to $basedir/sound/)");
 		g_WarningSound_8 = CreateConVar("sm_mapvote_warningsound_eight", "vo/announcer_ends_8sec.wav", "Sound file for warning counter: eight. (relative to $basedir/sound/)");
 		g_WarningSound_9 = CreateConVar("sm_mapvote_warningsound_nine", "vo/announcer_ends_9sec.wav", "Sound file for warning counter: nine. (relative to $basedir/sound/)");
-		g_WarningSound_10 = CreateConVar("sm_mapvote_warningsound_nine", "", "Sound file for warning counter: ten. (relative to $basedir/sound/)");
+		g_WarningSound_10 = CreateConVar("sm_mapvote_warningsound_ten", "", "Sound file for warning counter: ten. (relative to $basedir/sound/)");
 	}	
 	else
 	{
@@ -57,7 +57,7 @@ public OnPluginStart_VoteWarning()
 		g_WarningSound_7 = CreateConVar("sm_mapvote_warningsound_seven", "sourcemod/mapchooser/cstrike/seven.wav", "Sound file for warning counter: seven. (relative to $basedir/sound/)");
 		g_WarningSound_8 = CreateConVar("sm_mapvote_warningsound_eight", "sourcemod/mapchooser/cstrike/eight.wav", "Sound file for warning counter: eight. (relative to $basedir/sound/)");
 		g_WarningSound_9 = CreateConVar("sm_mapvote_warningsound_nine", "sourcemod/mapchooser/cstrike/nine.wav", "Sound file for warning counter: nine. (relative to $basedir/sound/)");
-		g_WarningSound_10 = CreateConVar("sm_mapvote_warningsound_nine", "sourcemod/mapchooser/cstrike/ten.wav", "Sound file for warning counter: ten. (relative to $basedir/sound/)");
+		g_WarningSound_10 = CreateConVar("sm_mapvote_warningsound_ten", "sourcemod/mapchooser/cstrike/ten.wav", "Sound file for warning counter: ten. (relative to $basedir/sound/)");
 	}
 }
 
