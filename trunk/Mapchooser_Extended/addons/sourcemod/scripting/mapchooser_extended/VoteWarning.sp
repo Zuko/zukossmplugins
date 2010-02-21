@@ -12,8 +12,8 @@ new String:g_WarningSound[PLATFORM_MAX_PATH];
 
 public OnPluginStart_VoteWarning()
 {
-	g_Cvar_WarningTime = CreateConVar("sm_mapvote_warningtime", "15.0", "Warning time in seconds.", _, true, 0.0, true, 30.0);
-	g_Cvar_WarningSound = CreateConVar("sm_mapvote_warningsound", "sourcemod/mapchooser/startyourvoting1.mp3", "Sound file for warning start.");
+	g_Cvar_WarningTime = CreateConVar("sm_mapvote_warningtime", "16.0", "Warning time in seconds.", _, true, 0.0, true, 30.0);
+	g_Cvar_WarningSound = CreateConVar("sm_mapvote_warningsound", "sourcemod/mapchooser/startyourvoting1.mp3", "Sound file for warning start. (relative to $basedir/sound/)");
 }
 
 // LoadWarningSound
@@ -35,11 +35,20 @@ public OnConfigsExecuted_VoteWarning()
 	}
 }
 
+public SoundVoteWarning()
+{
+	decl String:sound[255];
+	
+	GetConVarString(g_Cvar_WarningSound, sound, sizeof(sound));	
+	EmitSoundToAll(sound);
+}
+
 SetupWarningTimer()
 {
 	g_WarningTimeStart = GetTime();
-	g_WarningTimer = CreateTimer(0.1, WarningHintMsg, _, TIMER_REPEAT | TIMER_FLAG_NO_MAPCHANGE);
-	EmitSoundToAll(g_WarningSound);
+	g_WarningTimer = CreateTimer(0.95, WarningHintMsg, _, TIMER_REPEAT | TIMER_FLAG_NO_MAPCHANGE);
+	SoundVoteWarning();
+	//EmitSoundToAll(g_WarningSound);
 }
 
 public Action:WarningHintMsg(Handle:timer)
