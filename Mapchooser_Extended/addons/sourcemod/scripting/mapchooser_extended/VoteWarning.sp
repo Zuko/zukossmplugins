@@ -257,7 +257,7 @@ WarningCountdown()
 	}
 	else
 	{
-		return WarningTime;
+		return WarningTime + 1;
 	}
 }
 
