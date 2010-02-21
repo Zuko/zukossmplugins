@@ -41,12 +41,14 @@
 #include "mapchooser_extended/DisplayVoteProgress.sp"
 #include "mapchooser_extended/RemoveNormalMapchooser.sp"
 
+#define VERSION "0.1"
+
 public Plugin:myinfo =
 {
 	name = "Extended Mapvote",
-	author = "Zuko / exe.dll / Zerak / AlliedModders LLC",
+	author = "Zuko / AlliedModders LLC",
 	description = "Extended Mapvoting Plugin",
-	version = "1.0",
+	version = VERSION,
 	url = "http://www.sourcemod.net/"
 };
 
@@ -115,6 +117,8 @@ public OnPluginStart()
 	g_OldMapList = CreateArray(arraySize);
 	g_NextMapList = CreateArray(arraySize);
 
+	CreateConVar("sm_mapvote_version", VERSION, "MapChooser Extended Version", FCVAR_PLUGIN|FCVAR_SPONLY|FCVAR_REPLICATED|FCVAR_NOTIFY);
+	
 	g_Cvar_EndOfMapVote = CreateConVar("sm_mapvote_endvote", "1", "Specifies if MapChooser should run an end of map vote", _, true, 0.0, true, 1.0);
 
 	g_Cvar_StartTime = CreateConVar("sm_mapvote_start", "2.0", "Specifies when to start the vote based on time remaining.", _, true, 1.0);
