@@ -2,7 +2,7 @@
 #include <tf2_stocks>
 
 /* defines */
-#define PLUGIN_VERSION "0.6.5"
+#define PLUGIN_VERSION "0.6.6"
 //#define DEBUG "1"
 #define NULLNAME "$$NULL##"
 
@@ -337,7 +337,7 @@ public ePlayerDeath(Handle:event, const String:name[], bool:dontBroadcast)
 		if (iLosePoints == 0)
 			return;
 		new String:sNoise[128];
-		Format(sNoise, sizeof(sNoise), "[%s] Straciłeś %i punkty(ów).", sChatTag, iLosePoints);
+		Format(sNoise, sizeof(sNoise), "[%s] Straciłeś %i cukierków.", sChatTag, iLosePoints);
 		PrintNoise(sNoise, 3, victim);
 		RemoveCandy(victim, iLosePoints);
 		return;
@@ -365,7 +365,7 @@ public ePlayerDeath(Handle:event, const String:name[], bool:dontBroadcast)
 			AddCandy(attacker, iCreditGain);
 		
 		new String:sNoiseAttacker[128];
-		Format(sNoiseAttacker, sizeof(sNoiseAttacker), "[%s] Zdobyłeś %i punkty(ów).", sChatTag, iCreditGain);
+		Format(sNoiseAttacker, sizeof(sNoiseAttacker), "[%s] Zdobyłeś %i cukierków.", sChatTag, iCreditGain);
 		if (iCreditGain != 0)
 			PrintNoise(sNoiseAttacker, 2, attacker);
 	}
@@ -373,7 +373,7 @@ public ePlayerDeath(Handle:event, const String:name[], bool:dontBroadcast)
 	if (iCreditLoss != 0)
 		RemoveCandy(victim, iCreditLoss);
 	new String:sNoiseVictim[128];
-	Format(sNoiseVictim, sizeof(sNoiseVictim), "[%s] Straciłeś %i punkty(ów).", sChatTag, iCreditLoss);
+	Format(sNoiseVictim, sizeof(sNoiseVictim), "[%s] Straciłeś %i cukierków.", sChatTag, iCreditLoss);
 }
 
 public Action:cSay(client, args)
@@ -546,9 +546,9 @@ public Action:tTick(Handle:timer)
 		AddCandy(i, iCreditEarn);
 		new String:sTickNoise[128];
 		if (iCreditEarn == 1)
-			Format(sTickNoise, sizeof(sTickNoise), "[%s] Otrzymałeś 1 punkt!", sChatTag);
+			Format(sTickNoise, sizeof(sTickNoise), "[%s] Otrzymałeś 1 cukierek!", sChatTag);
 		else if (iCreditEarn > 1)
-			Format(sTickNoise, sizeof(sTickNoise), "[%s] Otrzymałeś %i punkty(ów)!", sChatTag, iCreditEarn);
+			Format(sTickNoise, sizeof(sTickNoise), "[%s] Otrzymałeś %i cukierków!", sChatTag, iCreditEarn);
 		PrintNoise(sTickNoise, 3, i);
 	}
 }
@@ -601,7 +601,7 @@ public Action:cAddCandy(client, args)
 	}
 	
 	new String:sCandyNoise[255];
-	Format(sCandyNoise, sizeof(sCandyNoise), "[%s] Dobry admin podarował ci %i punktów.", sChatTag, iAmount);
+	Format(sCandyNoise, sizeof(sCandyNoise), "[%s] Dobry admin podarował ci %i cukierków.", sChatTag, iAmount);
 	PrintNoise(sCandyNoise, 2, iTarget);
 	
 	return Plugin_Handled;
@@ -644,7 +644,7 @@ public Action:cPlayerResetCandy(client, args)
 	SQL_TQuery(dbConnection, cIgnoreQueryCallback, qReset);
 
 	new String:sCandyNoise[255];
-	Format(sCandyNoise, sizeof(sCandyNoise), "[%s] Zły admin zresetował Ci punkty.", sChatTag);
+	Format(sCandyNoise, sizeof(sCandyNoise), "[%s] Zły admin zabrał Ci wszystkie cukierki.", sChatTag);
 	PrintNoise(sCandyNoise, 2, iTarget);
 	
 	return Plugin_Handled;
@@ -698,7 +698,7 @@ public Action:cRemoveCandy(client, args)
 	}
 	
 	new String:sCandyNoise[255];
-	Format(sCandyNoise, sizeof(sCandyNoise), "[%s] Zły admin zabrał ci %i punktów.", sChatTag, iAmount);
+	Format(sCandyNoise, sizeof(sCandyNoise), "[%s] Zły admin zabrał ci %i cukierków.", sChatTag, iAmount);
 	PrintNoise(sCandyNoise, 2, iTarget);
 	
 	return Plugin_Handled;
@@ -837,7 +837,7 @@ public cGetUsersCandy(Handle:owner, Handle:hndl, String:error[], any:data)
 		SQL_FetchRow(hndl);
 		new iHisCandy = SQL_FetchInt(hndl, 0);
 		if (FullCheckClient(data))
-			PrintToChat(data, "[%s] Ten użytkownik posiada \x03%i\x01 punktów.", sChatTag, iHisCandy);
+			PrintToChat(data, "[%s] Ten użytkownik posiada \x03%i\x01 cukierków.", sChatTag, iHisCandy);
 		else
 			PrintToServer("[%s] This user has got \x03%i\x01 credits.", sChatTag, iHisCandy);
 	}
@@ -1014,7 +1014,7 @@ public cStatsSQLCallback(Handle:owner, Handle:hndl, String:error[], any:data)
 	new iCurrentMoney = SQL_FetchInt(hndl, 0);
 	new iLifetimeMoney = SQL_FetchInt(hndl, 1);
 	
-	PrintToChat(data, "[%s] Aktualnie posiadasz \x04%i\x01 punktów. Ogólnie zdobyłeś \x04%i\x01!", sChatTag, iCurrentMoney, iLifetimeMoney);
+	PrintToChat(data, "[%s] Aktualnie posiadasz \x04%i\x01 cukierków. Ogólnie zdobyłeś \x04%i\x01!", sChatTag, iCurrentMoney, iLifetimeMoney);
 }
 
 /**
@@ -1052,7 +1052,7 @@ public cBuyMenuSQLCallback(Handle:owner, Handle:hndl, String:error[], any:data)
 	}
 	
 	new Handle:mBuyMenu = CreateMenu(cBuyMenu);
-	SetMenuTitle(mBuyMenu, "Twoje punkty: %i", iCurrentMoney);
+	SetMenuTitle(mBuyMenu, "Twoje cukierki: %i", iCurrentMoney);
  
 	for (new i = 0; i < sizeof(sNames); i++)
 	{
@@ -1184,10 +1184,10 @@ public cBuyMenuCallbackSQLCallback(Handle:owner, Handle:hndl, String:error[], an
 		{
 			// U faild n00b!!
 			PrintDebug("Insufficient funds!");
-			PrintToChat(data, "[%s] Nie posiadasz wystarczającej ilości punktów by to kupić!(Wymagane: %i)", sChatTag, iPrice);
+			PrintToChat(data, "[%s] Nie posiadasz wystarczającej ilości cukierków by to kupić!(Wymagane: %i)", sChatTag, iPrice);
 			new sName[128];
 			GetClientName(data, sName, sizeof(sName));
-			LogToFile(logfile, "[%s] %s ma za mało punktów (%i) żeby kupić %s (%i pkt).", sChatTag, sName, iCurrentMoney, sTitle, iPrice);
+			LogToFile(logfile, "[%s] %s ma za mało cukierków (%i) żeby kupić %s (%i pkt).", sChatTag, sName, iCurrentMoney, sTitle, iPrice);
 			return;
 		}
 
@@ -1245,7 +1245,7 @@ public cBuyMenuCallbackSQLCallback(Handle:owner, Handle:hndl, String:error[], an
 		{
 			// U faild n00b!!
 			PrintDebug("Insufficient funds!");
-			PrintToChat(data, "[%s] Nie posiadasz wystarczającej ilości punktów by to kupić!(Wymagane: %i)", sChatTag, iCosts[iBuyEntry]);
+			PrintToChat(data, "[%s] Nie posiadasz wystarczającej ilości cukierków by to kupić!(Wymagane: %i)", sChatTag, iCosts[iBuyEntry]);
 			return;
 		}
 		Call_StartFunction(INVALID_HANDLE, fCallbacks[iBuyEntry][0]);
