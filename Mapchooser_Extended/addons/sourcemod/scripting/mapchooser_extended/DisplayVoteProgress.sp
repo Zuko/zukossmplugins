@@ -151,7 +151,9 @@ public Action:ShowVoteProgress(Handle:timer, Handle:menu)
 		{
 			GetMenuItem(menu, itemIndex[i-1], option, 0, _, option, sizeof(option));
 
-			Format(formatBuffer, sizeof(formatBuffer), "\n%i. %s - %i", i, option, itemVotes[i-1]);
+			new percent = ((itemVotes[i-1] * 100) / GetNrReceivedVotes());
+
+			Format(formatBuffer, sizeof(formatBuffer), "\n%i. %s - %i (%i)", i, option, itemVotes[i-1], percent);
 			StrCat(hintboxText, sizeof(hintboxText), formatBuffer);
 		}
 		else
