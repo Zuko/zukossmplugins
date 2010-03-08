@@ -36,6 +36,7 @@
 #include <sourcemod>
 #include <mapchooser>
 #include <nextmap>
+#include <colors>
 #include "mapchooser_extended/VoteSound.sp"
 #include "mapchooser_extended/VoteWarning.sp"
 #include "mapchooser_extended/DisplayVoteProgress.sp"
@@ -108,7 +109,7 @@ new g_winCount[MAXTEAMS];
 
 public OnPluginStart()
 {
-	LoadTranslations("mapchooser.phrases");
+	LoadTranslations("mapchooser_extended.phrases"); // $ changed
 	LoadTranslations("common.phrases");
 
 	new arraySize = ByteCountToCells(33);
@@ -567,7 +568,18 @@ InitiateVote(MapChange:when, Handle:inputlist=INVALID_HANDLE)
 		for (new i=0; i<nominationsToAdd; i++)
 		{
 			GetArrayString(g_NominateList, i, map, sizeof(map));
-			AddMenuItem(g_VoteMenu, map, map);
+			/* $ changed */
+			if (!MapIsOfficial(map))
+			{
+				decl String:map_custom[255];
+				Format(map_custom, sizeof(map_custom), "%s (custom)", map);
+				AddMenuItem(g_VoteMenu, map, map_custom);
+			}
+			else 
+			{
+				AddMenuItem(g_VoteMenu, map, map);
+			}
+			/* end of $ changed */
 
 			/* Notify Nominations that this map is now free */
 			Call_StartForward(g_NominationsResetForward);
@@ -603,7 +615,18 @@ InitiateVote(MapChange:when, Handle:inputlist=INVALID_HANDLE)
 			if (FindStringInArray(g_NominateList, map) == -1)
 			{
 				/* Insert the map and increment our count */
-				AddMenuItem(g_VoteMenu, map, map);
+				/* $ changed */
+				if (!MapIsOfficial(map))
+				{
+					decl String:map_custom[255];
+					Format(map_custom, sizeof(map_custom), "%s (custom)", map);
+					AddMenuItem(g_VoteMenu, map, map_custom);
+				}
+				else 
+				{
+					AddMenuItem(g_VoteMenu, map, map);
+				}
+				/* end of $ changed */
 				i++;
 			}
 
@@ -626,15 +649,20 @@ InitiateVote(MapChange:when, Handle:inputlist=INVALID_HANDLE)
 		{
 			GetArrayString(inputlist, i, map, sizeof(map));
 
-			if (!IsMapValid(map))
+			if (IsMapValid(map))
 			{
+				/* $ changed */
 				if (!MapIsOfficial(map))
 				{
 					decl String:map_custom[255];
 					Format(map_custom, sizeof(map_custom), "%s (custom)", map);
 					AddMenuItem(g_VoteMenu, map, map_custom);
 				}
-				else AddMenuItem(g_VoteMenu, map, map);
+				else 
+				{
+					AddMenuItem(g_VoteMenu, map, map);
+				}
+				/* end of $ changed */
 			}
 		}
 	}
@@ -655,7 +683,7 @@ InitiateVote(MapChange:when, Handle:inputlist=INVALID_HANDLE)
 	VoteMenuToAll(g_VoteMenu, voteDuration);
 
 	LogMessage("Voting for next map has started.");
-	PrintToChatAll("[SM] %t", "Nextmap Voting Started");
+	CPrintToChatAll("[SM] %t", "Nextmap Voting Started"); // $ changed
 	SoundVoteStart(); // $ added
 }
 
@@ -732,7 +760,7 @@ public Handler_MapVoteFinished(Handle:menu,
 			}
 		}
 
-		PrintToChatAll("[SM] %t", "Current Map Extended", RoundToFloor(float(item_info[0][VOTEINFO_ITEM_VOTES])/float(num_votes)*100), num_votes);
+		CPrintToChatAll("[SM] %t", "Current Map Extended", RoundToFloor(float(item_info[0][VOTEINFO_ITEM_VOTES])/float(num_votes)*100), num_votes); // $ changed
 		LogMessage("Voting for next map has finished. The current map has been extended.");
 		SoundVoteEnd();
 		// We extended, so we'll have to vote again.
@@ -743,7 +771,7 @@ public Handler_MapVoteFinished(Handle:menu,
 	}
 	else if (strcmp(map, VOTE_DONTCHANGE, false) == 0)
 	{
-		PrintToChatAll("[SM] %t", "Current Map Stays", RoundToFloor(float(item_info[0][VOTEINFO_ITEM_VOTES])/float(num_votes)*100), num_votes);
+		CPrintToChatAll("[SM] %t", "Current Map Stays", RoundToFloor(float(item_info[0][VOTEINFO_ITEM_VOTES])/float(num_votes)*100), num_votes); // $ changed
 		LogMessage("Voting for next map has finished. 'No Change' was the winner");
 		
 		g_HasVoteStarted = false;
@@ -757,7 +785,7 @@ public Handler_MapVoteFinished(Handle:menu,
 
 		PrintCenterTextAll("%t", "Next Map", map);
 
-		PrintToChatAll("[SM] %t", "Nextmap Voting Finished", map, RoundToFloor(float(item_info[0][VOTEINFO_ITEM_VOTES])/float(num_votes)*100), num_votes);
+		CPrintToChatAll("[SM] %t", "Nextmap Voting Finished", map, RoundToFloor(float(item_info[0][VOTEINFO_ITEM_VOTES])/float(num_votes)*100), num_votes); // $ changed
 		LogMessage("Voting for next map has finished. Nextmap: %s.", map);
 		SoundVoteEnd();
 	}

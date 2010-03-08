@@ -136,7 +136,7 @@ public Action:ShowVoteProgress(Handle:timer, Handle:menu)
 
 	// <title> - <timeleft>
 	GetMenuTitle(menu, hintboxText, sizeof(hintboxText));
-	Format(hintboxText, sizeof(hintboxText), "%s (%i/%i) - %i s", hintboxText, GetNrReceivedVotes(), GetArraySize(g_AllowedVoters), VoteTimeRemaining());
+	Format(hintboxText, sizeof(hintboxText), "Zebrane głosy (%i/%i) - %i s", GetNrReceivedVotes(), GetArraySize(g_AllowedVoters), VoteTimeRemaining());
 
 	// <X>. <option>
 	new nrItems = GetMenuItemCount(menu);
@@ -153,7 +153,7 @@ public Action:ShowVoteProgress(Handle:timer, Handle:menu)
 
 			new percent = ((itemVotes[i-1] * 100) / GetNrReceivedVotes());
 
-			Format(formatBuffer, sizeof(formatBuffer), "\n%i. %s - %i (%i%%)", i, option, itemVotes[i-1], percent);
+			Format(formatBuffer, sizeof(formatBuffer), "\n%i. %s - %i (%i procent)", i, option, itemVotes[i-1], percent);
 			StrCat(hintboxText, sizeof(hintboxText), formatBuffer);
 		}
 		else
