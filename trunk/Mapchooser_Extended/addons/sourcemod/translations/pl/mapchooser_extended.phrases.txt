@@ -1,0 +1,42 @@
+"Phrases"
+{
+	"Vote Nextmap"
+	{
+		"pl"		"Głosuj na następną mapę!"
+	}
+
+	"Nextmap Voting Started"
+	{
+		"pl"		"{lightgreen}Rozpoczęto głosowanie na następną mapę."
+	}
+
+	"Nextmap Voting Finished"
+	{
+		"pl"		"{default}Głosowanie na mapę zostało {lightgreen}zakończone. {default}Następną mapą będzie {green}{1}{default}. (Otrzymała {green}{2} {default}procent {default}z {green}{3} {default}głosów) "
+	}
+
+	"Current Map Extended"
+	{
+		"pl"		"{default}Aktualna mapa została {lightgreen}przedłużona{default}. (Otrzymała {green}{1} {default}procent z {green}{2} {default}głosów)"
+	}
+
+	"Extend Map"
+	{
+		"pl"		"Przedłuż Bieżącą Mapę "
+	}
+
+	"Dont Change"
+	{
+		"pl"		"Nie Zmieniaj"
+	}
+
+	"Current Map Stays"
+	{
+		"pl"		"{default}Aktualna mapa będzie {lightgreen}kontynuowana!{default} (Otrzymano {green}{1} {default}procent {default}z {green}{2} {default}głosów)"
+	}
+
+	"Changed Next Map"
+	{
+		"pl"		"Zmieniono następną mapę na: \"{1}\"."
+	}
+}

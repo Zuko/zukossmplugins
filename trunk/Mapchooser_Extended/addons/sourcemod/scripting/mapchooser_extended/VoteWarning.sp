@@ -229,7 +229,7 @@ SetupWarningTimer()
 public Action:WarningHintMsg(Handle:timer)
 {
 	decl String:hintboxText[512];
-	Format(hintboxText, sizeof(hintboxText), "WARNING! Vote will start in: %i s", WarningCountdown());
+	Format(hintboxText, sizeof(hintboxText), "UWAGA!!! Głosowanie rozpocznie się za: %i sekund", WarningCountdown());
 	PrintHintTextToAll(hintboxText);
 
 	if (GetConVarInt(g_Cvar_CounterSounds))

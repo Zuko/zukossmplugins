@@ -4,8 +4,8 @@
 
 new gamesupported = 0;
 
-new const String:officialmaps[][] = { "arena_badlands", "arena_granary", "arena_lumberyard" };
-								/*"arena_nucleus", "arena_offblast_final", "arena_ravine", 
+new const String:officialmaps[][] = { "arena_badlands", "arena_granary", "arena_lumberyard",
+								"arena_nucleus", "arena_offblast_final", "arena_ravine", 
 								"arena_sawmill", "arena_watchtower", "arena_well", "cp_badlands", 
 								"cp_dustbowl", "cp_egypt_final", "cp_fastlane", "cp_gorge", 
 								"cp_granary", "cp_gravelpit", "cp_junction_final", "cp_steel", 
@@ -23,7 +23,7 @@ new const String:officialmaps[][] = { "arena_badlands", "arena_granary", "arena_
 								"dm_resistance", "dm_runoff", "dm_steamlab", "dm_underpass" };
 // official map list for: 	Team Fortress 2, Counter-Strike: Source, Day of Defeat: Source,
 //							Half-Life 2: Deathmatch
-*/
+
 public OnPluginStart_MapListCustom()
 {
 	new String:game_mod_name[32];
@@ -31,22 +31,22 @@ public OnPluginStart_MapListCustom()
 	if (strcmp(game_mod_name, "tf", false) == 0)
 	{
 		gamesupported = 1;
-		LogAction(0, -1, "Team-Fotress 2 detected.");
+		LogAction(0, -1, "Team-Fotress 2 detected, official map list available");
 	}	
 	else if (strcmp(game_mod_name, "cstrike", false) == 0)
 	{
 		gamesupported = 1;
-		LogAction(0, -1, "Counter-Strike Source detected.");
+		LogAction(0, -1, "Counter-Strike Source detected, official map list available");
 	}
 	else if (strcmp(game_mod_name, "dod", false) == 0)
 	{
 		gamesupported = 1;
-		LogAction(0, -1, "Day Of Defeat detected.");
+		LogAction(0, -1, "Day Of Defeat detected, official map list available");
 	}
 	else if (strcmp(game_mod_name, "hl2mp", false) == 0)
 	{
 		gamesupported = 1;
-		LogAction(0, -1, "Half-Life 2: Deathmatch detected.");
+		LogAction(0, -1, "Half-Life 2: Deathmatch detected, official map list available");
 	}
 	else
 	{
