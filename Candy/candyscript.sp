@@ -553,10 +553,12 @@ public Action:tTick(Handle:timer)
 		AddCandy(i, iCreditEarn);
 		new String:sTickNoise[128];
 		if (iCreditEarn == 1)
-			Format(sTickNoise, sizeof(sTickNoise), "[%s] Otrzymałeś 1 cukierek!", sChatTag);
+/*			Format(sTickNoise, sizeof(sTickNoise), "[%s] Otrzymałeś 1 cukierek!", sChatTag);
 		else if (iCreditEarn > 1)
 			Format(sTickNoise, sizeof(sTickNoise), "[%s] Otrzymałeś %i cukierków!", sChatTag, iCreditEarn);
 		PrintNoise(sTickNoise, 3, i);
+*/
+		CandyAfterDeath[i]++;
 	}
 }
 
