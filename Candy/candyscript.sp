@@ -44,6 +44,7 @@ new iKills[MAXPLAYERS];
 new String:sGroups[MAXPLAYERS][256];
 new bool:CantBuy[MAXPLAYERS];
 new bool:Buying[MAXPLAYERS];
+new CandyAfterDeath[MAXPLAYERS];
 
 new String:sConnectingClients[34][128]; // Store SteamId for sql callbacks
 new iPushArray[34];
@@ -306,6 +307,7 @@ public ePlayerConnect(Handle:event, const String:name[], bool:dontBroadcast)
 	iUserId = GetEventInt(event, "userid");
 	hUserHimself = GetClientOfUserId(iUserId);
 	iKills[hUserHimself] = 0;
+	CandyAfterDeath[hUserHimself] = 0;
 	
 	PrintDebug("Prechecking connecting user");
 	PrecheckUser(AddToConnecters(sSteamId));
@@ -328,6 +330,14 @@ public ePlayerDeath(Handle:event, const String:name[], bool:dontBroadcast)
 		PrintDebug("The target or the attacker are invalid clients!");
 		return;
 	}
+
+	if (CandyAfterDeath[victim] > 0)
+	{
+		new String:sNoise[128];
+		Format(sNoise, sizeof(sNoise), "[%s] Zdobyłeś %i cukierków.", sChatTag, CandyAfterDeath[victim]);
+		PrintNoise(sNoise, 2, victim);
+		CandyAfterDeath[victim] = 0;
+	}
 	
 	if (attacker == victim)
 	{
@@ -338,7 +348,7 @@ public ePlayerDeath(Handle:event, const String:name[], bool:dontBroadcast)
 			return;
 		new String:sNoise[128];
 		Format(sNoise, sizeof(sNoise), "[%s] Straciłeś %i cukierków.", sChatTag, iLosePoints);
-		PrintNoise(sNoise, 3, victim);
+		PrintNoise(sNoise, 2, victim);
 		RemoveCandy(victim, iLosePoints);
 		return;
 	}
@@ -361,13 +371,10 @@ public ePlayerDeath(Handle:event, const String:name[], bool:dontBroadcast)
 	if (bUserGetsCredits)
 	{
 		PrintDebug("User gets credits!");
-		if (iCreditGain != 0)
+		if (iCreditGain != 0) {
 			AddCandy(attacker, iCreditGain);
-		
-		new String:sNoiseAttacker[128];
-		Format(sNoiseAttacker, sizeof(sNoiseAttacker), "[%s] Zdobyłeś %i cukierków.", sChatTag, iCreditGain);
-		if (iCreditGain != 0)
-			PrintNoise(sNoiseAttacker, 2, attacker);
+			CandyAfterDeath[attacker]++;
+		}
 	}
 	
 	if (iCreditLoss != 0)
