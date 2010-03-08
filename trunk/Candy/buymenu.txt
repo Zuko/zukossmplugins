@@ -16,21 +16,21 @@
 {
 	"1"
 	{
-		"title"		"100% Krytów (5 sek)"
+		"title"		"100% Krytów (10 sek)"
 		"price"		"150"
-		"oncmd"		"sm_candy_buy_crit ? 1"
-		"offcmd"	"sm_candy_buy_crit ? 0"
-		"time"		"5"
+		"oncmd"		"sm_kritz | 1"
+		"offcmd"	"sm_kritz | 0"
+		"time"		"10"
 		"group"		"a"
 	}
 
 	"2"
 	{
-		"title"		"Nieśmiertelność (5 sek)"
+		"title"		"Nieśmiertelność (10 sek)"
 		"price"		"250"
-		"oncmd"		"sm_candy_buy_invincible ? 1"
-		"offcmd"	"sm_candy_buy_invincible ? 0"
-		"time"		"5"
+		"oncmd"		"sm_uber | 1"
+		"offcmd"	"sm_uber | 0"
+		"time"		"10"
 		"group"		"a"
 	}
 

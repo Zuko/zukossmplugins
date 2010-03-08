@@ -40,13 +40,14 @@
 #include "mapchooser_extended/VoteWarning.sp"
 #include "mapchooser_extended/DisplayVoteProgress.sp"
 #include "mapchooser_extended/RemoveNormalMapchooser.sp"
+#include "mapchooser_extended/MapListCustomization.sp"
 
-#define VERSION "0.1"
+#define VERSION "1.1"
 
 public Plugin:myinfo =
 {
 	name = "Extended Mapvote",
-	author = "Zuko / AlliedModders LLC",
+	author = "Zuko and AlliedModders LLC",
 	description = "Extended Mapvoting Plugin",
 	version = VERSION,
 	url = "http://www.sourcemod.net/"
@@ -120,7 +121,6 @@ public OnPluginStart()
 	CreateConVar("sm_mapvote_version", VERSION, "MapChooser Extended Version", FCVAR_PLUGIN|FCVAR_SPONLY|FCVAR_REPLICATED|FCVAR_NOTIFY);
 	
 	g_Cvar_EndOfMapVote = CreateConVar("sm_mapvote_endvote", "1", "Specifies if MapChooser should run an end of map vote", _, true, 0.0, true, 1.0);
-
 	g_Cvar_StartTime = CreateConVar("sm_mapvote_start", "2.0", "Specifies when to start the vote based on time remaining.", _, true, 1.0);
 	g_Cvar_StartRounds = CreateConVar("sm_mapvote_startround", "2.0", "Specifies when to start the vote based on rounds remaining. Use 0 on TF2 to start vote during bonus round time", _, true, 0.0);
 	g_Cvar_StartFrags = CreateConVar("sm_mapvote_startfrags", "5.0", "Specifies when to start the vote base on frags remaining.", _, true, 1.0);
@@ -169,6 +169,7 @@ public OnPluginStart()
 	OnPluginStart_VoteSound(); // $ added
 	OnPluginStart_VoteWarning(); // $ added
 	OnPluginStart_DisplayVote(); // $ added
+	OnPluginStart_MapListCustom(); // $ added
 }
 
 public APLRes:AskPluginLoad2(Handle:myself, bool:late, String:error[], err_max)
@@ -625,9 +626,15 @@ InitiateVote(MapChange:when, Handle:inputlist=INVALID_HANDLE)
 		{
 			GetArrayString(inputlist, i, map, sizeof(map));
 
-			if (IsMapValid(map))
+			if (!IsMapValid(map))
 			{
-				AddMenuItem(g_VoteMenu, map, map);
+				if (!MapIsOfficial(map))
+				{
+					decl String:map_custom[255];
+					Format(map_custom, sizeof(map_custom), "%s (custom)", map);
+					AddMenuItem(g_VoteMenu, map, map_custom);
+				}
+				else AddMenuItem(g_VoteMenu, map, map);
 			}
 		}
 	}
