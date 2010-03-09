@@ -43,7 +43,7 @@
 #include "mapchooser_extended/RemoveNormalMapchooser.sp"
 #include "mapchooser_extended/MapListCustomization.sp"
 
-#define VERSION "1.1"
+#define VERSION "1.2"
 
 public Plugin:myinfo =
 {
@@ -156,7 +156,7 @@ public OnPluginStart()
 		HookEvent("player_death", Event_PlayerDeath);
 	}
 
-	AutoExecConfig(true, "mapchooser");
+	AutoExecConfig(true, "mapchooser_extended");
 
 	//Change the mp_bonusroundtime max so that we have time to display the vote
 	//If you display a vote during bonus time good defaults are 17 vote duration and 19 mp_bonustime
@@ -572,7 +572,7 @@ InitiateVote(MapChange:when, Handle:inputlist=INVALID_HANDLE)
 			if (!MapIsOfficial(map))
 			{
 				decl String:map_custom[255];
-				Format(map_custom, sizeof(map_custom), "%s (custom)", map);
+				Format(map_custom, sizeof(map_custom), "%t", "Custom", map, LANG_SERVER);
 				AddMenuItem(g_VoteMenu, map, map_custom);
 			}
 			else 
@@ -619,7 +619,7 @@ InitiateVote(MapChange:when, Handle:inputlist=INVALID_HANDLE)
 				if (!MapIsOfficial(map))
 				{
 					decl String:map_custom[255];
-					Format(map_custom, sizeof(map_custom), "%s (custom)", map);
+					Format(map_custom, sizeof(map_custom), "%t", "Custom", map, LANG_SERVER);
 					AddMenuItem(g_VoteMenu, map, map_custom);
 				}
 				else 
@@ -655,7 +655,7 @@ InitiateVote(MapChange:when, Handle:inputlist=INVALID_HANDLE)
 				if (!MapIsOfficial(map))
 				{
 					decl String:map_custom[255];
-					Format(map_custom, sizeof(map_custom), "%s (custom)", map);
+					Format(map_custom, sizeof(map_custom), "%t", "Custom", map, LANG_SERVER);
 					AddMenuItem(g_VoteMenu, map, map_custom);
 				}
 				else 
@@ -885,6 +885,9 @@ public Handler_MapVoteMenu(Handle:menu, MenuAction:action, param1, param2)
 					g_MapVoteCompleted = true; // $ moved
 				}
 				SoundVoteEnd();
+				decl String:buffer2[255];
+				Format(buffer2, sizeof(buffer2), "%t", "Next Map", map);
+				VoteEnded(buffer2);
 				LogMessage("No votes received, randomly selected %s as nextmap.", map);
 				/* end of $ added */
 

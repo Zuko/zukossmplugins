@@ -39,4 +39,14 @@
 	{
 		"pl"		"Zmieniono następną mapę na: \"{1}\"."
 	}
+	
+	"Number Of Votes"
+	{
+		"pl"		"Otrzymane głosy"
+	}
+	
+	"Custom"
+	{
+		"pl"		"{1} (Niestandardowa)"
+	}
 }
