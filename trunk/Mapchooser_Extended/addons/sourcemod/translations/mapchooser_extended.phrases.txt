@@ -43,4 +43,15 @@
 		"#format"		"{1:s}"
 		"en"			"Changed nextmap to \"{1}\"."	
 	}
+
+	"Number Of Votes"
+	{
+		"en"			"Number of votes"
+	}
+
+	"Custom"
+	{
+		"#format"		"{1:s}"
+		"en"			"{1} (Custom)"
+	}
 }

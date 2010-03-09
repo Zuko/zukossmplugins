@@ -130,13 +130,15 @@ public Action:ShowVoteProgress(Handle:timer, Handle:menu)
 {
 	if (menu == INVALID_HANDLE) return Plugin_Continue;
 
-	decl String:hintboxText[512];
+	decl String:hintboxText[1024];
 	decl String:option[ITEM_MAX_LENGTH];
-	decl String:formatBuffer[96];
+	decl String:formatBuffer[128];
+	decl String:translation_buffer[40];
 
 	// <title> - <timeleft>
-	GetMenuTitle(menu, hintboxText, sizeof(hintboxText));
-	Format(hintboxText, sizeof(hintboxText), "Zebrane głosy (%i/%i) - %i s", GetNrReceivedVotes(), GetArraySize(g_AllowedVoters), VoteTimeRemaining());
+	//GetMenuTitle(menu, hintboxText, sizeof(hintboxText));
+	Format(translation_buffer, sizeof(translation_buffer),"%t", "Number Of Votes", LANG_SERVER);
+	Format(hintboxText, sizeof(hintboxText), "%s (%i/%i) - %i s", translation_buffer, GetNrReceivedVotes(), GetArraySize(g_AllowedVoters), VoteTimeRemaining());
 
 	// <X>. <option>
 	new nrItems = GetMenuItemCount(menu);
