@@ -1,8 +1,9 @@
 #include <sourcemod>
 #include <tf2_stocks>
+#include <colors>
 
 /* defines */
-#define PLUGIN_VERSION "0.6.6"
+#define PLUGIN_VERSION "1.0"
 //#define DEBUG "1"
 #define NULLNAME "$$NULL##"
 
@@ -108,7 +109,7 @@ public PrintNoise(String:sMessage[], level, target)
 		if (target == 0)
 		{
 			PrintDebug("Print noise to all");
-			PrintToChatAll(sMessage);
+			CPrintToChatAll(sMessage);
 		}
 		else
 		{
@@ -118,7 +119,7 @@ public PrintNoise(String:sMessage[], level, target)
 				PrintDebug("Invalid target!");
 				return;
 			}
-			PrintToChat(target, sMessage);
+			CPrintToChat(target, sMessage);
 		}
 	}
 }
@@ -313,6 +314,16 @@ public ePlayerConnect(Handle:event, const String:name[], bool:dontBroadcast)
 	PrecheckUser(AddToConnecters(sSteamId));
 }
 
+public FormatCandyReply(String:buffer[], buffsize, cndCount)
+{
+	if (cndCount == 1)
+		Format(buffer, buffsize, "{lightgreen}[%s] {default}Zdobyłeś {green}%i {default}cukierek", sChatTag, cndCount);
+	else if ((cndCount > 1) & (cndCount < 5))
+		Format(buffer, buffsize, "{lightgreen}[%s] {default}Zdobyłeś {green}%i {default}cukierki", sChatTag, cndCount);
+	else
+		Format(buffer, buffsize, "{lightgreen}[%s] {default}Zdobyłeś {green}%i {default}cukierków", sChatTag, cndCount);
+}
+
 /**
  * Someone got killed! Call 911!
  */
@@ -334,7 +345,7 @@ public ePlayerDeath(Handle:event, const String:name[], bool:dontBroadcast)
 	if (CandyAfterDeath[victim] > 0)
 	{
 		new String:sNoise[128];
-		Format(sNoise, sizeof(sNoise), "[%s] Zdobyłeś %i cukierków.", sChatTag, CandyAfterDeath[victim]);
+		FormatCandyReply(sNoise, sizeof(sNoise), CandyAfterDeath[victim]);
 		PrintNoise(sNoise, 2, victim);
 		CandyAfterDeath[victim] = 0;
 	}
@@ -551,14 +562,14 @@ public Action:tTick(Handle:timer)
 		 */
 		PrintDebug("He's got candy!");
 		AddCandy(i, iCreditEarn);
-		new String:sTickNoise[128];
+//		new String:sTickNoise[128];
 		if (iCreditEarn == 1)
 /*			Format(sTickNoise, sizeof(sTickNoise), "[%s] Otrzymałeś 1 cukierek!", sChatTag);
 		else if (iCreditEarn > 1)
 			Format(sTickNoise, sizeof(sTickNoise), "[%s] Otrzymałeś %i cukierków!", sChatTag, iCreditEarn);
 		PrintNoise(sTickNoise, 3, i);
 */
-		CandyAfterDeath[i]++;
+			CandyAfterDeath[i]++;
 	}
 }
 
