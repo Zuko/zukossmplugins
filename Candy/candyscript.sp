@@ -584,6 +584,7 @@ public Action:cAddCandy(client, args)
 		return Plugin_Handled;
 	new String:sTarget[32], String:sAmount[32];
 	new iTarget, iAmount;
+	decl target_list[MAXPLAYERS], target_count, bool:tn_is_ml, String:target_name[MAX_TARGET_LENGTH];
 	
 	if (!GetCmdArg(1, sTarget, sizeof(sTarget)))
 	{
@@ -593,7 +594,7 @@ public Action:cAddCandy(client, args)
 			PrintToServer("[%s] Usage: sm_candy_add userid amount", sChatTag);
 		return Plugin_Handled;
 	}
-	
+
 	if (!GetCmdArg(2, sAmount, sizeof(sAmount)))
 	{
 		if (FullCheckClient(client))
@@ -602,27 +603,45 @@ public Action:cAddCandy(client, args)
 			PrintToServer("[%s] Usage: sm_candy_add userid amount", sChatTag);
 		return Plugin_Handled;
 	}
-	
-	iTarget = GetClientOfUserId(StringToInt(sTarget));
 	iAmount = StringToInt(sAmount);
 	
-	if (!FullCheckClient(iTarget))
+	if ((target_count = ProcessTargetString(
+			sTarget,
+			client,
+			target_list,
+			MAXPLAYERS,
+			COMMAND_FILTER_ALIVE,
+			target_name,
+			sizeof(target_name),
+			tn_is_ml)) <= 0)
 	{
-		if (FullCheckClient(client))
-			PrintToChat(client, "[%s] No such user (%s)", sChatTag, sTarget);
-		else
-			PrintToServer("[%s] No such user (%s)", sChatTag, sTarget);
+		ReplyToTargetError(client, target_count);
 		return Plugin_Handled;
 	}
 	
-	if (iAmount != 0)
+	for (new i = 0; i < target_count; i++)
 	{
-		AddCandy(iTarget, iAmount);
+		sTarget[0] = target_list[i];
+		iTarget = GetClientOfUserId(StringToInt(sTarget));
+		
+		if (!FullCheckClient(iTarget))
+		{
+			if (FullCheckClient(client))
+				PrintToChat(client, "[%s] No such user (%s)", sChatTag, sTarget);
+			else
+				PrintToServer("[%s] No such user (%s)", sChatTag, sTarget);
+			return Plugin_Handled;
+		}
+		
+		if (iAmount != 0)
+		{
+			AddCandy(iTarget, iAmount);
+		}
+		
+		new String:sCandyNoise[255];
+		Format(sCandyNoise, sizeof(sCandyNoise), "[%s] Dobry admin podarował ci %i cukierków.", sChatTag, iAmount);
+		PrintNoise(sCandyNoise, 2, iTarget);
 	}
-	
-	new String:sCandyNoise[255];
-	Format(sCandyNoise, sizeof(sCandyNoise), "[%s] Dobry admin podarował ci %i cukierków.", sChatTag, iAmount);
-	PrintNoise(sCandyNoise, 2, iTarget);
 	
 	return Plugin_Handled;
 }
@@ -637,6 +656,7 @@ public Action:cPlayerResetCandy(client, args)
 		return Plugin_Handled;
 	new String:sTarget[32];
 	new iTarget;
+	decl target_list[MAXPLAYERS], target_count, bool:tn_is_ml, String:target_name[MAX_TARGET_LENGTH];
 	
 	if (!GetCmdArg(1, sTarget, sizeof(sTarget)))
 	{
@@ -647,25 +667,43 @@ public Action:cPlayerResetCandy(client, args)
 		return Plugin_Handled;
 	}
 	
-	iTarget = GetClientOfUserId(StringToInt(sTarget));
-	
-	if (!FullCheckClient(iTarget))
+	if ((target_count = ProcessTargetString(
+			sTarget,
+			client,
+			target_list,
+			MAXPLAYERS,
+			COMMAND_FILTER_ALIVE,
+			target_name,
+			sizeof(target_name),
+			tn_is_ml)) <= 0)
 	{
-		if (FullCheckClient(client))
-			PrintToChat(client, "[%s] No such user (%s)", sChatTag, sTarget);
-		else
-			PrintToServer("[%s] No such user (%s)", sChatTag, sTarget);
+		ReplyToTargetError(client, target_count);
 		return Plugin_Handled;
 	}
+	
+	for (new i = 0; i < target_count; i++)
+	{	
+		sTarget[0] = target_list[i];
+		iTarget = GetClientOfUserId(StringToInt(sTarget));
 		
-	new String:qReset[255], String:SteamID[128];
-	GetClientAuthString(iTarget, SteamID, sizeof(SteamID));
-	Format(qReset, sizeof(qReset), "UPDATE %scandydata SET candy = 0, lifetimecandy = 0 WHERE steamid = '%s';", sTablePrefix, SteamID);
-	SQL_TQuery(dbConnection, cIgnoreQueryCallback, qReset);
+		if (!FullCheckClient(iTarget))
+		{
+			if (FullCheckClient(client))
+				PrintToChat(client, "[%s] No such user (%s)", sChatTag, sTarget);
+			else
+				PrintToServer("[%s] No such user (%s)", sChatTag, sTarget);
+			return Plugin_Handled;
+		}
+			
+		new String:qReset[255], String:SteamID[128];
+		GetClientAuthString(iTarget, SteamID, sizeof(SteamID));
+		Format(qReset, sizeof(qReset), "UPDATE %scandydata SET candy = 0, lifetimecandy = 0 WHERE steamid = '%s';", sTablePrefix, SteamID);
+		SQL_TQuery(dbConnection, cIgnoreQueryCallback, qReset);
 
-	new String:sCandyNoise[255];
-	Format(sCandyNoise, sizeof(sCandyNoise), "[%s] Zły admin zabrał Ci wszystkie cukierki.", sChatTag);
-	PrintNoise(sCandyNoise, 2, iTarget);
+		new String:sCandyNoise[255];
+		Format(sCandyNoise, sizeof(sCandyNoise), "[%s] Zły admin zjadł Ci wszystkie cukierki.", sChatTag);
+		PrintNoise(sCandyNoise, 2, iTarget);
+	}
 	
 	return Plugin_Handled;
 }
@@ -681,7 +719,8 @@ public Action:cRemoveCandy(client, args)
 		return Plugin_Handled;
 	new String:sTarget[32], String:sAmount[32];
 	new iTarget, iAmount;
-	
+	decl target_list[MAXPLAYERS], target_count, bool:tn_is_ml, String:target_name[MAX_TARGET_LENGTH];
+		
 	if (!GetCmdArg(1, sTarget, sizeof(sTarget)))
 	{
 		if (FullCheckClient(client))
@@ -700,26 +739,44 @@ public Action:cRemoveCandy(client, args)
 		return Plugin_Handled;
 	}
 	
-	iTarget = GetClientOfUserId(StringToInt(sTarget));
-	iAmount = StringToInt(sAmount);
-	
-	if (!FullCheckClient(iTarget))
+	if ((target_count = ProcessTargetString(
+			sTarget,
+			client,
+			target_list,
+			MAXPLAYERS,
+			COMMAND_FILTER_ALIVE,
+			target_name,
+			sizeof(target_name),
+			tn_is_ml)) <= 0)
 	{
-		if (FullCheckClient(client))
-			PrintToChat(client, "[%s] No such user (%s)", sChatTag, sTarget);
-		else
-			PrintToServer("[%s] No such user (%s)", sChatTag, sTarget);
+		ReplyToTargetError(client, target_count);
 		return Plugin_Handled;
 	}
 	
-	if (iAmount != 0)
-	{
-		RemoveCandy(iTarget, iAmount);
+	for (new i = 0; i < target_count; i++)
+	{	
+		sTarget[0] = target_list[i];
+		iTarget = GetClientOfUserId(StringToInt(sTarget));
+		iAmount = StringToInt(sAmount);
+		
+		if (!FullCheckClient(iTarget))
+		{
+			if (FullCheckClient(client))
+				PrintToChat(client, "[%s] No such user (%s)", sChatTag, sTarget);
+			else
+				PrintToServer("[%s] No such user (%s)", sChatTag, sTarget);
+			return Plugin_Handled;
+		}
+		
+		if (iAmount != 0)
+		{
+			RemoveCandy(iTarget, iAmount);
+		}
+		
+		new String:sCandyNoise[255];
+		Format(sCandyNoise, sizeof(sCandyNoise), "[%s] Zły admin zjadł Ci %i cukierków.", sChatTag, iAmount);
+		PrintNoise(sCandyNoise, 2, iTarget);
 	}
-	
-	new String:sCandyNoise[255];
-	Format(sCandyNoise, sizeof(sCandyNoise), "[%s] Zły admin zabrał ci %i cukierków.", sChatTag, iAmount);
-	PrintNoise(sCandyNoise, 2, iTarget);
 	
 	return Plugin_Handled;
 }
@@ -810,6 +867,7 @@ public Action:cGetCandy(client, args)
 		return Plugin_Handled;
 	new String:sTarget[32];
 	new iTarget;
+	decl target_list[MAXPLAYERS], target_count, bool:tn_is_ml, String:target_name[MAX_TARGET_LENGTH];
 	
 	if (!GetCmdArg(1, sTarget, sizeof(sTarget)))
 	{
@@ -820,23 +878,41 @@ public Action:cGetCandy(client, args)
 		return Plugin_Handled;
 	}
 	
-	iTarget = GetClientOfUserId(StringToInt(sTarget));
-	
-	if (!FullCheckClient(iTarget))
+	if ((target_count = ProcessTargetString(
+			sTarget,
+			client,
+			target_list,
+			MAXPLAYERS,
+			COMMAND_FILTER_ALIVE,
+			target_name,
+			sizeof(target_name),
+			tn_is_ml)) <= 0)
 	{
-		if (FullCheckClient(client))
-			PrintToChat(client, "[%s] No such user (%s)", sChatTag, sTarget);
-		else
-			PrintToServer("[%s] No such user (%s)", sChatTag, sTarget);
+		ReplyToTargetError(client, target_count);
 		return Plugin_Handled;
 	}
 	
-	new String:qGetUsersCandy[255], String:sSteamId[32];
-	GetClientAuthString(iTarget, sSteamId, sizeof(sSteamId));
-	Format(qGetUsersCandy, sizeof(qGetUsersCandy), "SELECT candy FROM %scandydata WHERE steamid = '%s';", sTablePrefix, sSteamId);
-	SQL_TQuery(dbConnection, cGetUsersCandy, qGetUsersCandy, client);
-	PrintDebug(qGetUsersCandy);
-	PrintDebug(qGetUsersCandy);
+	for (new i = 0; i < target_count; i++)
+	{	
+		sTarget[0] = target_list[i];
+		iTarget = GetClientOfUserId(StringToInt(sTarget));
+		
+		if (!FullCheckClient(iTarget))
+		{
+			if (FullCheckClient(client))
+				PrintToChat(client, "[%s] No such user (%s)", sChatTag, sTarget);
+			else
+				PrintToServer("[%s] No such user (%s)", sChatTag, sTarget);
+			return Plugin_Handled;
+		}
+		
+		new String:qGetUsersCandy[255], String:sSteamId[32];
+		GetClientAuthString(iTarget, sSteamId, sizeof(sSteamId));
+		Format(qGetUsersCandy, sizeof(qGetUsersCandy), "SELECT candy FROM %scandydata WHERE steamid = '%s';", sTablePrefix, sSteamId);
+		SQL_TQuery(dbConnection, cGetUsersCandy, qGetUsersCandy, client);
+		PrintDebug(qGetUsersCandy);
+		PrintDebug(qGetUsersCandy);
+	}
 	
 	return Plugin_Handled;
 }
