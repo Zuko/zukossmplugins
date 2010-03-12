@@ -39,14 +39,29 @@
 	{
 		"pl"		"Zmieniono następną mapę na: \"{1}\"."
 	}
-	
+
 	"Number Of Votes"
 	{
 		"pl"		"Otrzymane głosy"
 	}
-	
+
 	"Custom"
 	{
 		"pl"		"{1} (Niestandardowa)"
+	}
+
+	"Revote Is Needed"
+	{
+		"pl"		"Dwie mapy otrzymały tyle samo głosów.\nWięc która mapa jest zwycięzcą? Trzeba zagłosować ponownie!"
+	}
+
+	"Revote Warning"
+	{
+		"pl"		"Ponowne głosowanie rozpocznie się za: {1}s\nTym razem się już zdecydujcie ;-)"
+	}
+
+	"Vote Warning"
+	{
+		"pl"		"UWAGA!!! Za chwilę będziesz musiał dokonać ważnego wyboru!\nGłosowanie na następną mapę rozpocznie się za: {1}s\n ----"
 	}
 }

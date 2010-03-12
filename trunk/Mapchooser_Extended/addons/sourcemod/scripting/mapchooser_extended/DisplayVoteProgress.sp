@@ -138,7 +138,7 @@ public Action:ShowVoteProgress(Handle:timer, Handle:menu)
 	// <title> - <timeleft>
 	//GetMenuTitle(menu, hintboxText, sizeof(hintboxText));
 	Format(translation_buffer, sizeof(translation_buffer),"%t", "Number Of Votes", LANG_SERVER);
-	Format(hintboxText, sizeof(hintboxText), "%s (%i/%i) - %i s", translation_buffer, GetNrReceivedVotes(), GetArraySize(g_AllowedVoters), VoteTimeRemaining());
+	Format(hintboxText, sizeof(hintboxText), "%s (%i/%i) - %is", translation_buffer, GetNrReceivedVotes(), GetArraySize(g_AllowedVoters), VoteTimeRemaining());
 
 	// <X>. <option>
 	new nrItems = GetMenuItemCount(menu);
