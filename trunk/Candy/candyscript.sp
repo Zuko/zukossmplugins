@@ -621,7 +621,7 @@ public Action:cAddCandy(client, args)
 	
 	for (new i = 0; i < target_count; i++)
 	{
-		sTarget[0] = target_list[i];
+		strcopy(sTarget, sizeof(sTarget), target_list[i]);
 		iTarget = GetClientOfUserId(StringToInt(sTarget));
 		
 		if (!FullCheckClient(iTarget))
@@ -683,7 +683,7 @@ public Action:cPlayerResetCandy(client, args)
 	
 	for (new i = 0; i < target_count; i++)
 	{	
-		sTarget[0] = target_list[i];
+		strcopy(sTarget, sizeof(sTarget), target_list[i]);
 		iTarget = GetClientOfUserId(StringToInt(sTarget));
 		
 		if (!FullCheckClient(iTarget))
@@ -755,7 +755,7 @@ public Action:cRemoveCandy(client, args)
 	
 	for (new i = 0; i < target_count; i++)
 	{	
-		sTarget[0] = target_list[i];
+		strcopy(sTarget, sizeof(sTarget), target_list[i]);
 		iTarget = GetClientOfUserId(StringToInt(sTarget));
 		iAmount = StringToInt(sAmount);
 		
@@ -894,7 +894,7 @@ public Action:cGetCandy(client, args)
 	
 	for (new i = 0; i < target_count; i++)
 	{	
-		sTarget[0] = target_list[i];
+		strcopy(sTarget, sizeof(sTarget), target_list[i]);
 		iTarget = GetClientOfUserId(StringToInt(sTarget));
 		
 		if (!FullCheckClient(iTarget))
