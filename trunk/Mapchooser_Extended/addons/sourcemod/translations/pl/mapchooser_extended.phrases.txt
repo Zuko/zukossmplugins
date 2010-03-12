@@ -52,7 +52,7 @@
 
 	"Revote Is Needed"
 	{
-		"pl"		"Dwie mapy otrzymały tyle samo głosów.\nWięc która mapa jest zwycięzcą? Trzeba zagłosować ponownie!"
+		"pl"		"Żadna mapa nie otrzymała wystarczającej ilości głosów.\nWięc która mapa jest zwycięzcą? Trzeba zagłosować ponownie!"
 	}
 
 	"Revote Warning"
