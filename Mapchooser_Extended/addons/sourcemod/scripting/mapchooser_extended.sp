@@ -76,7 +76,6 @@ new Handle:g_Cvar_EndOfMapVote = INVALID_HANDLE;
 new Handle:g_Cvar_VoteDuration = INVALID_HANDLE;
 new Handle:g_Cvar_RunOff = INVALID_HANDLE;
 new Handle:g_Cvar_RunOffPercent = INVALID_HANDLE;
-new Handle:g_Cvar_RunOffVote = INVALID_HANDLE;
 
 new Handle:g_VoteTimer = INVALID_HANDLE;
 new Handle:g_RetryTimer = INVALID_HANDLE;
@@ -90,7 +89,6 @@ new Handle:g_NextMapList = INVALID_HANDLE;
 new Handle:g_VoteMenu = INVALID_HANDLE;
 
 new g_Extends;
-new g_RunOffVotes;
 new g_TotalRounds;
 new bool:g_HasVoteStarted;
 new bool:g_WaitingForVote;
@@ -101,6 +99,8 @@ new g_mapFileSerial = -1;
 
 new String:g_map1[128];
 new String:g_map2[128];
+new String:g_mapd1[128];
+new String:g_mapd2[128];
 new g_NominateCount = 0;
 new MapChange:g_ChangeTime;
 
@@ -142,7 +142,6 @@ public OnPluginStart()
 	g_Cvar_VoteDuration = CreateConVar("sm_mapvote_voteduration", "20", "Specifies how long the mapvote should be available for.", _, true, 5.0);
 	g_Cvar_RunOff = CreateConVar("sm_mapvote_runoff", "1", "Hold run of votes if winning choice is less than a certain margin", _, true, 0.0, true, 1.0);
 	g_Cvar_RunOffPercent = CreateConVar("sm_mapvote_runoffpercent", "50", "If winning choice has less than this percent of votes, hold a runoff", _, true, 0.0, true, 100.0);
-	g_Cvar_RunOffVote = CreateConVar("sm_mapvote_runoffvoteallowed", "1", "Number of runoff votes allowed.", _, true, 0.0);
 
 	RegAdminCmd("sm_mapvote", Command_Mapvote, ADMFLAG_CHANGEMAP, "sm_mapvote - Forces MapChooser to attempt to run a map vote now.");
 	RegAdminCmd("sm_setnextmap", Command_SetNextmap, ADMFLAG_CHANGEMAP, "sm_setnextmap <map>");
@@ -220,7 +219,6 @@ public OnConfigsExecuted()
 	g_TotalRounds = 0;
 
 	g_Extends = 0;
-	g_RunOffVotes = 0;
 
 	g_MapVoteCompleted = false;
 
@@ -722,45 +720,21 @@ public Handler_MapVoteFinished(Handle:menu,
 
 	if (GetConVarBool(g_Cvar_RunOff) && num_items > 1)
 	{
-		if (g_RunOffVotes < GetConVarInt(g_Cvar_RunOffVote))
-		{
-			new Float:winningvotes = float(item_info[0][VOTEINFO_ITEM_VOTES]);
-			new Float:required = num_votes * (GetConVarFloat(g_Cvar_RunOffPercent) / 100.0);
+		new Float:winningvotes = float(item_info[0][VOTEINFO_ITEM_VOTES]);
+		new Float:required = num_votes * (GetConVarFloat(g_Cvar_RunOffPercent) / 100.0);
 			
-			if (winningvotes <= required)
-			{
-				decl String:buffer_runoffvote[255];
-				Format(buffer_runoffvote, sizeof(buffer_runoffvote), "%t", "Revote Is Needed");
-
-				decl String:map[128];
-				
-				/* Get map names and store it */
-				GetMenuItem(menu, item_info[0][VOTEINFO_ITEM_INDEX], map, sizeof(map), _, g_map1, sizeof(g_map1));
-				GetMenuItem(menu, item_info[1][VOTEINFO_ITEM_INDEX], map, sizeof(map), _, g_map2, sizeof(g_map2));
-
-				CreateTimer(5.0, RunOffVoteWarningDelay, _, TIMER_FLAG_NO_MAPCHANGE);
-				VoteEnded(buffer_runoffvote);
-				return;
-			}
-		}
-		else
+		if (winningvotes <= required)
 		{
-			decl String:buffer[255];
-
-			new count = GetMenuItemCount(menu);
-			new item = GetRandomInt(0, count - 1);
-			decl String:map[32];
-			GetMenuItem(menu, item, map, sizeof(map));
-
-			Format(buffer, sizeof(buffer), "%t", "Next Map", map);
-			NextMap(map);
-			g_MapVoteCompleted = true;
-
-			SoundVoteEnd();
-			decl String:buffer2[255];
-			Format(buffer2, sizeof(buffer2), "%t", "Next Map", map);
-			VoteEnded(buffer2);
-			LogMessage("After one Run Off Vote, map was randomly selected %s as nextmap.", map);
+			decl String:buffer_runoffvote[255];
+			Format(buffer_runoffvote, sizeof(buffer_runoffvote), "%t", "Revote Is Needed", LANG_SERVER);
+				
+			/* Get map names and store it */
+			GetMenuItem(menu, item_info[0][VOTEINFO_ITEM_INDEX], g_map1, sizeof(g_map1), _, g_mapd1, sizeof(g_mapd1));
+			GetMenuItem(menu, item_info[1][VOTEINFO_ITEM_INDEX], g_map2, sizeof(g_map2), _, g_mapd2, sizeof(g_mapd2));
+			
+			CreateTimer(5.0, RunOffVoteWarningDelay, _, TIMER_FLAG_NO_MAPCHANGE);
+			VoteEnded(buffer_runoffvote);
+			return;
 		}
 	}
 
@@ -1132,14 +1106,12 @@ SetupRunOffVote()
 	SetMenuTitle(g_VoteMenu, "Runoff Vote Nextmap");
 	SetVoteResultCallback(g_VoteMenu, Handler_MapVoteFinished);
 	
-	AddMenuItem(g_VoteMenu, g_map1, g_map1);
-	AddMenuItem(g_VoteMenu, g_map2, g_map2);
+	AddMenuItem(g_VoteMenu, g_map1, g_mapd1);
+	AddMenuItem(g_VoteMenu, g_map2, g_mapd2);
 
 	new voteDuration = GetConVarInt(g_Cvar_VoteDuration);
 	SetMenuExitButton(g_VoteMenu, false);
 	VoteMenuToAll(g_VoteMenu, voteDuration);
-
-	g_RunOffVotes++;
 
 	LogMessage("Voting for next map was indecisive, beginning runoff vote");
 }
