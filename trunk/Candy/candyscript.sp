@@ -75,6 +75,7 @@ public OnPluginStart()
 		sNames[i] = NULLNAME;
 		
 	BuildPath(Path_SM, logfile, sizeof(logfile), "logs/candy.log");
+	LoadTranslations("common.phrases");
 }
 
 public OnConfigsExecuted()
@@ -610,7 +611,7 @@ public Action:cAddCandy(client, args)
 			client,
 			target_list,
 			MAXPLAYERS,
-			COMMAND_FILTER_ALIVE,
+			COMMAND_FILTER_CONNECTED,
 			target_name,
 			sizeof(target_name),
 			tn_is_ml)) <= 0)
@@ -621,7 +622,8 @@ public Action:cAddCandy(client, args)
 	
 	for (new i = 0; i < target_count; i++)
 	{
-		iTarget = GetClientOfUserId(target_list[i]);
+		iTarget = target_list[i];
+		GetClientName(iTarget, sTarget, sizeof(sTarget));
 		
 		if (!FullCheckClient(iTarget))
 		{
@@ -629,7 +631,7 @@ public Action:cAddCandy(client, args)
 				PrintToChat(client, "[%s] No such user (%s)", sChatTag, sTarget);
 			else
 				PrintToServer("[%s] No such user (%s)", sChatTag, sTarget);
-			return Plugin_Handled;
+			continue;
 		}
 		
 		if (iAmount != 0)
@@ -671,7 +673,7 @@ public Action:cPlayerResetCandy(client, args)
 			client,
 			target_list,
 			MAXPLAYERS,
-			COMMAND_FILTER_ALIVE,
+			COMMAND_FILTER_CONNECTED,
 			target_name,
 			sizeof(target_name),
 			tn_is_ml)) <= 0)
@@ -682,7 +684,8 @@ public Action:cPlayerResetCandy(client, args)
 	
 	for (new i = 0; i < target_count; i++)
 	{	
-		iTarget = GetClientOfUserId(target_list[i]);
+		iTarget = target_list[i];
+		GetClientName(iTarget, sTarget, sizeof(sTarget));
 		
 		if (!FullCheckClient(iTarget))
 		{
@@ -742,7 +745,7 @@ public Action:cRemoveCandy(client, args)
 			client,
 			target_list,
 			MAXPLAYERS,
-			COMMAND_FILTER_ALIVE,
+			COMMAND_FILTER_CONNECTED,
 			target_name,
 			sizeof(target_name),
 			tn_is_ml)) <= 0)
@@ -753,8 +756,8 @@ public Action:cRemoveCandy(client, args)
 	
 	for (new i = 0; i < target_count; i++)
 	{	
-		iTarget = GetClientOfUserId(target_list[i]);
-		iAmount = StringToInt(sAmount);
+		iTarget = target_list[i];
+		GetClientName(iTarget, sTarget, sizeof(sTarget));
 		
 		if (!FullCheckClient(iTarget))
 		{
@@ -880,7 +883,7 @@ public Action:cGetCandy(client, args)
 			client,
 			target_list,
 			MAXPLAYERS,
-			COMMAND_FILTER_ALIVE,
+			COMMAND_FILTER_CONNECTED,
 			target_name,
 			sizeof(target_name),
 			tn_is_ml)) <= 0)
@@ -891,7 +894,8 @@ public Action:cGetCandy(client, args)
 	
 	for (new i = 0; i < target_count; i++)
 	{	
-		iTarget = GetClientOfUserId(target_list[i]);
+		iTarget = target_list[i];
+		GetClientName(iTarget, sTarget, sizeof(sTarget));
 		
 		if (!FullCheckClient(iTarget))
 		{
