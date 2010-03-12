@@ -6,7 +6,7 @@
 
 #define Sound_Enable		0
 #define Sound_VoteStart	1
-#define Sound_VoteEnd	2
+#define Sound_VoteEnd		2
 
 #define MAX_SOUND_CVARS	3
 
