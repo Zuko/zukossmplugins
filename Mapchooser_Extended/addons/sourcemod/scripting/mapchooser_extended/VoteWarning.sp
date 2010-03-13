@@ -280,11 +280,11 @@ public Action:WarningHintMsg(Handle:timer)
 	decl String:hintboxText[512];
 	if(g_runoffvote)
 	{
-		Format(hintboxText, sizeof(hintboxText), "%t", "Revote Warning", WarningCountdown(), LANG_SERVER);
+		Format(hintboxText, sizeof(hintboxText), "%T", "Revote Warning", LANG_SERVER, WarningCountdown());
 	}
 	else
 	{
-		Format(hintboxText, sizeof(hintboxText), "%t", "Vote Warning", WarningCountdown(), LANG_SERVER);
+		Format(hintboxText, sizeof(hintboxText), "%T", "Vote Warning", LANG_SERVER, WarningCountdown());
 	}
 	PrintHintTextToAll(hintboxText);
 
