@@ -557,7 +557,9 @@ InitiateVote(MapChange:when, Handle:inputlist=INVALID_HANDLE)
 
 	g_HasVoteStarted = true;
 	g_VoteMenu = CreateMenu(Handler_MapVoteMenu, MenuAction:MENU_ACTIONS_ALL);
-	SetMenuTitle(g_VoteMenu, "Vote Nextmap");
+	decl String:title[128];
+	Format(title, sizeof(title),"%T", "Vote Nextmap", LANG_SERVER);
+	SetMenuTitle(g_VoteMenu, title);
 	SetVoteResultCallback(g_VoteMenu, Handler_MapVoteFinished);
 
 	/**
@@ -577,12 +579,12 @@ InitiateVote(MapChange:when, Handle:inputlist=INVALID_HANDLE)
 
 		/* Smaller of the two - It should be impossible for nominations to exceed the size though (cvar changed mid-map?) */
 		new nominationsToAdd = nominateCount >= voteSize ? voteSize : nominateCount;
-
-
+		
 		for (new i=0; i<nominationsToAdd; i++)
 		{
 			GetArrayString(g_NominateList, i, map, sizeof(map));
 			/* $ changed */
+
 			if (!MapIsOfficial(map))
 			{
 				decl String:map_custom[255];
@@ -631,6 +633,7 @@ InitiateVote(MapChange:when, Handle:inputlist=INVALID_HANDLE)
 			{
 				/* Insert the map and increment our count */
 				/* $ changed */
+
 				if (!MapIsOfficial(map))
 				{
 					decl String:map_custom[255];
@@ -726,7 +729,8 @@ public Handler_MapVoteFinished(Handle:menu,
 		if (winningvotes <= required)
 		{
 			decl String:buffer_runoffvote[255];
-			Format(buffer_runoffvote, sizeof(buffer_runoffvote), "%T", "Revote Is Needed", LANG_SERVER);
+			new infopercent = GetConVarInt(g_Cvar_RunOffPercent);
+			Format(buffer_runoffvote, sizeof(buffer_runoffvote), "%T", "Revote Is Needed", LANG_SERVER, infopercent);
 				
 			/* Get map names and store it */
 			GetMenuItem(menu, item_info[0][VOTEINFO_ITEM_INDEX], g_map1, sizeof(g_map1), _, g_mapd1, sizeof(g_mapd1));
@@ -1103,9 +1107,11 @@ SetupRunOffVote()
 {
 	/* Insufficient Winning margin - Lets do a runoff */
 	g_VoteMenu = CreateMenu(Handler_MapVoteMenu, MenuAction:MENU_ACTIONS_ALL);
-	SetMenuTitle(g_VoteMenu, "Runoff Vote Nextmap");
+	decl String:title[128];
+	Format(title, sizeof(title),"%T", "Runoff Vote Nextmap", LANG_SERVER);
+	SetMenuTitle(g_VoteMenu, title);
 	SetVoteResultCallback(g_VoteMenu, Handler_MapVoteFinished);
-	
+
 	AddMenuItem(g_VoteMenu, g_map1, g_mapd1);
 	AddMenuItem(g_VoteMenu, g_map2, g_mapd2);
 

@@ -5,6 +5,11 @@
 		"pl"		"Głosuj na następną mapę!"
 	}
 
+	"Runoff Vote Nextmap"
+	{
+		"pl"		"Wybierz ponownie!"
+	}
+
 	"Nextmap Voting Started"
 	{
 		"pl"		"{lightgreen}Rozpoczęto głosowanie na następną mapę."
@@ -22,7 +27,7 @@
 
 	"Extend Map"
 	{
-		"pl"		"Przedłuż Bieżącą Mapę "
+		"pl"		"Przedłuż Bieżącą Mapę"
 	}
 
 	"Dont Change"
@@ -52,7 +57,7 @@
 
 	"Revote Is Needed"
 	{
-		"pl"		"Żadna mapa nie otrzymała wystarczającej ilości głosów.\nWięc która mapa jest zwycięzcą? Trzeba zagłosować ponownie!"
+		"pl"		"Żadna mapa nie otrzymała przynajmniej {1}%% głosów.\nWięc która mapa jest zwycięzcą? Trzeba zagłosować ponownie!"
 	}
 
 	"Revote Warning"
@@ -62,6 +67,6 @@
 
 	"Vote Warning"
 	{
-		"pl"		"UWAGA!!! Za chwilę będziesz musiał dokonać ważnego wyboru!\nGłosowanie na następną mapę rozpocznie się za: {1}s\n ----"
+		"pl"		"UWAGA!!! Za chwilę będziesz musiał dokonać ważnego wyboru!\nGłosowanie na następną mapę rozpocznie się za: {1}s\n -----------"
 	}
 }
