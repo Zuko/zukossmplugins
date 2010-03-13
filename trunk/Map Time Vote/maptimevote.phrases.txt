@@ -1,0 +1,56 @@
+"Phrases"
+{
+	"VoteMenuTitle"
+	{
+		"en"		"How long you want to play at this map?"
+		"pl"		"Jak długo chcesz grać na tej mapie?"
+	}
+
+	"MenuItem01"
+	{
+		"en"		"15min"
+		"pl"		"15min"
+	}
+
+	"MenuItem02"
+	{
+		"en"		"25min"
+		"pl"		"25min"
+	}
+
+	"MenuItem03"
+	{
+		"en"		"35min"
+		"pl"		"35min"
+	}
+
+	"MenuItem04"
+	{
+		"en"		"45min"
+		"pl"		"45min"
+	}
+
+	"VoteEnd01"
+	{
+		"en"		"{default}Map will be played for {olive}15min!"
+		"pl"		"{default}Mapa będzie grana przez {olive}15min!"
+	}
+
+	"VoteEnd02"
+	{
+		"en"		"{default}Map will be played for {olive}25min!"
+		"pl"		"{default}Mapa będzie grana przez {olive}25min!"
+	}
+
+	"VoteEnd03"
+	{
+		"en"		"{default}Map will be played for {olive}35min!"
+		"pl"		"{default}Mapa będzie grana przez {olive}35min!"	
+	}
+
+	"VoteEnd04"
+	{
+		"en"		"{default}Map will be played for {olive}45min!"
+		"pl"		"{default}Mapa będzie grana przez {olive}45min!"	
+	}
+}

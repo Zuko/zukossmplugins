@@ -726,7 +726,7 @@ public Handler_MapVoteFinished(Handle:menu,
 		if (winningvotes <= required)
 		{
 			decl String:buffer_runoffvote[255];
-			Format(buffer_runoffvote, sizeof(buffer_runoffvote), "%t", "Revote Is Needed", LANG_SERVER);
+			Format(buffer_runoffvote, sizeof(buffer_runoffvote), "%T", "Revote Is Needed", LANG_SERVER);
 				
 			/* Get map names and store it */
 			GetMenuItem(menu, item_info[0][VOTEINFO_ITEM_INDEX], g_map1, sizeof(g_map1), _, g_mapd1, sizeof(g_mapd1));
