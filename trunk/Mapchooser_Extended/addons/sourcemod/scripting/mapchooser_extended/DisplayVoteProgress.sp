@@ -132,8 +132,8 @@ public Action:ShowVoteProgress(Handle:timer, Handle:menu)
 
 	decl String:hintboxText[1024];
 	decl String:option[ITEM_MAX_LENGTH];
-	decl String:formatBuffer[128];
-	decl String:translation_buffer[40];
+	decl String:formatBuffer[256];
+	decl String:translation_buffer[256];
 
 	// <title> - <timeleft>
 	//GetMenuTitle(menu, hintboxText, sizeof(hintboxText));
@@ -155,7 +155,7 @@ public Action:ShowVoteProgress(Handle:timer, Handle:menu)
 
 			new percent = ((itemVotes[i-1] * 100) / GetNrReceivedVotes());
 
-			Format(formatBuffer, sizeof(formatBuffer), "\n%i. %s - %i (%i procent)", i, option, itemVotes[i-1], percent);
+			Format(formatBuffer, sizeof(formatBuffer), "\n%i. %s - %i (%i%%)", i, option, itemVotes[i-1], percent);
 			StrCat(hintboxText, sizeof(hintboxText), formatBuffer);
 		}
 		else

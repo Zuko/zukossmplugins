@@ -5,6 +5,11 @@
 		"en"		"Vote for the next map!"
 	}	
 
+	"Runoff Vote Nextmap"
+	{
+		"en"		"Run Off Vote for the next map!"
+	}
+
 	"Nextmap Voting Started"
 	{
 		"en"		"{lightgreen}Voting for next map has started."
@@ -57,7 +62,8 @@
 
 	"Revote Is Needed"
 	{
-		"en"		"Two maps has the same amount of votes. \nSo, with map is a winner? Revote is needed!"
+		"#format"	"{1:i}"
+		"en"		"Neither map has not received more than {1}%% of votes.\nSo, with map is a winner? Revote is needed!"
 	}
 
 	"Revote Warning"
