@@ -8,49 +8,45 @@
 
 	"MenuItem01"
 	{
-		"en"		"15min"
-		"pl"		"15min"
+		"en"		"15 minutes"
+		"pl"		"15 minut"
 	}
 
 	"MenuItem02"
 	{
-		"en"		"25min"
-		"pl"		"25min"
+		"en"		"25 minutes"
+		"pl"		"25 minut"
 	}
 
 	"MenuItem03"
 	{
-		"en"		"35min"
-		"pl"		"35min"
+		"en"		"35 minutes"
+		"pl"		"35 minut"
 	}
-
+	
 	"MenuItem04"
 	{
-		"en"		"45min"
-		"pl"		"45min"
+		"en"		"45 minutes"
+		"pl"		"45 minut"
 	}
 
-	"VoteEnd01"
+	"VoteEnd"
 	{
-		"en"		"{default}Map will be played for {olive}15min!"
-		"pl"		"{default}Mapa będzie grana przez {olive}15min!"
+		"#format"	"{1:s}"
+		"en"		"{default}Map will be played for {olive}{1} minutes!"
+		"pl"		"{default}Mapa będzie grana przez {olive}{1} minut!"
 	}
 
-	"VoteEnd02"
+	"VoteEnd_Hintbox"
 	{
-		"en"		"{default}Map will be played for {olive}25min!"
-		"pl"		"{default}Mapa będzie grana przez {olive}25min!"
+		"#format"	"{1:s}"
+		"en"		"Map will be played for {1} minutes!"
+		"pl"		"Mapa będzie grana przez {1} minut!"
 	}
-
-	"VoteEnd03"
+	
+	"Number Of Votes"
 	{
-		"en"		"{default}Map will be played for {olive}35min!"
-		"pl"		"{default}Mapa będzie grana przez {olive}35min!"	
-	}
-
-	"VoteEnd04"
-	{
-		"en"		"{default}Map will be played for {olive}45min!"
-		"pl"		"{default}Mapa będzie grana przez {olive}45min!"	
+		"en"		"Number of votes"
+		"pl"		"Otrzymane głosy"
 	}
 }

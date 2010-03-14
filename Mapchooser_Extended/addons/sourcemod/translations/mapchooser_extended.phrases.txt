@@ -63,7 +63,7 @@
 	"Revote Is Needed"
 	{
 		"#format"	"{1:i}"
-		"en"		"Neither map has not received more than {1}%% of votes.\nSo, with map is a winner? Revote is needed!"
+		"en"		"Neither map has not received more than {1} percent of votes.\nSo, with map is a winner? Revote is needed!"
 	}
 
 	"Revote Warning"
@@ -76,5 +76,15 @@
 	{
 		"#format"	"{1:i}"
 		"en"		"Warning! Vote will start in: {1}s"
+	}
+
+	"Line One"
+	{
+		"pl"		"Consider which map you want to play..."
+	}
+
+	"Line Two"
+	{
+		"pl"		"...and don't hit buttons thoughtlessly ;-)"
 	}
 }
