@@ -170,6 +170,7 @@ public InitializeAdminCommands()
 	RegAdminCmd("sm_candy_reset", cResetCandy, ADMFLAG_ROOT, "Reset the amount of candy of every player to a certain amount (sm_candy_reset amount)");
 	RegAdminCmd("sm_candy_resetdb", cResetDB, ADMFLAG_ROOT, "Reset the database (sm_candy_resetdb)");
 	RegAdminCmd("sm_candy_playerreset", cPlayerResetCandy, ADMFLAG_ROOT, "Reset the amount of candy of selected player to 0 (sm_candy_playerreset userid)");
+	RegAdminCmd("sm_candy_forcedrop", cForceDrop, ADMFLAG_ROOT, "Force drop");
 }
 
 /**
@@ -541,7 +542,7 @@ public Action:tDropCandy(Handle:timer)
 			AddCandy(randomPlayer, cndCount)
 			CPrintToChatAll(message);
 			StartLooper(randomPlayer);
-			new Float:playerPos[3] ;
+			new Float:playerPos[3];
 			GetEntPropVector(randomPlayer, Prop_Send, "m_vecOrigin", playerPos);
 			EmitAmbientSound(ACHIEVEMENT_SOUND, playerPos, SOUND_FROM_WORLD, SNDLEVEL_NORMAL, SND_NOFLAGS, SNDVOL_NORMAL, SNDPITCH_NORMAL, 0.0);
 		}
@@ -606,6 +607,24 @@ public Action:tTick(Handle:timer)
 */
 			CandyAfterDeath[i]++;
 	}
+}
+
+public Action:cForceDrop(client, args)
+{
+	new randomPlayer = GetRandomInt(1, GetClientCount());
+	new cndCount = GetRandomInt(10, 100);
+	new String:playerName[255];
+	GetClientName(randomPlayer, playerName, sizeof(playerName));
+	new String:message[255];
+	Format(message, sizeof(message), "{lightgreen}%s {default}znalazł(a) {green}%i {default}cukierków!", playerName, cndCount);
+	AddCandy(randomPlayer, cndCount)
+	CPrintToChatAll(message);
+	StartLooper(randomPlayer);
+	new Float:playerPos[3];
+	GetEntPropVector(randomPlayer, Prop_Send, "m_vecOrigin", playerPos);
+	EmitAmbientSound(ACHIEVEMENT_SOUND, playerPos, SOUND_FROM_WORLD, SNDLEVEL_NORMAL, SND_NOFLAGS, SNDVOL_NORMAL, SNDPITCH_NORMAL, 0.0);
+	
+	return Plugin_Handled;
 }
 
 /**
