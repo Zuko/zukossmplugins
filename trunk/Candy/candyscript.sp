@@ -1,10 +1,11 @@
 #include <sourcemod>
 #include <tf2_stocks>
 #include <colors>
+#include "candy/fireworks.sp"
 
 /* defines */
 #define PLUGIN_VERSION "1.0"
-//#define DEBUG "1"
+#define DEBUG "1"
 #define NULLNAME "$$NULL##"
 
 public Plugin:myinfo = 
@@ -33,6 +34,7 @@ new Handle:cvCustomChatTriggerBuyMenu2;
 new Handle:cvCustomChatTriggerPlayerStats1;
 new Handle:cvCustomChatTriggerPlayerStats2;
 new Handle:cvDelay;
+new Handle:cvDropCandy;
 
 new Handle:dbConnection = INVALID_HANDLE;
 
@@ -146,6 +148,7 @@ public InitializeConvars()
 	cvCustomChatTriggerPlayerStats1 = CreateConVar("sm_candy_chat_stats1", "", "Custom chat trigger for the player stats", FCVAR_PLUGIN);
 	cvCustomChatTriggerPlayerStats2 = CreateConVar("sm_candy_chat_stats2", "", "Custom chat trigger for the player stats", FCVAR_PLUGIN);
 	cvDelay = CreateConVar("sm_candy_delay", "0.0", "Delay between buying", FCVAR_PLUGIN);
+	cvDropCandy = CreateConVar("sm_candy_dropcandy", "1.0", "Drop candy", FCVAR_PLUGIN);
 	
 	PrintDebug("AutoExecConfig");
 	AutoExecConfig();
@@ -294,6 +297,11 @@ public InitializeTimersAndCValues()
 	{
 		sConnectingClients[i] = "";
 	}
+	new iDropEnabled = GetConVarInt(cvDropCandy);
+	if (iDropEnabled == 1)
+	{
+		CreateTimer(1.0, tDropCandy, _, TIMER_REPEAT);
+	}	
 }
 
 /**
@@ -512,6 +520,32 @@ public RemoveFromConnecters(position)
 {
 	sConnectingClients[position] = "";
 	PrintDebug("Removing a value from the connectors");
+}
+
+/**
+ * Drop Candy!
+ */
+public Action:tDropCandy(Handle:timer)
+{
+	if (GetConVarInt(cvDropCandy) == 1)
+	{
+		PrintDebug("Drop Candy Tick!");
+		if (GetRandomInt(0, 9) == GetRandomInt(8, 19))
+		{
+			new randomPlayer = GetRandomInt(1, GetClientCount());
+			new cndCount = GetRandomInt(10, 100);
+			new String:playerName[255];
+			GetClientName(randomPlayer, playerName, sizeof(playerName));
+			new String:message[255];
+			Format(message, sizeof(message), "{lightgreen}%s {default}znalazł(a) {green}%i {default}cukierków!", playerName, cndCount);
+			AddCandy(randomPlayer, cndCount)
+			CPrintToChatAll(message);
+			StartLooper(randomPlayer);
+			new Float:playerPos[3] ;
+			GetEntPropVector(randomPlayer, Prop_Send, "m_vecOrigin", playerPos);
+			EmitAmbientSound(ACHIEVEMENT_SOUND, playerPos, SOUND_FROM_WORLD, SNDLEVEL_NORMAL, SND_NOFLAGS, SNDVOL_NORMAL, SNDPITCH_NORMAL, 0.0);
+		}
+	}
 }
 
 /**
