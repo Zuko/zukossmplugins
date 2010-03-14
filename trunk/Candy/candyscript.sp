@@ -1,7 +1,7 @@
 #include <sourcemod>
 #include <tf2_stocks>
 #include <colors>
-#include "candy/fireworks.sp"
+#include "Candy/fireworks.sp"
 
 /* defines */
 #define PLUGIN_VERSION "1.0"
@@ -59,6 +59,7 @@ new iCosts[512];
 new Float:iStopTimes[512];
 
 new String:logfile[255];
+new String:droplogfile[255];
 
 public OnPluginStart()
 {
@@ -77,6 +78,7 @@ public OnPluginStart()
 		sNames[i] = NULLNAME;
 		
 	BuildPath(Path_SM, logfile, sizeof(logfile), "logs/candy.log");
+	BuildPath(Path_SM, droplogfile, sizeof(droplogfile), "logs/candy_drop.log");
 	LoadTranslations("common.phrases");
 }
 
@@ -534,11 +536,17 @@ public Action:tDropCandy(Handle:timer)
 		if (GetRandomInt(0, 9) == GetRandomInt(8, 19))
 		{
 			new randomPlayer = GetRandomInt(1, GetClientCount());
+			if (!FullCheckClient(randomPlayer))
+			{
+				PrintDebug("Drop Candy: Invalid Client");
+				return;
+			}
 			new cndCount = GetRandomInt(10, 100);
 			new String:playerName[255];
 			GetClientName(randomPlayer, playerName, sizeof(playerName));
 			new String:message[255];
 			Format(message, sizeof(message), "{lightgreen}%s {default}znalazł(a) {green}%i {default}cukierków!", playerName, cndCount);
+			LogToFile(droplogfile, "[%s] %s znalazł(a) %i cukierków!", sChatTag, playerName, cndCount);
 			AddCandy(randomPlayer, cndCount)
 			CPrintToChatAll(message);
 			StartLooper(randomPlayer);
