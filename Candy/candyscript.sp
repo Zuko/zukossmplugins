@@ -5,7 +5,7 @@
 
 /* defines */
 #define PLUGIN_VERSION "1.0"
-#define DEBUG "1"
+//#define DEBUG "1"
 #define NULLNAME "$$NULL##"
 
 public Plugin:myinfo = 
@@ -300,7 +300,7 @@ public InitializeTimersAndCValues()
 	new iDropEnabled = GetConVarInt(cvDropCandy);
 	if (iDropEnabled == 1)
 	{
-		CreateTimer(1.0, tDropCandy, _, TIMER_REPEAT);
+		CreateTimer(300.0, tDropCandy, _, TIMER_REPEAT);
 	}	
 }
 
