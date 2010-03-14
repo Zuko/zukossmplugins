@@ -27,7 +27,7 @@
 
 	"Extend Map"
 	{
-		"pl"		"Przedłuż Bieżącą Mapę"
+		"pl"		"Przedłuż bieżącą mapę"
 	}
 
 	"Dont Change"
@@ -57,7 +57,7 @@
 
 	"Revote Is Needed"
 	{
-		"pl"		"Żadna mapa nie otrzymała przynajmniej {1}%% głosów.\nWięc która mapa jest zwycięzcą? Trzeba zagłosować ponownie!"
+		"pl"		"Żadna mapa nie otrzymała przynajmniej {1}procent głosów.\nWięc która mapa jest zwycięzcą? Trzeba zagłosować ponownie!"
 	}
 
 	"Revote Warning"
@@ -68,5 +68,15 @@
 	"Vote Warning"
 	{
 		"pl"		"UWAGA!!! Za chwilę będziesz musiał dokonać ważnego wyboru!\nGłosowanie na następną mapę rozpocznie się za: {1}s\n -----------"
+	}
+
+	"Line One"
+	{
+		"pl"		"Zastanów się na której mapie chcesz grać..."
+	}
+
+	"Line Two"
+	{
+		"pl"		"...i nie wciskaj bezmyślnie jedynki ;-)"
 	}
 }
