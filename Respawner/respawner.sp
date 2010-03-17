@@ -49,6 +49,9 @@
  * - Redone some functions
  * - Redone phrases
  *
+ * Version 1.7 (15.03.2010)
+ * - Removed checks for round start/end (sm_autorplayer don't respawn player when round ends)
+ *
  * TODO:
  * - Requests ;-)
  * - Fixing bugs ;D
@@ -77,9 +80,6 @@ new Handle:g_Cvar_Log = INVALID_HANDLE;
 new bool:autorespawn_enabled[MAXPLAYERS+1] = false;
 new Float:respawn_delay[MAXPLAYERS+1] = -1.0;
 
-new bool:SuddenDeathMode
-new bool:RoundIsActive
-
 new String:logFile[256];
 new PlayerTeam
 
@@ -100,14 +100,14 @@ public OnPluginStart()
 {
 	CreateConVar("respawner_version", PLUGIN_VERSION, "Respawn Player Plugin Version", FCVAR_PLUGIN|FCVAR_SPONLY|FCVAR_REPLICATED|FCVAR_NOTIFY);
 	
-	g_Cvar_PluginEnable = 					CreateConVar("sm_respawner_enable", 			"1", "Enable/Disable Respawn Player Plugin", 	_, true, 0.0, true, 1.0);
-	g_Cvar_ChatNotify = 					CreateConVar("sm_respawner_chat_notify", 	"1", "Respawn Chat Notifications", 				_, true, 0.0, true, 2.0);
-	g_Cvar_ChatNotify_AutoRespawn = 		CreateConVar("sm_autorespawn_chat_notify", 	"1", "Auto Respawn Chat Notifications",		 	_, true, 0.0, true, 2.0);
-	g_Cvar_Log = 								CreateConVar("sm_respawner_log", 			"1", "Respawn Actions Logging", 				_, true, 0.0, true, 2.0);
+	g_Cvar_PluginEnable = CreateConVar("sm_respawner_enable", "1", "Enable/Disable Respawn Player Plugin", _, true, 0.0, true, 1.0);
+	g_Cvar_ChatNotify = CreateConVar("sm_respawner_chat_notify", "1", "Respawn Chat Notifications", _, true, 0.0, true, 2.0);
+	g_Cvar_ChatNotify_AutoRespawn = CreateConVar("sm_autorespawn_chat_notify", "1", "Auto Respawn Chat Notifications", _, true, 0.0, true, 2.0);
+	g_Cvar_Log = CreateConVar("sm_respawner_log", "1", "Respawn Actions Logging", _, true, 0.0, true, 2.0);
 	
-	RegAdminCmd("sm_rp", 			Command_Rplayer, 			_ADMIN_FLAG_, "sm_rp <#userid | name>");
-	RegAdminCmd("sm_autorespawn", 	Command_AutoRplayer,		_ADMIN_FLAG_, "sm_autorespawn <#userid | name> <delay>");
-	RegAdminCmd("sm_rme", 			Command_RespawnMe, 			_ADMIN_FLAG_, "Respawn yourself");
+	RegAdminCmd("sm_rp", Command_Rplayer, _ADMIN_FLAG_, "sm_rp <#userid | name>");
+	RegAdminCmd("sm_autorespawn", Command_AutoRplayer, _ADMIN_FLAG_, "sm_autorespawn <#userid | name> <delay>");
+	RegAdminCmd("sm_rme", Command_RespawnMe, _ADMIN_FLAG_, "Respawn yourself");
 	
 	LoadTranslations("common.phrases");
 	LoadTranslations("respawner.phrases");
@@ -117,9 +117,6 @@ public OnPluginStart()
 	
 	/* Hook Events */
 	HookEvent("player_death", EventPlayerDeath);
-	HookEvent("teamplay_round_stalemate", EventSuddenDeath, EventHookMode_PostNoCopy);
-	HookEvent("teamplay_round_win", EventRoundWon, EventHookMode_PostNoCopy);
-	HookEvent("teamplay_round_start", EventRoundStart, EventHookMode_PostNoCopy);
 		
 	/*Menu Handler */
 	new Handle:topmenu
@@ -318,7 +315,7 @@ public Action:Command_AutoRplayer(client, args)
 	
 	for (new i = 0; i < target_count; i++)
 	{
-		if (!SuddenDeathMode && IsClientConnected(target_list[i]) && IsClientInGame(target_list[i]))
+		if (IsClientConnected(target_list[i]) && IsClientInGame(target_list[i]))
 		{
 			PlayerTeam = GetClientTeam(target_list[i]);
 			if (PlayerTeam != 1)
@@ -400,7 +397,7 @@ public Action:Command_AutoRplayer(client, args)
 /* Respawn Timer */
 public Action:SpawnPlayerTimer(Handle:timer, any:client)
 {
-	if (!SuddenDeathMode && IsClientConnected(client) && IsClientInGame(client) && !IsPlayerAlive(client))
+	if (IsClientConnected(client) && IsClientInGame(client) && !IsPlayerAlive(client))
 	{
 		TF2_RespawnPlayer(client);
 	}
@@ -415,7 +412,7 @@ public Action:EventPlayerDeath(Handle:event, const String:name[], bool:dontBroad
 	
 	new Float:RespawnTime = 0.0;
 	
-	if ((autorespawn_enabled[client] == true) && (!SuddenDeathMode) && (RoundIsActive == true))
+	if (autorespawn_enabled[client] == true)
 	{
 		RespawnTime = respawn_delay[client];
 		if (respawn_delay[client] == -1)
@@ -428,22 +425,6 @@ public Action:EventPlayerDeath(Handle:event, const String:name[], bool:dontBroad
 		}
 	}
 	return Plugin_Continue;
-}
-
-public Action:EventSuddenDeath(Handle:event, const String:name[], bool:dontBroadcast)
-{
-	SuddenDeathMode = true;
-	return Plugin_Continue;
-}
-
-public EventRoundWon(Handle:event, const String:name[], bool:dontBroadcast)
-{
-	RoundIsActive = false;
-}
-
-public EventRoundStart(Handle:event, const String:name[], bool:dontBroadcast)
-{
-	RoundIsActive = true;
 }
 /* >>> end of events */
 /* >>> end of Auto Respawn */

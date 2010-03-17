@@ -79,4 +79,9 @@
 	{
 		"pl"		"...i nie wciskaj bezmyślnie jedynki ;-)"
 	}
+	
+	"Vote Progress"
+	{
+		"pl"		"\n{1}. {2} - {3} ({4}%%%%)"
+	}
 }
