@@ -1,0 +1,150 @@
+// Klasy:
+// 1 - Scout
+// 2 - Sniper
+// 3 - Soldier
+// 4 - Demoman
+// 5 - Medic
+// 6 - Heavy
+// 7 - Pyro
+// 8 - Spy
+// 9 - Engineer
+
+// Grupy:
+// dowolny znak
+
+"Buymenu"
+{
+	"1"
+	{
+		"title"		"100% Krytów (10 sek)"
+		"price"		"150"
+		"oncmd"		"sm_kritz | 1"
+		"offcmd"	"sm_kritz | 0"
+		"time"		"10"
+		"group"		"a"
+	}
+
+	"2"
+	{
+		"title"		"Nieśmiertelność (10 sek)"
+		"price"		"250"
+		"oncmd"		"sm_uber | 1"
+		"offcmd"	"sm_uber | 0"
+		"time"		"10"
+		"group"		"a"
+	}
+
+	"3"
+	{
+		"title"		"100% Ubera (Dla Medyka)"
+		"price"		"200"
+		"oncmd"		"sm_candy_buy_uber ? 100"
+		"offcmd"	""
+		"time"		"0"
+		"class"		"5"
+	}
+
+	"4"
+	{
+		"title"		"200% Ubera (Dla Medyka)"
+		"price"		"400"
+		"oncmd"		"sm_candy_buy_uber ? 200"
+		"offcmd"	""
+		"time"		"10"
+		"class"		"5"
+	}
+
+	"5"
+	{
+		"title"		"400% Ubera (Dla Medyka)"
+		"price"		"1000"
+		"oncmd"		"sm_candy_buy_uber ? 400"
+		"offcmd"	""
+		"time"		"0"
+		"class"		"5"
+	}
+	
+	"6"
+	{
+		"title"		"200 Metalu (Dla Inżyniera)"
+		"price"		"200"
+		"oncmd"		"sm_setmetal | 200"
+		"offcmd"	""
+		"time"		"0"
+		"class"		"9"
+	}	
+	
+	"7"
+	{
+		"title"		"Leczenie"
+		"price"		"50"
+		"oncmd"		"sm_candy_buy_regen ?"
+		"offcmd"	""
+		"time"		""
+	}
+	
+	"8"
+	{
+		"title"		"Rezerwacja slotu - 1 tydzień"
+		"price"		"6000"
+		"oncmd"		"sm_addtimedreserved ? 604800"
+		"offcmd"	""
+		"time"		""
+	}
+	
+	"9"
+	{
+		"title"		"Rezerwacja slotu - 2 tygodnie"
+		"price"		"8000"
+		"oncmd"		"sm_addtimedreserved ? 1209600"
+		"offcmd"	""
+		"time"		""
+	}
+	
+	"10"
+	{
+		"title"		"Rezerwacja slotu - 4 tygodnie"
+		"price"		"10000"
+		"oncmd"		"sm_addtimedreserved ? 2419200"
+		"offcmd"	""
+		"time"		""
+	}
+	
+	"11"
+	{
+		"title"		"Auto Respawn (po 5 sek)"
+		"price"		"500"
+		"oncmd"		"sm_autorespawn | 5"
+		"offcmd"	""
+		"time"		""
+	}
+	
+	"12"
+	{
+		"title"		"Auto Respawn (od razu)"
+		"price"		"700"
+		"oncmd"		"sm_autorespawn | 0"
+		"offcmd"	""
+		"time"		""
+	}
+	
+	"13"
+	{
+		"title"		"Auto Uber (50%)"
+		"price"		"500"
+		"oncmd"		"sm_autouber | 50"
+		"offcmd"	""
+		"time"		""
+		"class"		"5"
+	}
+	
+	"14"
+	{
+		"title"		"Auto Uber (25%)"
+		"price"		"250"
+		"oncmd"		"sm_autouber | 25"
+		"offcmd"	""
+		"time"		""
+		"class"		"5"
+	}
+}
