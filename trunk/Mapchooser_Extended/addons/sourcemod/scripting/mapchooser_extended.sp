@@ -787,27 +787,25 @@ public Handler_MapVoteFinished(Handle:menu,
 
 	if (GetConVarBool(g_Cvar_RunOff) && num_items > 1)
 	{
-		if (g_RunOffs < GetConVarInt(g_Cvar_MaxRunOffs))
+		new Float:winningvotes = float(item_info[0][VOTEINFO_ITEM_VOTES]);
+		new Float:required = num_votes * (GetConVarFloat(g_Cvar_RunOffPercent) / 100.0);
+		
+		if ((g_RunOffs < GetConVarInt(g_Cvar_MaxRunOffs)) && (winningvotes <= required))
 		{
-			new Float:winningvotes = float(item_info[0][VOTEINFO_ITEM_VOTES]);
-			new Float:required = num_votes * (GetConVarFloat(g_Cvar_RunOffPercent) / 100.0);
-			
-			if (winningvotes <= required)
-			{
-				decl String:buffer_runoffvote[255];
-				new infopercent = GetConVarInt(g_Cvar_RunOffPercent);
-				Format(buffer_runoffvote, sizeof(buffer_runoffvote), "%T", "Revote Is Needed", LANG_SERVER, infopercent);
-					
-				/* Get map names and store it */
-				GetMenuItem(menu, item_info[0][VOTEINFO_ITEM_INDEX], g_map1, sizeof(g_map1), _, g_mapd1, sizeof(g_mapd1));
-				GetMenuItem(menu, item_info[1][VOTEINFO_ITEM_INDEX], g_map2, sizeof(g_map2), _, g_mapd2, sizeof(g_mapd2));
+			decl String:buffer_runoffvote[255];
+			new infopercent = GetConVarInt(g_Cvar_RunOffPercent);
+			Format(buffer_runoffvote, sizeof(buffer_runoffvote), "%T", "Revote Is Needed", LANG_SERVER, infopercent);
 				
-				CreateTimer(5.0, RunOffVoteWarningDelay, _, TIMER_FLAG_NO_MAPCHANGE);
-				VoteEnded(buffer_runoffvote);
-				g_RunOffs++;
-				return;
-			}
+			/* Get map names and store it */
+			GetMenuItem(menu, item_info[0][VOTEINFO_ITEM_INDEX], g_map1, sizeof(g_map1), _, g_mapd1, sizeof(g_mapd1));
+			GetMenuItem(menu, item_info[1][VOTEINFO_ITEM_INDEX], g_map2, sizeof(g_map2), _, g_mapd2, sizeof(g_mapd2));
+				
+			CreateTimer(5.0, RunOffVoteWarningDelay, _, TIMER_FLAG_NO_MAPCHANGE);
+			VoteEnded(buffer_runoffvote);
+			g_RunOffs++;
+			return;
 		}
+		/* to byl raczej ten fail ;D
 		else
 		{
 			new count = GetMenuItemCount(menu);
@@ -832,6 +830,7 @@ public Handler_MapVoteFinished(Handle:menu,
 			LogMessage("RunOff votes has beed used, randomly selected %s as nextmap.", map);
 			return;
 		}
+		*/
 	}
 
 	decl String:map[32];
@@ -988,7 +987,6 @@ public Handler_MapVoteMenu(Handle:menu, MenuAction:action, param1, param2)
 
 		case MenuAction_VoteCancel:
 		{
-
 			decl String:buffer[255]; // $ added
 
 			// If we receive 0 votes, pick at random.
@@ -1088,6 +1086,7 @@ public Handler_MapVoteMenu(Handle:menu, MenuAction:action, param1, param2)
 			{
 				// We were actually cancelled. I guess we do nothing.
 				Format(buffer, sizeof(buffer), "%t", "Cancelled Vote",param1); // $ added
+				VoteEnded(buffer);
 			}
 
 			g_HasVoteStarted = false;

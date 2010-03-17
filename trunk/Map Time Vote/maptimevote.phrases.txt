@@ -5,6 +5,12 @@
 		"en"		"How long you want to play at this map?"
 		"pl"		"Jak długo chcesz grać na tej mapie?"
 	}
+	
+	"VoteMenuTitle2"
+	{
+		"en"		"Enable or Disable Crits?"
+		"pl"		"Właczyć czy WYłączyć KRYTYKI?"
+	}
 
 	"MenuItem01"
 	{
@@ -29,6 +35,18 @@
 		"en"		"45 minutes"
 		"pl"		"45 minut"
 	}
+	
+	"MenuItem05"
+	{
+		"en"		"Enable! I like crits"
+		"pl"		"Włączyć! Lubię je ;-)"
+	}
+	
+	"MenuItem06"
+	{
+		"en"		"Disable! F**k it."
+		"pl"		"Wyłączyć! Jak ja ich nienawidze..."
+	}
 
 	"VoteEnd"
 	{
@@ -44,9 +62,86 @@
 		"pl"		"Mapa będzie grana przez {1} minut!"
 	}
 	
+	"VoteEnd2"
+	{
+		"#format"	"{1:s}"
+		"en"		"{default}So, criticals will be {olive}{1}!"
+		"pl"		"{default}Więc, krytyki zostały {olive}{1}!"
+	}
+
+	"VoteEnd_Hintbox2"
+	{
+		"#format"	"{1:s}"
+		"en"		"So, criticals will be {1}!"
+		"pl"		"Więc, krytyki zostały {1}!"
+	}
+	
+	"VoteEnd_Average"
+	{
+		"#format"	"{1:i}"
+		"en"		"{default}Map will be played for {olive}{1} minutes! {default}(Average from all results)"
+		"pl"		"{default}Mapa będzie grana przez {olive}{1} minut! {default}(Średnia z wszystkich głosów)"
+	}
+	
+	"VoteEnd_Hintbox_Average"
+	{
+		"#format"	"{1:i}"
+		"en"		"Map will be played for {1} minutes!\n(Average from all results)"
+		"pl"		"Mapa będzie grana przez {1} minut!\n(Średnia z wszystkich głosów)"
+	}
+	
 	"Number Of Votes"
 	{
 		"en"		"Number of votes"
 		"pl"		"Otrzymane głosy"
+	}
+
+	"Line One"
+	{
+		"en"		"Consider how long you want to play..."
+		"pl"		"Zastanów się ile czasu chcesz grać..."
+	}
+
+	"Line Two"
+	{
+		"en"		"...and don't hit buttons thoughtlessly ;-)"
+		"pl"		"...i nie wciskaj bezmyślnie jedynki ;-)"
+	}
+	
+	"Line Three"
+	{
+		"en"		"Consider if you like crits or not..."
+		"pl"		"Zastanów się czy lubisz krytyki czy może nie bardzo..."
+	}
+
+	"Line Four"
+	{
+		"en"		"...and don't hit buttons thoughtlessly ;-)"
+		"pl"		"...i nie wciskaj bezmyślnie jedynki ;-)"
+	}
+	
+	"No_Votes"
+	{
+		"en"		"No votes received ;("
+		"pl"		"Nie otrzymano głosów ;("
+	}
+
+	"Enabled"
+	{
+		"en"		"ENABLED"
+		"pl"		"WŁĄCZONE"
+	}
+
+	"Disabled"
+	{
+		"en"		"DISABLED"
+		"pl"		"WYŁĄCZONE"
+	}
+	
+	"Vote Progress"
+	{
+		"#format"	"{1:i},{2:s},{3:i},{4:i}"
+		"en"		"\n{1}. {2} - {3} ({4}%%%%)"
+		"pl"		"\n{1}. {2} - {3} ({4}%%%%)"
 	}
 }

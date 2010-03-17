@@ -1,36 +1,30 @@
 /*
- * Version 1.0
- * - Initial release 
- *
  * Zuko / #hlds.pl @ Qnet / zuko.isports.pl /
- *
  */
- 
+
 #include <sourcemod>
 #include <sdktools>
 #include <colors>
 
-#define ITEM_MAX_LENGTH		128
+#define ITEM_MAX_LENGTH 128
 #define CLIENT_MAX_LENGTH	32
-#define PLUGIN_VERSION "1.1"
-
-new g_PlayerVotes[MAXPLAYERS+1];
+#define PLUGIN_VERSION "1.3"
 
 new Handle:g_Cvar_PrintVotes = INVALID_HANDLE;
 new Handle:g_Cvar_ShowVotes = INVALID_HANDLE;
 new Handle:g_AllowedVoters = INVALID_HANDLE;
-
 new Handle:g_timer_ShowVotes = INVALID_HANDLE;
+new Handle:g_Cvar_Average = INVALID_HANDLE;
 
 new g_VoteTimeStart2;
- 
+new g_PlayerVotes[MAXPLAYERS+1];
 new bool:anyplayerconnected = false
 
 public Plugin:myinfo = 
 {
 	name = "Map Time Vote",
 	author = "Zuko",
-	description = "Jak dlugo ma trwac mapa",
+	description = "How long map should be played. Enable or disable crits?",
 	version = PLUGIN_VERSION,
 	url = "http://zuko.isports.pl"
 }
@@ -45,7 +39,7 @@ public OnPluginStart()
 
 	g_Cvar_PrintVotes = CreateConVar("sm_maptimevote_printvotes", "0", "Should the option that a player vote on get printed (1 - yes print player votes, 0 - don't print).", _, true, 0.0, true, 1.0);
 	g_Cvar_ShowVotes = CreateConVar("sm_maptimevote_showvotes", "3", "How many vote options the hint box should show. 0 will disable it", _, true, 0.0, true, 3.0);
-
+	g_Cvar_Average = CreateConVar("sm_maptimevote_average", "1", "Count average map time from all votes.", _, true, 0.0, true, 1.0);
 	g_AllowedVoters = CreateArray(1);
 }
 
@@ -56,22 +50,19 @@ public OnMapStart()
 
 public OnMapEnd()
 {
-	g_timer_ShowVotes = INVALID_HANDLE; // Being closed on mapchange: TIMER_FLAG_NO_MAPCHANGE
+	g_timer_ShowVotes = INVALID_HANDLE;
 }
 
 public OnClientDisconnect(client)
 {
-	// reset the clients vote
 	g_PlayerVotes[client] = -1;
 
-	// if client is allowed to vote then remove him (to fix max number of voters)
 	new index = FindValueInArray(g_AllowedVoters, client);
 	if (index > -1)
 	{
 		RemoveFromArray(g_AllowedVoters, index);
 	}
 
-	// if we display vote then update it
 	if (GetConVarBool(g_Cvar_ShowVotes) && g_timer_ShowVotes != INVALID_HANDLE)
 	{
 		TriggerTimer(g_timer_ShowVotes);
@@ -82,7 +73,7 @@ public OnClientPostAdminCheck()
 {
 	if (!anyplayerconnected)
 	{
-		CreateTimer(60.0, StartVote)
+		CreateTimer(90.0, StartVote)
 		anyplayerconnected = true
 	}
 }
@@ -94,22 +85,29 @@ public Action:StartVote(Handle:timer)
 		return;
 	}
  
-	new Handle:menu = CreateMenu(Handle_VoteMenu)//, MenuAction:MENU_ACTIONS_ALL);
+	new Handle:menu = CreateMenu(Handle_VoteMenu);
 	SetVoteResultCallback(menu, Handler_MapVoteFinished);
+	SetMenuPagination(menu, MENU_NO_PAGINATION);
 	
+	decl String:lineone[128], String:linetwo[128];
 	decl String:title[100], String:menuitem1[100], String:menuitem2[100], String:menuitem3[100], String:menuitem4[100];
-	Format(title, sizeof(title),"%t", "VoteMenuTitle", LANG_SERVER)
+	Format(title, sizeof(title),"%t", "VoteMenuTitle", LANG_SERVER);
 	SetMenuTitle(menu, title);
-	AddMenuItem(menu, "nothing", "Nie wciskaj bezmyślnie jedynki ;-)", ITEMDRAW_DISABLED)
-	AddMenuItem(menu, "nothing", " ", ITEMDRAW_SPACER)
-	Format(menuitem1, sizeof(menuitem1),"%t", "MenuItem01", LANG_SERVER)
-	AddMenuItem(menu, "15", menuitem1)
-	Format(menuitem2, sizeof(menuitem2),"%t", "MenuItem02", LANG_SERVER)
-	AddMenuItem(menu, "25", menuitem2)
-	Format(menuitem3, sizeof(menuitem3),"%t", "MenuItem03", LANG_SERVER)
-	AddMenuItem(menu, "35", menuitem3)
-	Format(menuitem4, sizeof(menuitem4),"%t", "MenuItem04", LANG_SERVER)
-	AddMenuItem(menu, "45", menuitem4)
+	AddMenuItem(menu, "nothing", " ", ITEMDRAW_SPACER);
+	Format(lineone, sizeof(lineone),"%T", "Line One", LANG_SERVER);
+	AddMenuItem(menu, "nothing", lineone, ITEMDRAW_DISABLED);
+	Format(linetwo, sizeof(linetwo),"%T", "Line Two", LANG_SERVER);
+	AddMenuItem(menu, "nothing", linetwo, ITEMDRAW_DISABLED);
+	AddMenuItem(menu, "nothing", " ", ITEMDRAW_SPACER);
+	AddMenuItem(menu, "nothing", " ", ITEMDRAW_SPACER);
+	Format(menuitem1, sizeof(menuitem1),"%T", "MenuItem01", LANG_SERVER);
+	AddMenuItem(menu, "15", menuitem1);
+	Format(menuitem2, sizeof(menuitem2),"%T", "MenuItem02", LANG_SERVER);
+	AddMenuItem(menu, "25", menuitem2);
+	Format(menuitem3, sizeof(menuitem3),"%T", "MenuItem03", LANG_SERVER);
+	AddMenuItem(menu, "35", menuitem3);
+	Format(menuitem4, sizeof(menuitem4),"%T", "MenuItem04", LANG_SERVER);
+	AddMenuItem(menu, "45", menuitem4);
 	SetMenuExitButton(menu, false)
 	VoteMenuToAll(menu, 30);
 }
@@ -147,6 +145,22 @@ public Handle_VoteMenu(Handle:menu, MenuAction:action, param1, param2)
 				TriggerTimer(g_timer_ShowVotes);
 			}
 		}
+		case MenuAction_VoteCancel:
+		{
+			if (param1 == VoteCancel_NoVotes)
+			{
+				decl String:buffer[128];
+				Format(buffer, sizeof(buffer), "%T", "No_Votes", LANG_SERVER);
+				CPrintToChatAll("%T", "No_Votes", LANG_SERVER);
+				VoteEnded(buffer);
+			}
+			else
+			{
+				decl String:buffer[128];
+				Format(buffer, sizeof(buffer), "%T", "Cancelled Vote", param1);
+				VoteEnded(buffer);
+			}
+		}
 	}
 }
 
@@ -163,18 +177,184 @@ public Handler_MapVoteFinished(Handle:menu,
 		LogError("No Votes recorded yet Advanced callback fired - Tell nobody! to fix this");
 		return;
 	}
-
-	decl String:option[128], String:buffer[128], String:buffer2[128];
-	GetMenuItem(menu, item_info[0][VOTEINFO_ITEM_INDEX], option, sizeof(option));
-
-	Format(buffer2, sizeof(buffer2), "mp_timelimit %s", option);
-	ServerCommand(buffer2);
 	
-	CPrintToChatAll("%T", "VoteEnd", LANG_SERVER, option);
-	Format(buffer, sizeof(buffer), "%T", "VoteEnd_Hintbox", LANG_SERVER, option);
+	if ((num_votes > 1) && GetConVarBool(g_Cvar_Average))
+	{
+		decl String:option[128], String:option2[128], String:option3[128], String:option4[128];
+		decl String:buffer[128], String:buffer2[128];
+		GetMenuItem(menu, item_info[0][VOTEINFO_ITEM_INDEX], option, sizeof(option));
+		GetMenuItem(menu, item_info[1][VOTEINFO_ITEM_INDEX], option2, sizeof(option2));
+		GetMenuItem(menu, item_info[2][VOTEINFO_ITEM_INDEX], option3, sizeof(option3));
+		GetMenuItem(menu, item_info[3][VOTEINFO_ITEM_INDEX], option4, sizeof(option4));
+		
+		new ivotes = RoundToFloor(float(item_info[0][VOTEINFO_ITEM_VOTES]));
+		new ivotes2 = RoundToFloor(float(item_info[1][VOTEINFO_ITEM_VOTES]));
+		new ivotes3 = RoundToFloor(float(item_info[2][VOTEINFO_ITEM_VOTES]));
+		new ivotes4 = RoundToFloor(float(item_info[3][VOTEINFO_ITEM_VOTES]));
+		
+		new ioption = StringToInt(option);
+		new ioption2 = StringToInt(option2);
+		new ioption3 = StringToInt(option3);
+		new ioption4 = StringToInt(option4);
+			
+		new result = (((ioption*ivotes)+(ioption2*ivotes2)+(ioption3*ivotes3)+(ioption4*ivotes4))/num_votes)
+
+		Format(buffer2, sizeof(buffer2), "mp_timelimit %i", result);
+		new H_mp_timelimit = FindConVar("mp_timelimit");
+		new flags = GetConVarFlags(H_mp_timelimit);
+		SetConVarFlags(H_mp_timelimit, flags & ~FCVAR_NOTIFY);
+		ServerCommand(buffer2);
+		SetConVarFlags(H_mp_timelimit, flags|FCVAR_NOTIFY);
+
+		CPrintToChatAll("%T", "VoteEnd_Average", LANG_SERVER, result);
+		Format(buffer, sizeof(buffer), "%T", "VoteEnd_Hintbox_Average", LANG_SERVER, result);
+		VoteEnded(buffer);
+
+		CreateTimer(5.0, StartVote2);
+	}
+	else
+	{
+		decl String:option[128], String:buffer[128], String:buffer2[128];
+		GetMenuItem(menu, item_info[0][VOTEINFO_ITEM_INDEX], option, sizeof(option));
+
+		Format(buffer2, sizeof(buffer2), "mp_timelimit %s", result);
+		new H_mp_timelimit = FindConVar("mp_timelimit");
+		new flags = GetConVarFlags(H_mp_timelimit);
+		SetConVarFlags(H_mp_timelimit, flags & ~FCVAR_NOTIFY);
+		ServerCommand(buffer2);
+		SetConVarFlags(H_mp_timelimit, flags|FCVAR_NOTIFY);
+
+		CPrintToChatAll("%T", "VoteEnd", LANG_SERVER, option);
+		Format(buffer, sizeof(buffer), "%T", "VoteEnd_Hintbox", LANG_SERVER, option);
+		VoteEnded(buffer);
+		
+		CreateTimer(5.0, StartVote2);
+	}
+}
+
+public Action:StartVote2(Handle:timer)
+{
+	if (IsVoteInProgress())
+	{
+		return;
+	}
+ 
+	new Handle:menu2 = CreateMenu(Handle_VoteMenu2);
+	SetVoteResultCallback(menu2, Handler_MapVoteFinished2);
+	SetMenuPagination(menu2, MENU_NO_PAGINATION);
+	
+	decl String:lineone[128], String:linetwo[128];
+	decl String:title[100], String:menuitem1[100], String:menuitem2[100];
+	Format(title, sizeof(title),"%t", "VoteMenuTitle2", LANG_SERVER);
+	SetMenuTitle(menu2, title);
+	AddMenuItem(menu2, "nothing", " ", ITEMDRAW_SPACER);
+	Format(lineone, sizeof(lineone),"%T", "Line Three", LANG_SERVER);
+	AddMenuItem(menu2, "nothing", lineone, ITEMDRAW_DISABLED);
+	Format(linetwo, sizeof(linetwo),"%T", "Line Four", LANG_SERVER);
+	AddMenuItem(menu2, "nothing", linetwo, ITEMDRAW_DISABLED);
+	AddMenuItem(menu2, "nothing", " ", ITEMDRAW_SPACER);
+	Format(menuitem1, sizeof(menuitem1),"%T", "MenuItem05", LANG_SERVER);
+	AddMenuItem(menu2, "1", menuitem1);
+	Format(menuitem2, sizeof(menuitem2),"%T", "MenuItem06", LANG_SERVER);
+	AddMenuItem(menu2, "0", menuitem2);
+	SetMenuExitButton(menu2, false)
+	VoteMenuToAll(menu2, 30);
+}
+
+public Handle_VoteMenu2(Handle:menu2, MenuAction:action, param1, param2)
+{
+	switch(action)
+	{
+		case MenuAction_VoteStart:
+		{
+			VoteStarted();
+			if (GetConVarBool(g_Cvar_ShowVotes))
+			{
+				if (g_timer_ShowVotes == INVALID_HANDLE)
+				{
+					g_timer_ShowVotes = CreateTimer(0.95, ShowVoteProgress, menu2, TIMER_REPEAT | TIMER_FLAG_NO_MAPCHANGE);
+				}
+				TriggerTimer(g_timer_ShowVotes);
+			}
+		}
+
+		case MenuAction_Select:
+		{
+			if (GetConVarBool(g_Cvar_PrintVotes))
+			{
+				decl String:name[CLIENT_MAX_LENGTH], String:option[ITEM_MAX_LENGTH];
+				GetClientName(param1, name, sizeof(name));
+				GetMenuItem(menu2, param2, option, 0, _, option, sizeof(option));
+
+				PrintToChatAll("[SM] %t", "Vote Select", name, option);
+			}
+			if (GetConVarBool(g_Cvar_ShowVotes))
+			{
+				g_PlayerVotes[param1] = param2;
+				TriggerTimer(g_timer_ShowVotes);
+			}
+		}
+		case MenuAction_VoteCancel:
+		{
+			if (param1 == VoteCancel_NoVotes)
+			{
+				decl String:buffer[128];
+				Format(buffer, sizeof(buffer), "%T", "No_Votes", LANG_SERVER);
+				CPrintToChatAll("%T", "No_Votes", LANG_SERVER);
+				VoteEnded(buffer);
+			}
+			else
+			{
+				decl String:buffer[128];
+				Format(buffer, sizeof(buffer), "%T", "Cancelled Vote", param1);
+				VoteEnded(buffer);
+			}
+		}
+	}
+}
+
+public Handler_MapVoteFinished2(Handle:menu2,
+						   num_votes,
+						   num_clients,
+						   const client_info[][2],
+						   num_items,
+						   const item_info[][2])
+{
+
+	if (num_votes == 0)
+	{
+		LogError("No Votes recorded yet Advanced callback fired - Tell nobody! to fix this");
+		return;
+	}
+	
+	decl String:option[128], String:buffer[128], String:buffer2[128], String:buffer3[128];
+	GetMenuItem(menu2, item_info[0][VOTEINFO_ITEM_INDEX], option, sizeof(option));
+
+	Format(buffer2, sizeof(buffer2), "tf_weapon_criticals %s", option);
+	
+	new flags = GetConVarFlags(tf_weapon_criticals);
+	new flags2 = GetConVarFlags(sv_tags);
+	SetConVarFlags(tf_weapon_criticals, flags & ~FCVAR_NOTIFY);
+	SetConVarFlags(sv_tags, flags2 & ~FCVAR_NOTIFY);
+	ServerCommand(buffer2);
+	SetConVarFlags(tf_weapon_criticals, flags|FCVAR_NOTIFY);
+	SetConVarFlags(sv_tags, flags2|FCVAR_NOTIFY);
+
+	if (strcmp(option, "1") == 0)
+	{
+		Format(buffer3, sizeof(buffer3), "%T", "Enabled", LANG_SERVER);
+	}
+	else
+	{
+		Format(buffer3, sizeof(buffer3), "%T", "Disabled", LANG_SERVER);
+	}
+	
+	CPrintToChatAll("%T", "VoteEnd2", LANG_SERVER, buffer3);
+	Format(buffer, sizeof(buffer), "%T", "VoteEnd_Hintbox2", LANG_SERVER, buffer3);
 	VoteEnded(buffer);
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////
 VoteStarted()
 {
 	// reset all votes
@@ -235,14 +415,14 @@ public Action:ShowVoteProgress(Handle:timer, Handle:menu)
 
 			new percent = ((itemVotes[i-1] * 100) / GetNrReceivedVotes());
 
-			Format(formatBuffer, sizeof(formatBuffer), "\n%i. %s - %i (%i%%)", i, option, itemVotes[i-1], percent);
+			Format(formatBuffer, sizeof(formatBuffer), "%T", "Vote Progress", LANG_SERVER, i, option, itemVotes[i-1], percent);
 			StrCat(hintboxText, sizeof(hintboxText), formatBuffer);
 		}
 		else
 			break;
 	}
 
-	PrintHintTextToAll(hintboxText);
+	PrintHintTextToAll("%s", hintboxText);
 
 	return Plugin_Continue;
 }

@@ -40,7 +40,7 @@
 	"UberAmount2"
 	{
 		"en"		"Über amount must be lower than 100%%, auto-set to 100%%"
-		"pl"		"Wartość übera musi być mniejsza niż 100%%, ustawiono na 100%"
+		"pl"		"Wartość übera musi być mniejsza niż 100%%, ustawiono na 100%%"
 	}
 	
 	"UberPhrase1"
