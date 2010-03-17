@@ -1,7 +1,8 @@
 #include <sourcemod>
 #include <tf2_stocks>
 #include <colors>
-#include "Candy/fireworks.sp"
+#include "candy/fireworks.sp"
+#include "candy/candyscript.inc"
 
 /* defines */
 #define PLUGIN_VERSION "1.0"

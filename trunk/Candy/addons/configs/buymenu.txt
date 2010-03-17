@@ -86,7 +86,7 @@
 	"8"
 	{
 		"title"		"Rezerwacja slotu - 1 tydzień"
-		"price"		"15000"
+		"price"		"6000"
 		"oncmd"		"sm_addtimedreserved ? 604800"
 		"offcmd"	""
 		"time"		""
@@ -95,7 +95,7 @@
 	"9"
 	{
 		"title"		"Rezerwacja slotu - 2 tygodnie"
-		"price"		"30000"
+		"price"		"8000"
 		"oncmd"		"sm_addtimedreserved ? 1209600"
 		"offcmd"	""
 		"time"		""
@@ -104,7 +104,7 @@
 	"10"
 	{
 		"title"		"Rezerwacja slotu - 4 tygodnie"
-		"price"		"60000"
+		"price"		"10000"
 		"oncmd"		"sm_addtimedreserved ? 2419200"
 		"offcmd"	""
 		"time"		""
