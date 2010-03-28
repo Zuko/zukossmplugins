@@ -12,25 +12,50 @@
 // Grupy:
 // dowolny znak
 
+// Conditions
+// TFCond_Slowed			0
+// TFCond_Zoomed			1
+// TFCond_Disguising		2
+// TFCond_Disguised			3
+// TFCond_Cloaked			4
+// TFCond_Ubercharged		5
+// TFCond_TeleportedGlow	6
+// TFCond_Taunting			7
+// TFCond_UberchargeFading	8
+// TFCond_Unknown1			9
+// TFCond_Teleporting		10
+// TFCond_Kritzkrieged		11
+// TFCond_Unknown2			12
+// TFCond_DeadRingered		13
+// TFCond_Bonked			14
+// TFCond_Dazed				15
+// TFCond_Buffed			16
+// TFCond_Charging			17
+// TFCond_DemoBuff			18
+// TFCond_Healing			19
+// TFCond_OnFire			20
+// TFCond_Overhealed		21
+// TFCond_Jarated			22
+
 "Buymenu"
 {
 	"1"
 	{
-		"title"		"100% Krytów (10 sek)"
+		"title"		"100% Krytów (15 sek)"
 		"price"		"150"
-		"oncmd"		"sm_kritz | 1"
-		"offcmd"	"sm_kritz | 0"
-		"time"		"10"
+		"oncmd"		"sm_candy_buy_cond | 11 15"
+		"offcmd"	""
+		"time"		""
 		"group"		"a"
 	}
 
 	"2"
 	{
-		"title"		"Nieśmiertelność (10 sek)"
+		"title"		"Nieśmiertelność [Uber] (15 sek)"
 		"price"		"250"
-		"oncmd"		"sm_uber | 1"
-		"offcmd"	"sm_uber | 0"
-		"time"		"10"
+		"oncmd"		"sm_candy_buy_cond | 5 15"
+		"offcmd"	""
+		"time"		""
 		"group"		"a"
 	}
 
@@ -63,7 +88,7 @@
 		"time"		"0"
 		"class"		"5"
 	}
-	
+
 	"6"
 	{
 		"title"		"200 Metalu (Dla Inżyniera)"
