@@ -2,11 +2,10 @@
 #include <tf2_stocks>
 #include <colors>
 #include "candy/fireworks.sp"
-#include "candy/candyscript.inc"
 
 /* defines */
 #define PLUGIN_VERSION "1.0"
-//#define DEBUG "1"
+#define DEBUG "0"
 #define NULLNAME "$$NULL##"
 
 public Plugin:myinfo = 
@@ -15,7 +14,7 @@ public Plugin:myinfo =
 	author = "GachL, modified by Luki and Zuko",
 	description = "Give some candy to your users",
 	version = PLUGIN_VERSION,
-	url = "http://bloodisgood.org"
+	url = "http://HLDS.pl"
 }
 
 /* Global variables */
@@ -89,11 +88,20 @@ public OnConfigsExecuted()
 	InitializeDatabase();
 }
 
+#if SOURCEMOD_V_MAJOR >= 1 && SOURCEMOD_V_MINOR >= 4
+public APLRes:AskPluginLoad2(Handle:myself, bool:late, String:error[], err_max)
+#else
 public bool:AskPluginLoad(Handle:myself, bool:late, String:error[], err_max)
+#endif
 {
 	CreateNative("RegisterCandy", RegisterCandy);
 	CreateNative("DeregisterCandy", DeregisterCandy);
+	
+#if SOURCEMOD_V_MAJOR >= 1 && SOURCEMOD_V_MINOR >= 4
+	return APLRes_Success;
+#else
 	return true;
+#endif
 }
 
 /**
@@ -595,26 +603,25 @@ public Action:tTick(Handle:timer)
 		 *
 		 */
 		new TFClassType:class = TF2_GetPlayerClass(i);
-		if((class != TFClass_Engineer) || (class != TFClass_Medic))
+		if((class == TFClass_Engineer) || (class == TFClass_Medic))
 		{
-			PrintDebug("Client is not a Medic or Engineer, clients don't get points");
-			continue;	
+			/**
+			 * This client is now free to
+			 * get his candy
+			 */
+			PrintDebug("He's got candy!");
+			AddCandy(i, iCreditEarn);
+			// new String:sTickNoise[128];
+			if (iCreditEarn == 1)
+			/* Format(sTickNoise, sizeof(sTickNoise), "[%s] Otrzymałeś 1 cukierek!", sChatTag);
+			else if (iCreditEarn > 1)
+				Format(sTickNoise, sizeof(sTickNoise), "[%s] Otrzymałeś %i cukierków!", sChatTag, iCreditEarn);
+			PrintNoise(sTickNoise, 3, i);
+			*/
+				CandyAfterDeath[i]++;
 		}
-		
-		/**
-		 * This client is now free to
-		 * get his candy
-		 */
-		PrintDebug("He's got candy!");
-		AddCandy(i, iCreditEarn);
-//		new String:sTickNoise[128];
-		if (iCreditEarn == 1)
-/*			Format(sTickNoise, sizeof(sTickNoise), "[%s] Otrzymałeś 1 cukierek!", sChatTag);
-		else if (iCreditEarn > 1)
-			Format(sTickNoise, sizeof(sTickNoise), "[%s] Otrzymałeś %i cukierków!", sChatTag, iCreditEarn);
-		PrintNoise(sTickNoise, 3, i);
-*/
-			CandyAfterDeath[i]++;
+		else
+			PrintDebug("Client is not a Medic or Engineer.");
 	}
 }
 
@@ -1343,26 +1350,26 @@ public cBuyMenuCallbackSQLCallback(Handle:owner, Handle:hndl, String:error[], an
 			// U faild n00b!!
 			PrintDebug("Insufficient funds!");
 			PrintToChat(data, "[%s] Nie posiadasz wystarczającej ilości cukierków by to kupić!(Wymagane: %i)", sChatTag, iPrice);
-			new sName[128];
-			GetClientName(data, sName, sizeof(sName));
-			LogToFile(logfile, "[%s] %s ma za mało cukierków (%i) żeby kupić %s (%i pkt).", sChatTag, sName, iCurrentMoney, sTitle, iPrice);
+			new String:sPlayerName[128];
+			GetClientName(data, sPlayerName, sizeof(sPlayerName));
+			LogToFile(logfile, "[%s] %s ma za mało cukierków (%i) żeby kupić %s (%i pkt).", sChatTag, sPlayerName, iCurrentMoney, sTitle, iPrice);
 			return;
 		}
 
 		PrintDebug("Parsing ?$#~|");
-		new String:sUserId[8], String:sName[128], String:sIndex[4], String:sSteamId[32], String:sQuotedName[128];
+		new String:sUserId[8], String:sPlayerName[128], String:sIndex[4], String:sSteamId[32], String:sQuotedName[128];
 		IntToString(GetClientUserId(data), sUserId, sizeof(sUserId));
-		GetClientName(data, sName, sizeof(sName));
+		GetClientName(data, sPlayerName, sizeof(sPlayerName));
 		GetClientAuthString(data, sSteamId, sizeof(sSteamId));
 		IntToString(data, sIndex, sizeof(sIndex));
-		Format(sQuotedName, sizeof(sQuotedName), "\"%s\"", sName);
+		Format(sQuotedName, sizeof(sQuotedName), "\"%s\"", sPlayerName);
 		ReplaceChar("?", sUserId, sOnCmd);
-		ReplaceChar("$", sName, sOnCmd);
+		ReplaceChar("$", sPlayerName, sOnCmd);
 		ReplaceChar("#", sIndex, sOnCmd);
 		ReplaceChar("~", sSteamId, sOnCmd);
 		ReplaceChar("|", sQuotedName, sOnCmd);
 
-		LogToFile(logfile, "[%s] %s (%i pkt) kupił %s (%i pkt).", sChatTag, sName, iCurrentMoney, sTitle, iPrice);
+		LogToFile(logfile, "[%s] %s (%i pkt) kupił %s (%i pkt).", sChatTag, sPlayerName, iCurrentMoney, sTitle, iPrice);
 			
 		RemoveCandy(data, iPrice);
 		if (GetConVarFloat(cvDelay) != 0.0)
@@ -1377,7 +1384,7 @@ public cBuyMenuCallbackSQLCallback(Handle:owner, Handle:hndl, String:error[], an
 		{
 			PrintDebug("Command has off time");
 			ReplaceChar("?", sUserId, sOffCmd);
-			ReplaceChar("$", sName, sOffCmd);
+			ReplaceChar("$", sPlayerName, sOffCmd);
 			ReplaceChar("#", sIndex, sOffCmd);
 			ReplaceChar("~", sSteamId, sOffCmd);
 			ReplaceChar("|", sQuotedName, sOffCmd);
