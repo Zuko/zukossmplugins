@@ -57,7 +57,7 @@
 
 	"Revote Is Needed"
 	{
-		"pl"		"Żadna mapa nie otrzymała przynajmniej {1}procent głosów.\nWięc która mapa jest zwycięzcą? Trzeba zagłosować ponownie!"
+		"pl"		"Żadna mapa nie otrzymała przynajmniej {1}%%%% głosów.\nWięc która mapa jest zwycięzcą? Trzeba zagłosować ponownie!"
 	}
 
 	"Revote Warning"
@@ -67,7 +67,7 @@
 
 	"Vote Warning"
 	{
-		"pl"		"UWAGA!!! Za chwilę będziesz musiał dokonać ważnego wyboru!\nGłosowanie na następną mapę rozpocznie się za: {1}s\n -----------"
+		"pl"		"UWAGA!!! Głosowanie na następną mapę rozpocznie się za: {1}s"
 	}
 
 	"Line One"
@@ -77,7 +77,7 @@
 
 	"Line Two"
 	{
-		"pl"		"...i nie wciskaj bezmyślnie jedynki ;-)"
+		"pl"		"...wpisując !revote możesz zmienić swój głos."
 	}
 	
 	"Vote Progress"

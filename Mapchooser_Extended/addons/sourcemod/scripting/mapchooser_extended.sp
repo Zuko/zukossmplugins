@@ -801,36 +801,10 @@ public Handler_MapVoteFinished(Handle:menu,
 			GetMenuItem(menu, item_info[1][VOTEINFO_ITEM_INDEX], g_map2, sizeof(g_map2), _, g_mapd2, sizeof(g_mapd2));
 				
 			CreateTimer(5.0, RunOffVoteWarningDelay, _, TIMER_FLAG_NO_MAPCHANGE);
-			VoteEnded(buffer_runoffvote);
+			VoteEnded("%s", buffer_runoffvote);
 			g_RunOffs++;
 			return;
 		}
-		/* to byl raczej ten fail ;D
-		else
-		{
-			new count = GetMenuItemCount(menu);
-			new item;
-
-			if (GetConVarBool(g_Cvar_BlockSlots))
-			{
-				item = GetRandomInt(5, count - 1);
-			}
-			else
-			{
-				item = GetRandomInt(0, count - 1);
-			}
-
-			decl String:map[64], String:buffer[128];
-			GetMenuItem(menu, item, map, sizeof(map));
-			Format(buffer, sizeof(buffer), "%T", "Next Map", LANG_SERVER, map);
-			NextMap(map);
-			g_MapVoteCompleted = true;
-			SoundVoteEnd();
-			VoteEnded(buffer);
-			LogMessage("RunOff votes has beed used, randomly selected %s as nextmap.", map);
-			return;
-		}
-		*/
 	}
 
 	decl String:map[32];
