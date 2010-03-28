@@ -3,254 +3,147 @@
 #include <tf2>
 #include <tf2_stocks>
 
-#define PLUGIN_VERSION "0.4.4"
+#define PLUGIN_VERSION "0.5"
 
 public Plugin:myinfo = 
 {
 	name = "Fun package for Candy",
-	author = "GachL, Zuko",
+	author = "Zuko (earlier Gahl)",
 	description = "This plugin is a pack of functions that work well with Candy for TF2.",
 	version = PLUGIN_VERSION,
-	url = "http://bloodisgood.org"
+	url = "http://HLDS.pl"
 }
 
 new Handle:cvNoiseLevel;
-//new Handle:sdkRegenerate;
-new bool:bPlayerHasCrit[MAXPLAYERS]
 
 public OnPluginStart()
 {
-	RegAdminCmd("sm_candy_buy_crit", cBuyCrit, ADMFLAG_BAN, "Get crit 100%");
-	RegAdminCmd("sm_candy_buy_invincible", cBuyInvincible, ADMFLAG_BAN, "Get invincibility");
-	RegAdminCmd("sm_candy_buy_uber", cBuyUber, ADMFLAG_BAN, "Get instant uber (medic)");
+	RegAdminCmd("sm_candy_buy_cond", cBuyCrit, ADMFLAG_BAN, "Buy a Condition!");
 	RegAdminCmd("sm_candy_buy_regen", cBuyRegen, ADMFLAG_BAN, "Fill health and ammo");
-	//RegAdminCmd("sm_candy_buy_repair", cBuyRepair, ADMFLAG_BAN, "Instant repair all buildings (engineer)");
-	//RegAdminCmd("sm_candy_buy_invisible", cBuyInvisibility, ADMFLAG_BAN, "Be invisible");
-	//RegAdminCmd("sm_candy_buy_noreload", cBuyReload, ADMFLAG_BAN, "No reloading needed");
 	RegAdminCmd("sm_candy_buy_slay", cBuySlay, ADMFLAG_BAN, "Slay a player!");
-	
-	/*StartPrepSDKCall(SDKCall_Player);
-	PrepSDKCall_SetFromConf(g_hGameConf, SDKConf_Signature, "Regenerate");
-	sdkRegenerate = EndPrepSDKCall();
-	*/
+
 	cvNoiseLevel = CreateConVar("sm_candy_buy_noiselevel", "2", "1 = silent, 2 = buyer only, 3 = everyone", FCVAR_PLUGIN, true, 1.0, true, 3.0);
 }
 
-public Action:cBuyCrit(cclient, args)
+public Action:cBuyCrit(client, args)
 {
-	new String:sErrStr[] = "[candypack] Usage: sm_candy_buy_crit <userid> <onoff>";
-	if (args < 2)
+	new String:sErrStr[] = "[candypack] Usage: sm_candy_buy_cond <#userid|name|@all|@red|@blue|@bots> <TFCond> [duration]";
+	if (args < 3)
 	{
 		PrintToServer(sErrStr);
 		return Plugin_Handled;
 	}
-	new String:sclient[32];
-	GetCmdArg(1, sclient, sizeof(sclient));
-	new client = GetClientOfUserId(StringToInt(sclient));
-	if (!FullCheckClient(client))
-	{
-		PrintToServer(sErrStr);
-		return Plugin_Handled;
-	}
-	new String:sonoff[32];
-	GetCmdArg(2, sonoff, sizeof(sonoff));
-	new onoff = StringToInt(sonoff);
+	
+	decl String:target[MAXPLAYERS];
+	decl String:cond[25];
+	decl String:duration[3];
+	decl String:target_name[MAX_TARGET_LENGTH];
+	decl target_list[MAXPLAYERS];
+	decl target_count;
+	decl bool:tn_is_ml;
+
+	GetCmdArg(1, target, sizeof(target));
+	GetCmdArg(2, cond, sizeof(cond));
+	new i_cond = StringToInt(cond);
+	GetCmdArg(3, duration, sizeof(duration));
+	new Float:f_duration = StringToFloat(duration);
 	new noise = GetConVarInt(cvNoiseLevel);
-	
-	if (onoff == 1)
-	{
-		SetPlayerCrit(client, true);
-		if (noise == 2)
-		{
-			PrintToChat(client, "Masz kryty! Strzelaj!");
-		}
-		else if (noise == 3)
-		{
-			new String:name[128];
-			GetClientName(client, name, sizeof(name));
-			PrintToChatAll("%s kupił sobie krytyki! Uciekajcie!", name);
-		}
-	}
-	else
-	{
-		SetPlayerCrit(client, false);
-		if (noise == 2)
-		{
-			PrintToChat(client, "Koniec krytów! Nie mogłeś zabić ich wiecej? ;-)");
-		}
-		else if (noise == 3)
-		{
-			new String:name[128];
-			GetClientName(client, name, sizeof(name));
-			PrintToChatAll("%s już nie ma krytyków! Teraz możecie go zabić ;-)", name);
-		}
-	}
-	
-	return Plugin_Handled;
-}
 
-public Action:TF2_CalcIsAttackCritical(client, weapon, String:weaponname[], &bool:result)
-{
-	if (PlayerHasCrit(client))
+	if (target[client] == -1)
 	{
-		result = true;
 		return Plugin_Handled;
 	}
-	else
+
+	if ((target_count = ProcessTargetString(
+			target,
+			client,
+			target_list,
+			MAXPLAYERS,
+			COMMAND_FILTER_ALIVE,
+			target_name,
+			sizeof(target_name),
+			tn_is_ml)) <= 0)
 	{
-		return Plugin_Continue;
-	}
-}
-
-public bool:PlayerHasCrit(client)
-{
-	return bPlayerHasCrit[client-1];
-}
-
-public SetPlayerCrit(client, bool:onoff)
-{
-	bPlayerHasCrit[client-1] = onoff;
-}
-
-public Action:cBuyInvincible(cclient, args)
-{
-	new String:sErrStr[] = "[candypack] Usage: sm_candy_buy_invincible <userid> <onoff>";
-	if (args < 2)
-	{
-		PrintToServer(sErrStr);
+		ReplyToTargetError(client, target_count);
 		return Plugin_Handled;
 	}
-	new String:sclient[32];
-	GetCmdArg(1, sclient, sizeof(sclient));
-	new client = GetClientOfUserId(StringToInt(sclient));
-	if (!FullCheckClient(client))
+
+	for (new i = 0; i < target_count; i++)
 	{
-		PrintToServer(sErrStr);
-		return Plugin_Handled;
-	}
-	new String:sonoff[32];
-	GetCmdArg(2, sonoff, sizeof(sonoff));
-	new onoff = StringToInt(sonoff);
-	new noise = GetConVarInt(cvNoiseLevel);
-	
-	if (onoff == 1)
-	{
-		SetEntProp(client, Prop_Data, "m_takedamage", 0, 1);
-		SetEntityRenderColor(client, 0, 255, 0, 0)
-		if (noise == 2)
+		if (IsClientConnected(target_list[i]) && IsClientInGame(target_list[i]))
 		{
-			PrintToChat(client, "Poczuj się jak SuperMan! Nieśmiertelność włączona!");
-		}
-		else if (noise == 3)
-		{
-			new String:name[128];
-			GetClientName(client, name, sizeof(name));
-			PrintToChatAll("%s jest NIEŚMIERTELNY! Lepiej go unikać!", name);
-		}
-	}
-	else
-	{
-		SetEntProp(client, Prop_Data, "m_takedamage", 2, 1);
-		SetEntityRenderColor(client, 255, 255, 255, 0)
-		if (noise == 2)
-		{
-			PrintToChat(client, "Koniec zabawy! Już nie jeteś SuperManem ;]");
-		}
-		else if (noise == 3)
-		{
-			new String:name[128];
-			GetClientName(client, name, sizeof(name));
-			PrintToChatAll("Można już zabić %s! Na co czekacie?", name);
+			TF2_AddCondition(target_list[i], TFCond:i_cond, f_duration);
+			
+			if (noise == 2)
+			{
+				PrintToChat(target_list[i], "Kupiłeś sobie cos użyj tego dobrze!");
+			}
+			else if (noise == 3)
+			{
+				new String:name[128];
+				GetClientName(target_list[i], name, sizeof(name));
+				PrintToChatAll("%s cos sobie kupil", name);
+			}
 		}
 	}
 	return Plugin_Handled;
 }
 
-public Action:cBuyUber(cclient, args)
+public Action:cBuyRegen(client, args)
 {
-	new String:sErrStr[] = "[candypack] Usage: sm_candy_buy_uber <userid> <percent>";
-	if (args < 2)
-	{
-		PrintToServer(sErrStr);
-		return Plugin_Handled;
-	}
-	new String:sclient[32];
-	GetCmdArg(1, sclient, sizeof(sclient));
-	new client = GetClientOfUserId(StringToInt(sclient));
-	if (!FullCheckClient(client))
-	{
-		PrintToServer(sErrStr);
-		return Plugin_Handled;
-	}
-	new String:sonoff[32];
-	GetCmdArg(2, sonoff, sizeof(sonoff));
-	new onoff = StringToInt(sonoff);
-	new noise = GetConVarInt(cvNoiseLevel);
-	
-	if (TF2_GetPlayerClass(client) == TF2_GetClass("medic"))
-	{
-		new iSlot = GetPlayerWeaponSlot(client, 1);
-		if (iSlot > 0)
-			SetEntPropFloat(iSlot, Prop_Send, "m_flChargeLevel", onoff*0.01);
-		if (noise == 2)
-		{
-			PrintToChat(client, "Dostałeś %i\% Ubera!", onoff);
-		}
-		else if (noise == 3)
-		{
-			new String:name[128];
-			GetClientName(client, name, sizeof(name));
-			PrintToChatAll("%s kupił %i\% Uber!", name, onoff);
-		}
-	}
-	return Plugin_Handled;
-}
-
-public Action:cBuyRegen(cclient, args)
-{
-	new String:sErrStr[] = "[candypack] Usage: sm_candy_buy_regen <userid>";
+	new String:sErrStr[] = "[candypack] Usage: sm_candy_buy_regenerate <#userid|name|@all|@red|@blue|@bots>";
 	if (args < 1)
 	{
 		PrintToServer(sErrStr);
 		return Plugin_Handled;
 	}
-	new String:sclient[32];
-	GetCmdArg(1, sclient, sizeof(sclient));
-	new client = GetClientOfUserId(StringToInt(sclient));
-	if (!FullCheckClient(client))
+	
+	decl String:target[MAXPLAYERS];
+	decl String:target_name[MAX_TARGET_LENGTH];
+	decl target_list[MAXPLAYERS];
+	decl target_count;
+	decl bool:tn_is_ml;
+
+	GetCmdArg(1, target, sizeof(target));
+	new noise = GetConVarInt(cvNoiseLevel);
+
+	if (target[client] == -1)
 	{
-		PrintToServer(sErrStr);
 		return Plugin_Handled;
 	}
-	new noise = GetConVarInt(cvNoiseLevel);
-	
-	new iClassHealth[] = {-1, 125, 125, 200, 175, 150, 300, 175, 125, 125};
-	SetEntityHealth(client, iClassHealth[GetEntProp(client, Prop_Send, "m_iClass")]);
-	if (noise == 2)
+
+	if ((target_count = ProcessTargetString(
+			target,
+			client,
+			target_list,
+			MAXPLAYERS,
+			COMMAND_FILTER_ALIVE,
+			target_name,
+			sizeof(target_name),
+			tn_is_ml)) <= 0)
 	{
-		PrintToChat(client, "Szybkie leczenie!"); //nie daje amunicji, tylko HP
+		ReplyToTargetError(client, target_count);
+		return Plugin_Handled;
 	}
-	else if (noise == 3)
+
+	for (new i = 0; i < target_count; i++)
 	{
-		new String:name[128];
-		GetClientName(client, name, sizeof(name));
-		PrintToChatAll("%s kupił zestaw apteczek!", name);
+		if (IsClientConnected(target_list[i]) && IsClientInGame(target_list[i]))
+		{
+			TF2_RegeneratePlayer(target_list[i]);
+			
+			if (noise == 2)
+			{
+				PrintToChat(target_list[i], "Kupiłeś sobie Regenerację!");
+			}
+			else if (noise == 3)
+			{
+				new String:name[128];
+				GetClientName(target_list[i], name, sizeof(name));
+				PrintToChatAll("%s kupił sobie regeneracje", name);
+			}
+		}
 	}
-	return Plugin_Handled;
-}
-
-public Action:cBuyRepair(cclient, args)
-{
-	return Plugin_Handled;
-}
-
-public Action:cBuyInvisibility(cclient, args)
-{
-	return Plugin_Handled;
-}
-
-public Action:cBuyReload(cclient, args)
-{
 	return Plugin_Handled;
 }
 
