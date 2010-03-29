@@ -81,7 +81,7 @@
 
 	"5"
 	{
-		"title"		"Nieśmiertelność [Uber] (5 sek)"
+		"title"		"Uber (5 sek)"
 		"price"		"150"
 		"oncmd"		"sm_candy_buy_cond | 5 5; sm_candy_countdown | 5"
 		"offcmd"	""
@@ -91,7 +91,7 @@
 
 	"6"
 	{
-		"title"		"Nieśmiertelność [Uber] (10 sek)"
+		"title"		"Uber (10 sek)"
 		"price"		"200"
 		"oncmd"		"sm_candy_buy_cond | 5 10; sm_candy_countdown | 10"
 		"offcmd"	""
@@ -101,7 +101,7 @@
 
 	"7"
 	{
-		"title"		"Nieśmiertelność [Uber] (15 sek)"
+		"title"		"Uber (15 sek)"
 		"price"		"250"
 		"oncmd"		"sm_candy_buy_cond | 5 15; sm_candy_countdown | 15"
 		"offcmd"	""
@@ -111,7 +111,7 @@
 
 	"8"
 	{
-		"title"		"Nieśmiertelność [Uber] (30 sek)"
+		"title"		"Uber (30 sek)"
 		"price"		"500"
 		"oncmd"		"sm_candy_buy_cond | 5 30; sm_candy_countdown | 30"
 		"offcmd"	""
@@ -121,7 +121,7 @@
 
 	"9"
 	{
-		"title"		"Nieśmiertelność [Uber] + 100% Krytów (15 sek)"
+		"title"		"Uber + 100% Krytów (15 sek)"
 		"price"		"2000"
 		"oncmd"		"sm_candy_buy_cond | 5 15; sm_candy_buy_cond | 11 15; sm_candy_countdown | 15"
 		"offcmd"	""
@@ -131,7 +131,7 @@
 	
 	"10"
 	{
-		"title"		"Nieśmiertelność [Uber] + 100% Krytów dla całej drużyny (15 sek)"
+		"title"		"Uber + 100% Krytów (Drużyna) (15 sek)"
 		"price"		"3000"
 		"oncmd"		"sm_candy_buy_cond ^ 5 15; sm_candy_buy_cond ^ 11 15; sm_candy_countdown ^ 15"
 		"offcmd"	""
