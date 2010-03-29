@@ -419,8 +419,9 @@ public Action:Counter(Handle:timer, any:target)
 
 	if (TimeRemaining() == 0)
 	{
-		KillTimer(g_CountdownTimer);
+		return Plugin_Stop;
 	}
+	return Plugin_Continue;
 }
 
 TimeRemaining()
