@@ -86,20 +86,19 @@ public ConnectToDatabase()
 	{
 		return;
 	}
-	new String:error[255];
 	
-	Database = SQL_Connect(sSQLName, false, error, sizeof(error));
+	Database = SQL_TConnect(TSql, sSQLName);
 	
-	if (Database == INVALID_HANDLE)
+}
+
+public TSql(Handle:owner, Handle:hndl, const String:error[], any:data)
+{
+	if (hndl == INVALID_HANDLE)
 	{
-		PrintToServer("Could not connect: %s", error)
+		LogError("RMF Database failure: %s", error);
+	} else {
+		Database = hndl;
 	}
-/*
-	else	
-	{
-		CreateTables();
-	}
-*/
 }
 
 /////////////////////////////////////////////////////////////////////
@@ -126,6 +125,8 @@ stock Action:Event_FiredUser(Handle:event, const String:name[], any:client=0)
 		RegConsoleCmd("say", Command_Say);
 		RegConsoleCmd("say_team", Command_Say);
 		
+		RegAdminCmd("sm_rmf_give_licence", cGiveLicence, ADMFLAG_ROOT, "Give ability licence");
+
 		// リスポンルームの退出などをフック
 		HookEntityOutput("func_respawnroom",  "OnStartTouch",    EntityOutput_StartTouch);
 		HookEntityOutput("func_respawnroom", "OnEndTouch",    EntityOutput_EndTouch);
@@ -555,6 +556,77 @@ public Action:Command_Say(client, args)
 // メニュー選択
 //
 /////////////////////////////////////////////////////////////////////
+public Action:cGiveLicence(client, args)
+{
+	new String:arg1[32], String:arg2[32], String:arg3[32];
+
+	if (args != 3)
+	{
+		ReplyToCommand(client, "[SM] Usage: sm_rmf_give_licence <steamid> <ability name> <time>");
+		return Plugin_Handled;
+	}
+	
+	GetCmdArg(1, arg1, sizeof(arg1));
+	GetCmdArg(2, arg2, sizeof(arg2));
+	GetCmdArg(3, arg3, sizeof(arg3));
+	
+	GiveLicence(arg1, arg2, StringToInt(arg3));
+	
+	return Plugin_Handled;
+}
+
+GiveLicence(String:licSID[], String:PluginName[], time)
+{
+	if (Database == INVALID_HANDLE)
+	{
+		return false;
+	}
+	new String:Query[255];
+	Format(Query, sizeof(Query), "SELECT * FROM `%slicences` WHERE `steamid` = '%s' AND `ability` = '%s';", sTablePrefix, licSID, PluginName);
+	
+	new Handle:arr = CreateArray(255, 3);
+	PushArrayCell(arr, time);
+	PushArrayString(arr, licSID);
+	PushArrayString(arr, PluginName);
+	PrintToServer("time %i | sid %s | name %s", time, licSID, PluginName);
+	SQL_TQuery(Database, TGiveLicence, Query, arr);
+}
+
+public TGiveLicence(Handle: owner, Handle:hndl, const String:error[], const any:arr)
+{
+	if(hndl == INVALID_HANDLE)
+	{
+		return false;
+	}
+	else
+	{
+		new String:licSID[255];
+		new String:PluginName[255];
+		new time = GetArrayCell(arr, 1);
+		GetArrayString(arr, 2, licSID, sizeof(licSID));
+		GetArrayString(arr, 3, PluginName, sizeof(PluginName));
+		PrintToServer("time %i | sid %s | name %s", time, licSID, PluginName);
+		CloseHandle(arr);
+		
+		if(SQL_GetRowCount(hndl) == 0)
+		{
+			new String:Query[255];
+			Format(Query, sizeof(Query), "INSERT INTO `%slicences` (`steamid', `ability`, `expires`) VALUES ('%s', '%s', '%i');", sTablePrefix, licSID, PluginName, time);
+			SQL_TQuery(Database, TNoCallback, Query);
+		}
+		else
+		{
+			new String:Query[255];
+			Format(Query, sizeof(Query), "UPDATE `%slicences` SET `expires` = `expires` + '%i' WHERE `steamid` = '%s' AND `ability` = '%s';", sTablePrefix, time, licSID, PluginName);
+			SQL_TQuery(Database, TNoCallback, Query);
+		}
+	}
+}
+
+public TNoCallback(Handle: owner, Handle:hndl, const String:error[], any:data)
+{
+}
+
 public AbilityMenu(client)
 {
 	if (Database == INVALID_HANDLE)
@@ -672,6 +744,8 @@ public TAbilityMenu(Handle: owner, Handle:hndl, const String:error[], any:client
 	//	Format(notuse, sizeof(notuse), "%T", "ABILITYMENU_NOTUSE", client);
 	//}
 	SetMenuExitButton(menu, true);
+	
+	CloseHandle(plyAbilities);
 	
 	if(allowCount > 0)
 	{
