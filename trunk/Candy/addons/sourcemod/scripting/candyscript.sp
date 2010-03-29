@@ -1357,17 +1357,26 @@ public cBuyMenuCallbackSQLCallback(Handle:owner, Handle:hndl, String:error[], an
 		}
 
 		PrintDebug("Parsing ?$#~|");
-		new String:sUserId[8], String:sPlayerName[128], String:sIndex[4], String:sSteamId[32], String:sQuotedName[128];
+		new String:sUserId[8], String:sPlayerName[128], String:sIndex[4], String:sSteamId[32], String:sQuotedName[128], String:sPlayerTeam[6];
 		IntToString(GetClientUserId(data), sUserId, sizeof(sUserId));
 		GetClientName(data, sPlayerName, sizeof(sPlayerName));
 		GetClientAuthString(data, sSteamId, sizeof(sSteamId));
 		IntToString(data, sIndex, sizeof(sIndex));
 		Format(sQuotedName, sizeof(sQuotedName), "\"%s\"", sPlayerName);
+		if (GetClientTeam(data) == 2)
+		{
+			sPlayerTeam = "@red";
+		}
+		else if (GetClientTeam(data) == 3)
+		{
+			sPlayerTeam = "@blue";
+		}
 		ReplaceChar("?", sUserId, sOnCmd);
 		ReplaceChar("$", sPlayerName, sOnCmd);
 		ReplaceChar("#", sIndex, sOnCmd);
 		ReplaceChar("~", sSteamId, sOnCmd);
 		ReplaceChar("|", sQuotedName, sOnCmd);
+		ReplaceChar("^", sPlayerTeam, sOnCmd);
 
 		LogToFile(logfile, "[%s] %s (%i pkt) kupił %s (%i pkt).", sChatTag, sPlayerName, iCurrentMoney, sTitle, iPrice);
 			
