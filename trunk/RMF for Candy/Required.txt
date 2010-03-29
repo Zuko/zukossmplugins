@@ -1,0 +1,7 @@
+- Metamod:Source 1.8.0
+- Sourcemod 1.3.1
+- [EXTENSION] SDK Hooks 1.3	http://tsunami-productions.googlecode.com/files/sdkhooks13-ob-sm13.zip
+
+*** When the old version of RMF Ability Pack is installed ***
+- Remove "JumpBoots.smx" and "AdrenalinDash.smx" from \addons\sourcemod\plugins
+- Remove "jumpboots.phrases.txt" and "adrenalindash.phrases.txt" from \addons\sourcemod\translations
