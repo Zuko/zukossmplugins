@@ -709,7 +709,7 @@ public Action:cAddCandy(client, args)
 		}
 		
 		new String:sCandyNoise[255];
-		Format(sCandyNoise, sizeof(sCandyNoise), "[%s] Dobry admin podarował ci %i cukierków.", sChatTag, iAmount);
+		Format(sCandyNoise, sizeof(sCandyNoise), "[%s] %s jest dobrym adminem i podarował ci %i cukierków.", sChatTag, client, iAmount);
 		PrintNoise(sCandyNoise, 2, iTarget);
 	}
 	
@@ -843,7 +843,7 @@ public Action:cRemoveCandy(client, args)
 		}
 		
 		new String:sCandyNoise[255];
-		Format(sCandyNoise, sizeof(sCandyNoise), "[%s] Zły admin zjadł Ci %i cukierków.", sChatTag, iAmount);
+		Format(sCandyNoise, sizeof(sCandyNoise), "[%s] %s jest złym adminem i zjadł Ci %i cukierków.", sChatTag,client, iAmount);
 		PrintNoise(sCandyNoise, 2, iTarget);
 	}
 	
@@ -1356,7 +1356,7 @@ public cBuyMenuCallbackSQLCallback(Handle:owner, Handle:hndl, String:error[], an
 			return;
 		}
 
-		PrintDebug("Parsing ?$#~|");
+		PrintDebug("Parsing ?$#~|^");
 		new String:sUserId[8], String:sPlayerName[128], String:sIndex[4], String:sSteamId[32], String:sQuotedName[128], String:sPlayerTeam[6];
 		IntToString(GetClientUserId(data), sUserId, sizeof(sUserId));
 		GetClientName(data, sPlayerName, sizeof(sPlayerName));
