@@ -1,0 +1,313 @@
+// Klasy:
+// 1 - Scout
+// 2 - Sniper
+// 3 - Soldier
+// 4 - Demoman
+// 5 - Medic
+// 6 - Heavy
+// 7 - Pyro
+// 8 - Spy
+// 9 - Engineer
+
+// Grupy:
+// dowolny znak
+
+// Conditions
+// 0 - TFCond_Slowed
+// 1 - TFCond_Zoomed
+// 2 - TFCond_Disguising
+// 3 - TFCond_Disguised
+// 4 - TFCond_Cloaked
+// 5 - TFCond_Ubercharged
+// 6 - TFCond_TeleportedGlow
+// 7 - TFCond_Taunting
+// 8 - TFCond_UberchargeFading
+// 9 - TFCond_Unknown1
+// 10 - TFCond_Teleporting
+// 11 - TFCond_Kritzkrieged
+// 12 - TFCond_Unknown2
+// 13 - TFCond_DeadRingered
+// 14 - TFCond_Bonked
+// 15 - TFCond_Dazed
+// 16 - TFCond_Buffed
+// 17 - TFCond_Charging
+// 18 - TFCond_DemoBuff
+// 19 - TFCond_Healing
+// 20 - TFCond_OnFire
+// 21 - TFCond_Overhealed
+// 22 - TFCond_Jarated
+
+// Znaki:
+// ? - UserID
+// $ - PlayerName
+// # - Index
+// ~ - SteamID
+// | - QuotedName
+// ^ - PlayerTeam
+// & - EnemyTeam
+
+"Buymenu"
+{
+	"Kryty"
+	{
+		"1"
+		{
+			"title"		"100% Krytów (5 sek)"
+			"price"		"75"
+			"oncmd"		"sm_candy_buy_cond | 11 5; sm_candy_countdown | 5"
+			"offcmd"	""
+			"time"		"5"
+			"group"		"a"
+		}
+		
+		"2"
+		{
+			"title"		"100% Krytów (10 sek)"
+			"price"		"150"
+			"oncmd"		"sm_candy_buy_cond | 11 10; sm_candy_countdown | 10"
+			"offcmd"	""
+			"time"		"10"
+			"group"		"a"
+		}
+		
+		"3"
+		{
+			"title"		"100% Krytów (15 sek)"
+			"price"		"200"
+			"oncmd"		"sm_candy_buy_cond | 11 15; sm_candy_countdown | 15"
+			"offcmd"	""
+			"time"		"15"
+			"group"		"a"
+		}
+
+		"4"
+		{
+			"title"		"100% Krytów (30 sek)"
+			"price"		"1000"
+			"oncmd"		"sm_candy_buy_cond | 11 30; sm_candy_countdown | 30"
+			"offcmd"	""
+			"time"		"30"
+			"group"		"a"
+		}
+	}
+	"Uber"
+	{
+		"5"
+		{
+			"title"		"Uber (5 sek)"
+			"price"		"150"
+			"oncmd"		"sm_candy_buy_cond | 5 5; sm_candy_countdown | 5"
+			"offcmd"	""
+			"time"		"5"
+			"group"		"a"
+		}
+
+		"6"
+		{
+			"title"		"Uber (10 sek)"
+			"price"		"200"
+			"oncmd"		"sm_candy_buy_cond | 5 10; sm_candy_countdown | 10"
+			"offcmd"	""
+			"time"		"10"
+			"group"		"a"
+		}	
+
+		"7"
+		{
+			"title"		"Uber (15 sek)"
+			"price"		"250"
+			"oncmd"		"sm_candy_buy_cond | 5 15; sm_candy_countdown | 15"
+			"offcmd"	""
+			"time"		"15"
+			"group"		"a"
+		}
+
+		"8"
+		{
+			"title"		"Uber (30 sek)"
+			"price"		"500"
+			"oncmd"		"sm_candy_buy_cond | 5 30; sm_candy_countdown | 30"
+			"offcmd"	""
+			"time"		"30"
+			"group"		"a"
+		}	
+
+		"9"
+		{
+			"title"		"Uber + 100% Krytów (15 sek)"
+			"price"		"2000"
+			"oncmd"		"sm_candy_buy_cond | 5 15; sm_candy_buy_cond | 11 15; sm_candy_countdown | 15"
+			"offcmd"	""
+			"time"		"15"
+			"group"		"a"
+		}
+		"10"
+		{
+			"title"		"Uber + 100% Krytów (Drużyna) (15 sek)"
+			"price"		"3000"
+			"oncmd"		"sm_candy_buy_cond ^ 5 15; sm_candy_buy_cond ^ 11 15; sm_candy_countdown ^ 15"
+			"offcmd"	""
+			"time"		"15"
+			"group"		"a"
+		}
+		"11"
+		{
+			"title"		"Tryb Robina Walkera!"
+			"price"		"3000"
+			"oncmd"		"sm_candy_buy_powerplay | 1; sm_candy_countdown | 15"
+			"offcmd"	"sm_candy_buy_powerplay | 0"
+			"time"		"15"
+			"group"		"a"
+		}
+	}
+	"Regeneracja"
+	{
+		"12"
+		{
+			"title"		"Regeneracja (Siebie)"
+			"price"		"50"
+			"oncmd"		"sm_candy_buy_regen |"
+			"offcmd"	""
+			"time"		""
+		}
+		
+		"13"
+		{
+			"title"		"Regeneracja (Drużyny)"
+			"price"		"50"
+			"oncmd"		"sm_candy_buy_regen ^"
+			"offcmd"	""
+			"time"		""
+		}
+		
+		"14"
+		{
+			"title"		"Regeneracja (Wszystkich)"
+			"price"		"50"
+			"oncmd"		"sm_candy_buy_regen @all"
+			"offcmd"	""
+			"time"		""
+		}
+
+		"15"
+		{
+			"title"		"100% Ubera (Dla Medyka)"
+			"price"		"200"
+			"oncmd"		"sm_candy_buy_uber | 100"
+			"offcmd"	""
+			"time"		"0"
+			"class"		"5"
+		}
+
+		"16"
+		{
+			"title"		"200% Ubera (Dla Medyka)"
+			"price"		"400"
+			"oncmd"		"sm_candy_buy_uber | 200"
+			"offcmd"	""
+			"time"		"10"
+			"class"		"5"
+		}
+
+		"17"
+		{
+			"title"		"400% Ubera (Dla Medyka)"
+			"price"		"1000"
+			"oncmd"		"sm_candy_buy_uber | 400"
+			"offcmd"	""
+			"time"		"0"
+			"class"		"5"
+		}
+		
+		"18"
+		{
+			"title"		"1000% Ubera (Dla Medyka)"
+			"price"		"1000"
+			"oncmd"		"sm_candy_buy_uber | 1000"
+			"offcmd"	""
+			"time"		"0"
+			"class"		"5"
+		}
+
+		"19"
+		{
+			"title"		"200 Metalu (Dla Inżyniera)"
+			"price"		"200"
+			"oncmd"		"sm_setmetal | 200"
+			"offcmd"	""
+			"time"		"0"
+			"class"		"9"
+		}	
+	}
+	
+	"Rezerwacja"
+	{
+		"20"
+		{
+			"title"		"Rezerwacja slotu - 1 tydzień"
+			"price"		"6000"
+			"oncmd"		"sm_addtimedreserved ? 604800"
+			"offcmd"	""
+			"time"		""
+		}
+		
+		"21"
+		{
+			"title"		"Rezerwacja slotu - 2 tygodnie"
+			"price"		"8000"
+			"oncmd"		"sm_addtimedreserved ? 1209600"
+			"offcmd"	""
+			"time"		""
+		}
+		
+		"22"
+		{
+			"title"		"Rezerwacja slotu - 4 tygodnie"
+			"price"		"10000"
+			"oncmd"		"sm_addtimedreserved ? 2419200"
+			"offcmd"	""
+			"time"		""
+		}
+	}
+	
+	"Auto *"
+	{
+		"23"
+		{
+			"title"		"Auto Respawn (po 5 sek)"
+			"price"		"500"
+			"oncmd"		"sm_autorespawn | 5"
+			"offcmd"	""
+			"time"		""
+		}
+		
+		"24"
+		{
+			"title"		"Auto Respawn (od razu)"
+			"price"		"700"
+			"oncmd"		"sm_autorespawn | 0"
+			"offcmd"	""
+			"time"		""
+		}
+		
+		"25"
+		{
+			"title"		"Auto Uber (50%)"
+			"price"		"500"
+			"oncmd"		"sm_autouber | 50"
+			"offcmd"	""
+			"time"		""
+			"class"		"5"
+		}
+		
+		"26"
+		{
+			"title"		"Auto Uber (25%)"
+			"price"		"250"
+			"oncmd"		"sm_autouber | 25"
+			"offcmd"	""
+			"time"		""
+			"class"		"5"
+		}
+	}
+}
