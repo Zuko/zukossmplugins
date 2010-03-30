@@ -123,6 +123,42 @@
 			"time"		""
 			"class"		"5"
 		}
+		"19"
+		{
+			"title"		"100% Ubera (Dla Medyka)"
+			"price"		"200"
+			"oncmd"		"sm_candy_buy_uber | 100"
+			"offcmd"	""
+			"time"		"0"
+			"class"		"5"
+		}
+		"20"
+		{
+			"title"		"200% Ubera (Dla Medyka)"
+			"price"		"300"
+			"oncmd"		"sm_candy_buy_uber | 200"
+			"offcmd"	""
+			"time"		"10"
+			"class"		"5"
+		}
+		"21"
+		{
+			"title"		"400% Ubera (Dla Medyka)"
+			"price"		"400"
+			"oncmd"		"sm_candy_buy_uber | 400"
+			"offcmd"	""
+			"time"		"0"
+			"class"		"5"
+		}
+		"22"
+		{
+			"title"		"1000% Ubera (Dla Medyka)"
+			"price"		"500"
+			"oncmd"		"sm_candy_buy_uber | 1000"
+			"offcmd"	""
+			"time"		"0"
+			"class"		"5"
+		}
 	}
 	"Kryty" // 2
 	{
@@ -376,11 +412,8 @@
 			"oncmd"		"sm_rplayer |"
 			"offcmd"	""
 			"time"		""
-		}		
-	}
-	"Regeneracja" // 5
-	{
-		"51"
+		}
+		"45"
 		{
 			"title"		"Regeneracja (Siebie)"
 			"price"		"50"
@@ -388,7 +421,7 @@
 			"offcmd"	""
 			"time"		""
 		}
-		"52"
+		"46"
 		{
 			"title"		"Regeneracja (Drużyny)"
 			"price"		"50"
@@ -396,7 +429,7 @@
 			"offcmd"	""
 			"time"		""
 		}
-		"53"
+		"47"
 		{
 			"title"		"Regeneracja (Wszystkich)"
 			"price"		"50"
@@ -404,43 +437,7 @@
 			"offcmd"	""
 			"time"		""
 		}
-		"54"
-		{
-			"title"		"100% Ubera (Dla Medyka)"
-			"price"		"200"
-			"oncmd"		"sm_candy_buy_uber | 100"
-			"offcmd"	""
-			"time"		"0"
-			"class"		"5"
-		}
-		"55"
-		{
-			"title"		"200% Ubera (Dla Medyka)"
-			"price"		"400"
-			"oncmd"		"sm_candy_buy_uber | 200"
-			"offcmd"	""
-			"time"		"10"
-			"class"		"5"
-		}
-		"56"
-		{
-			"title"		"400% Ubera (Dla Medyka)"
-			"price"		"1000"
-			"oncmd"		"sm_candy_buy_uber | 400"
-			"offcmd"	""
-			"time"		"0"
-			"class"		"5"
-		}
-		"57"
-		{
-			"title"		"1000% Ubera (Dla Medyka)"
-			"price"		"1000"
-			"oncmd"		"sm_candy_buy_uber | 1000"
-			"offcmd"	""
-			"time"		"0"
-			"class"		"5"
-		}
-		"58"
+		"48"
 		{
 			"title"		"200 Metalu (Dla Inżyniera)"
 			"price"		"200"
@@ -448,11 +445,11 @@
 			"offcmd"	""
 			"time"		"0"
 			"class"		"9"
-		}	
+		}			
 	}
-	"Rezerwacja Slotu" // 6
+	"Rezerwacja Slotu" // 5
 	{
-		"61"
+		"51"
 		{
 			"title"		"Rezerwacja slotu - 1 tydzień"
 			"price"		"6000"
@@ -460,7 +457,7 @@
 			"offcmd"	""
 			"time"		""
 		}
-		"62"
+		"52"
 		{
 			"title"		"Rezerwacja slotu - 2 tygodnie"
 			"price"		"8000"
@@ -468,11 +465,46 @@
 			"offcmd"	""
 			"time"		""
 		}
-		"63"
+		"53"
 		{
 			"title"		"Rezerwacja slotu - 4 tygodnie"
 			"price"		"10000"
 			"oncmd"		"sm_addtimedreserved ? 2419200"
+			"offcmd"	""
+			"time"		""
+		}
+	}
+	"Wkurwiacze" // 6
+	{
+		"61"
+		{
+			"title"		"Zbonkuj gracza! (5 sekund)"
+			"price"		"100"
+			"oncmd"		"sm_candy_buy_condplayer ? 14 5"
+			"offcmd"	""
+			"time"		""
+		}
+		"62"
+		{
+			"title"		"Zbonkuj gracza! (10 sekund)"
+			"price"		"200"
+			"oncmd"		"sm_candy_buy_condplayer ? 14 10"
+			"offcmd"	""
+			"time"		""
+		}
+		"63"
+		{
+			"title"		"Zbonkuj gracza! (15 sekund)"
+			"price"		"500"
+			"oncmd"		"sm_candy_buy_condplayer ? 14 15"
+			"offcmd"	""
+			"time"		""
+		}
+		"64"
+		{
+			"title"		"Zbonkuj gracza! (30 sekund)"
+			"price"		"1000"
+			"oncmd"		"sm_candy_buy_condplayer ? 14 30"
 			"offcmd"	""
 			"time"		""
 		}
