@@ -584,34 +584,33 @@ GiveLicence(String:licSID[], String:PluginName[], time)
 	new String:Query[255];
 	Format(Query, sizeof(Query), "SELECT * FROM `%slicences` WHERE `steamid` = '%s' AND `ability` = '%s';", sTablePrefix, licSID, PluginName);
 	
-	new Handle:arr = CreateArray(255, 3);
-	PushArrayCell(arr, time);
-	PushArrayString(arr, licSID);
-	PushArrayString(arr, PluginName);
-	PrintToServer("time %i | sid %s | name %s", time, licSID, PluginName);
-	SQL_TQuery(Database, TGiveLicence, Query, arr);
+	new Handle:pack = CreateDataPack();
+	WritePackCell(pack, time);
+	WritePackString(pack, licSID);
+	WritePackString(pack, PluginName);
+	SQL_TQuery(Database, TGiveLicence, Query, pack);
 }
 
-public TGiveLicence(Handle: owner, Handle:hndl, const String:error[], const any:arr)
+public TGiveLicence(Handle: owner, Handle:hndl, const String:error[], const any:pack)
 {
 	if(hndl == INVALID_HANDLE)
 	{
-		return false;
+		return;
 	}
 	else
 	{
 		new String:licSID[255];
 		new String:PluginName[255];
-		new time = GetArrayCell(arr, 1);
-		GetArrayString(arr, 2, licSID, sizeof(licSID));
-		GetArrayString(arr, 3, PluginName, sizeof(PluginName));
-		PrintToServer("time %i | sid %s | name %s", time, licSID, PluginName);
-		CloseHandle(arr);
+		ResetPack(pack);	
+		new time = ReadPackCell(pack);
+		ReadPackString(pack, licSID, sizeof(licSID));
+		ReadPackString(pack, PluginName, sizeof(PluginName));
+		CloseHandle(pack);
 		
 		if(SQL_GetRowCount(hndl) == 0)
 		{
 			new String:Query[255];
-			Format(Query, sizeof(Query), "INSERT INTO `%slicences` (`steamid', `ability`, `expires`) VALUES ('%s', '%s', '%i');", sTablePrefix, licSID, PluginName, time);
+			Format(Query, sizeof(Query), "INSERT INTO `%slicences` (`steamid`, `ability`, `expires`) VALUES ('%s', '%s', '%i');", sTablePrefix, licSID, PluginName, GetTime() + time);
 			SQL_TQuery(Database, TNoCallback, Query);
 		}
 		else
@@ -625,6 +624,11 @@ public TGiveLicence(Handle: owner, Handle:hndl, const String:error[], const any:
 
 public TNoCallback(Handle: owner, Handle:hndl, const String:error[], any:data)
 {
+	if (hndl == INVALID_HANDLE)
+	{
+		PrintToServer("kurwa, znowu cos nei dziala: %s", error);
+	}
+	return;
 }
 
 public AbilityMenu(client)
