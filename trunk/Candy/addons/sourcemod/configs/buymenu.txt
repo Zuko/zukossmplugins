@@ -478,33 +478,33 @@
 	{
 		"61"
 		{
-			"title"		"Zbonkuj gracza! (5 sekund)"
-			"price"		"100"
-			"oncmd"		"sm_candy_buy_condplayer ? 14 5"
+			"title"		"Efekt Teleportu! (5 sekund)"
+			"price"		"50"
+			"oncmd"		"sm_candy_buy_condplayer ? 6 5"
 			"offcmd"	""
 			"time"		""
 		}
 		"62"
 		{
-			"title"		"Zbonkuj gracza! (10 sekund)"
-			"price"		"200"
-			"oncmd"		"sm_candy_buy_condplayer ? 14 10"
+			"title"		"Efekt Teleportu! (10 sekund)"
+			"price"		"100"
+			"oncmd"		"sm_candy_buy_condplayer ? 6 10"
 			"offcmd"	""
 			"time"		""
 		}
 		"63"
 		{
-			"title"		"Zbonkuj gracza! (15 sekund)"
-			"price"		"500"
-			"oncmd"		"sm_candy_buy_condplayer ? 14 15"
+			"title"		"Efekt Teleportu! (15 sekund)"
+			"price"		"200"
+			"oncmd"		"sm_candy_buy_condplayer ? 6 15"
 			"offcmd"	""
 			"time"		""
 		}
 		"64"
 		{
-			"title"		"Zbonkuj gracza! (30 sekund)"
-			"price"		"1000"
-			"oncmd"		"sm_candy_buy_condplayer ? 14 30"
+			"title"		"Efekt Teleportu! (30 sekund)"
+			"price"		"300"
+			"oncmd"		"sm_candy_buy_condplayer ? 6 30"
 			"offcmd"	""
 			"time"		""
 		}
