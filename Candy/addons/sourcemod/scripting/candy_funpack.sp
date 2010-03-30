@@ -1,6 +1,6 @@
 /*
  * TODO:
- * - dodac obsikanie, podpalenie, zbonkowanie
+ * - dodac zbonkowanie (czekac na native ;D)
  * - Multi-Lang (może się kiedyś przyda | tylko jak zrobić multi-lang w buymenu...)
  */
 
@@ -101,8 +101,13 @@ public Action:cBuyCond(client, args)
 		if (IsClientConnected(target_list[i]) && IsClientInGame(target_list[i]))
 		{
 			TF2_AddCondition(target_list[i], TFCond:i_cond, f_duration);
-			g_Time[client] = i_duration;
-			PerformCounter(target_list[i]);
+			if (CountdownTimer[target_list[i]] == INVALID_HANDLE)
+			{
+				g_Time[target_list[i]] = i_duration;
+				g_CounterTimeStart[target_list[i]] = GetTime();
+				PerformCounter(target_list[i]);
+			}
+			
 			if (noise == 2)
 			{
 				PrintToChat(target_list[i], "Towar zakupiony użyj go dobrze!");
@@ -565,9 +570,10 @@ public cCondPlayer(Handle:menu, MenuAction:action, client, result)
 		GetClientName(hTarget, sVName, sizeof(sVName));
 
 		TF2_AddCondition(hTarget, TFCond:i_cond, f_duration);
-		g_Time[client] = i_duration;
 		if (CountdownTimer[client] == INVALID_HANDLE)
 		{
+			g_Time[client] = i_duration;
+			g_CounterTimeStart[client] = GetTime();
 			PerformCounter(hTarget);
 		}
 		new noise = GetConVarInt(cvNoiseLevel);
