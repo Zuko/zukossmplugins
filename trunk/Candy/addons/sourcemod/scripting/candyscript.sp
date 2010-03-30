@@ -4,7 +4,7 @@
 #include "candy/fireworks.sp"
 
 /* defines */
-#define PLUGIN_VERSION "1.0"
+#define PLUGIN_VERSION "1.1"
 // #define DEBUG "0"
 #define NULLNAME "$$NULL##"
 
@@ -688,12 +688,12 @@ public Action:cAddCandy(client, args)
 		ReplyToTargetError(client, target_count);
 		return Plugin_Handled;
 	}
-	
+
 	for (new i = 0; i < target_count; i++)
 	{
 		iTarget = target_list[i];
 		GetClientName(iTarget, sTarget, sizeof(sTarget));
-		
+
 		if (!FullCheckClient(iTarget))
 		{
 			if (FullCheckClient(client))
@@ -702,20 +702,19 @@ public Action:cAddCandy(client, args)
 				PrintToServer("[%s] No such user (%s)", sChatTag, sTarget);
 			continue;
 		}
-		
+
 		if (iAmount != 0)
 		{
 			AddCandy(iTarget, iAmount);
 		}
-		
-		new String:sCandyNoise[255];
+
 		if (client != 0)
 		{
+			new String:sCandyNoise[255];
 			Format(sCandyNoise, sizeof(sCandyNoise), "[%s] %s jest dobrym adminem i podarował ci %i cukierków.", sChatTag, client, iAmount);
 			PrintNoise(sCandyNoise, 2, iTarget);
 		}
 	}
-	
 	return Plugin_Handled;
 }
 
@@ -773,9 +772,12 @@ public Action:cPlayerResetCandy(client, args)
 		Format(qReset, sizeof(qReset), "UPDATE %scandydata SET candy = 0, lifetimecandy = 0 WHERE steamid = '%s';", sTablePrefix, SteamID);
 		SQL_TQuery(dbConnection, cIgnoreQueryCallback, qReset);
 
-		new String:sCandyNoise[255];
-		Format(sCandyNoise, sizeof(sCandyNoise), "[%s] Zły admin zjadł Ci wszystkie cukierki.", sChatTag);
-		PrintNoise(sCandyNoise, 2, iTarget);
+		if (client != 0)
+		{
+			new String:sCandyNoise[255];
+			Format(sCandyNoise, sizeof(sCandyNoise), "[%s] Zły admin zjadł Ci wszystkie cukierki.", sChatTag);
+			PrintNoise(sCandyNoise, 2, iTarget);
+		}
 	}
 	
 	return Plugin_Handled;
@@ -845,9 +847,12 @@ public Action:cRemoveCandy(client, args)
 			RemoveCandy(iTarget, iAmount);
 		}
 		
-		new String:sCandyNoise[255];
-		Format(sCandyNoise, sizeof(sCandyNoise), "[%s] %s jest złym adminem i zjadł Ci %i cukierków.", sChatTag,client, iAmount);
-		PrintNoise(sCandyNoise, 2, iTarget);
+		if (client != 0)
+		{
+			new String:sCandyNoise[255];
+			Format(sCandyNoise, sizeof(sCandyNoise), "[%s] %s jest złym adminem i zjadł Ci %i cukierków.", sChatTag,client, iAmount);
+			PrintNoise(sCandyNoise, 2, iTarget);
+		}
 	}
 	
 	return Plugin_Handled;
