@@ -624,10 +624,6 @@ public TGiveLicence(Handle: owner, Handle:hndl, const String:error[], const any:
 
 public TNoCallback(Handle: owner, Handle:hndl, const String:error[], any:data)
 {
-	if (hndl == INVALID_HANDLE)
-	{
-		PrintToServer("kurwa, znowu cos nei dziala: %s", error);
-	}
 	return;
 }
 
