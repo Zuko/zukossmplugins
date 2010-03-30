@@ -175,12 +175,12 @@ public InitializeConvars()
  */
 public InitializeAdminCommands()
 {
-	RegAdminCmd("sm_candy_add", cAddCandy, ADMFLAG_ROOT, "Give an user some credits (sm_candy_add userid amount)");
-	RegAdminCmd("sm_candy_remove", cRemoveCandy, ADMFLAG_ROOT, "Remove some credits (sm_candy_remove userid amount)");
-	RegAdminCmd("sm_candy_get", cGetCandy, ADMFLAG_ROOT, "Get the amount of candy (sm_candy_get userid)");
+	RegAdminCmd("sm_candy_add", cAddCandy, ADMFLAG_ROOT, "Give an user some credits (sm_candy_add <#userid|name> amount)");
+	RegAdminCmd("sm_candy_remove", cRemoveCandy, ADMFLAG_ROOT, "Remove some credits (sm_candy_remove <#userid|name> amount)");
+	RegAdminCmd("sm_candy_get", cGetCandy, ADMFLAG_ROOT, "Get the amount of candy (sm_candy_get <#userid|name>)");
 	RegAdminCmd("sm_candy_reset", cResetCandy, ADMFLAG_ROOT, "Reset the amount of candy of every player to a certain amount (sm_candy_reset amount)");
 	RegAdminCmd("sm_candy_resetdb", cResetDB, ADMFLAG_ROOT, "Reset the database (sm_candy_resetdb)");
-	RegAdminCmd("sm_candy_playerreset", cPlayerResetCandy, ADMFLAG_ROOT, "Reset the amount of candy of selected player to 0 (sm_candy_playerreset userid)");
+	RegAdminCmd("sm_candy_playerreset", cPlayerResetCandy, ADMFLAG_ROOT, "Reset the amount of candy of selected player to 0 (sm_candy_playerreset <#userid|name>)");
 	RegAdminCmd("sm_candy_forcedrop", cForceDrop, ADMFLAG_ROOT, "Force drop");
 }
 
@@ -452,7 +452,7 @@ public Action:cSay(client, args)
 			new String:qGetUsersCandy[255], String:sSteamId[32];
 			GetClientAuthString(client, sSteamId, sizeof(sSteamId));
 			Format(qGetUsersCandy, sizeof(qGetUsersCandy), "SELECT candy FROM %scandydata WHERE steamid = '%s';", sTablePrefix, sSteamId);
-			SQL_TQuery(dbConnection, cBuyMenuSQLCallback, qGetUsersCandy, client);
+			SQL_TQuery(dbConnection, cGroupMenuSQLCallback, qGetUsersCandy, client);
 		}
 		else
 		{
@@ -1182,10 +1182,7 @@ public cStatsSQLCallback(Handle:owner, Handle:hndl, String:error[], any:data)
 	PrintToChat(data, "[%s] Aktualnie posiadasz \x04%i\x01 cukierków. Ogólnie zdobyłeś \x04%i\x01!", sChatTag, iCurrentMoney, iLifetimeMoney);
 }
 
-/**
- * Buy menu SQL callback
- */
-public cBuyMenuSQLCallback(Handle:owner, Handle:hndl, String:error[], any:data)
+public cGroupMenuSQLCallback(Handle:owner, Handle:hndl, String:error[], any:data)
 {
 	if (hndl == INVALID_HANDLE)
 	{
@@ -1216,8 +1213,52 @@ public cBuyMenuSQLCallback(Handle:owner, Handle:hndl, String:error[], any:data)
 		return;
 	}
 	
+	new Handle:mGroupMenu = CreateMenu(cGroupMenu);
+	SetMenuTitle(mGroupMenu, "Twoje cukierki: %i", iCurrentMoney);
+ 
+	decl String:buffer[255];
+	do
+	{
+		KvGetSectionName(kv, buffer, sizeof(buffer));
+		new String:tmp[255];
+		IntToString(iCurrentMoney, tmp, sizeof(tmp));
+		AddMenuItem(mGroupMenu, tmp, buffer, ITEMDRAW_DEFAULT);
+	} while (KvGotoNextKey(kv));
+
+	CloseHandle(kv)
+	DisplayMenu(mGroupMenu, data, 20);
+}
+
+public cBuyMenuGroupCallback(String:Group[], iCurrentMoney, client)
+{
+
+	/**
+	 * Thanks to the allied mods wiki!
+	 */
+	new String:sFilePath[PLATFORM_MAX_PATH];
+	BuildPath(Path_SM, sFilePath, sizeof(sFilePath),"configs/buymenu.txt");
+
+	if (!FileExists(sFilePath))
+    {
+        PrintToServer("[%s] buymenu.txt not found in configs folder!", sChatTag);
+        return;
+    }
+	new Handle:kv = CreateKeyValues("Buymenu");
+	FileToKeyValues(kv, sFilePath);
+ 
+	if(!KvJumpToKey(kv, Group))
+	{
+		PrintToServer("[%s] Failed to read the buymenu.txt", sChatTag);
+		return;
+	}
+	if (!KvGotoFirstSubKey(kv))
+	{
+		PrintToServer("[%s] Failed to read the buymenu.txt", sChatTag);
+		return;
+	}
+	
 	new Handle:mBuyMenu = CreateMenu(cBuyMenu);
-	SetMenuTitle(mBuyMenu, "Twoje cukierki: %i", iCurrentMoney);
+	SetMenuTitle(mBuyMenu, "%s", Group);
  
 	for (new i = 0; i < sizeof(sNames); i++)
 	{
@@ -1228,29 +1269,24 @@ public cBuyMenuSQLCallback(Handle:owner, Handle:hndl, String:error[], any:data)
 		AddMenuItem(mBuyMenu, sInfo, sNames[i], (iCurrentMoney >= iCosts[i] ? ITEMDRAW_DEFAULT : ITEMDRAW_DISABLED));
 	}
  
-	/**
-	 * I know the following code is
-	 * totally stupid and chaos
-	 * but I'm too lazy to clean
-	 * up. Huh? *looking around*
-	 * True.. true...
-	 */
 	decl String:buffer[255];
 	do
 	{
 		new String:sTitle[32], String:sCosts[32], String:sText[64], String:sGroup[8];
 		new iClass;
 		KvGetSectionName(kv, buffer, sizeof(buffer));
+		PrintToChatAll("bufor:");
+		PrintToChatAll(buffer);
 		KvGetString(kv, "title", sTitle, sizeof(sTitle));
 		KvGetString(kv, "price", sCosts, sizeof(sCosts));
 		KvGetString(kv, "group", sGroup, sizeof(sGroup));
 		iClass = KvGetNum(kv, "class");
-		if (StrContains(sGroups[data], sGroup, false) != -1 && strcmp(sGroup, "", false) != 0)
+		if (StrContains(sGroups[client], sGroup, false) != -1 && strcmp(sGroup, "", false) != 0)
 		{
 			Format(sText, sizeof(sText), "%s (%s | nie możesz teraz tego użyć)", sTitle, sCosts);
 			AddMenuItem(mBuyMenu, buffer, sText, ITEMDRAW_DISABLED);
 		}
-		else if (iClass != 0 && GetEntProp(data, Prop_Send, "m_iClass") != iClass)
+		else if (iClass != 0 && GetEntProp(client, Prop_Send, "m_iClass") != iClass)
 		{
 			Format(sText, sizeof(sText), "%s (%s | zła klasa)", sTitle, sCosts);
 			AddMenuItem(mBuyMenu, buffer, sText, ITEMDRAW_DISABLED);
@@ -1263,7 +1299,22 @@ public cBuyMenuSQLCallback(Handle:owner, Handle:hndl, String:error[], any:data)
 	} while (KvGotoNextKey(kv));
  
 	CloseHandle(kv)
-	DisplayMenu(mBuyMenu, data, 20);
+	DisplayMenu(mBuyMenu, client, 20);
+}
+
+public cGroupMenu(Handle:menu, MenuAction:action, param1, param2)
+{
+	if(action == MenuAction_Select)
+	{
+		new String:group[32];
+		new String:scandy[32];
+		GetMenuItem(menu, param2, scandy, sizeof(scandy), _, group, sizeof(group));
+		cBuyMenuGroupCallback(group, StringToInt(scandy), param1);
+	}
+	else if (action == MenuAction_End)
+	{
+		CloseHandle(menu)
+	}
 }
 
 /**
@@ -1281,13 +1332,16 @@ public cBuyMenu(Handle:menu, MenuAction:action, param1, param2)
 			return;
 		}
 			
-		new String:info[32]
-		GetMenuItem(menu, param2, info, sizeof(info))
+		new String:info[32];
+		GetMenuItem(menu, param2, info, sizeof(info));
+		
+		new String:group[32];
+		GetMenuTitle(menu, group, sizeof(group));
 		
 		new String:qGetUsersCandy[255], String:sSteamId[32];
 		GetClientAuthString(param1, sSteamId, sizeof(sSteamId));
 		Buying[param1] = true;
-		Format(qGetUsersCandy, sizeof(qGetUsersCandy), "SELECT candy, '%s' FROM %scandydata WHERE steamid = '%s';", info, sTablePrefix, sSteamId);
+		Format(qGetUsersCandy, sizeof(qGetUsersCandy), "SELECT candy, '%s', '%s' FROM %scandydata WHERE steamid = '%s';", info, group, sTablePrefix, sSteamId);
 		SQL_TQuery(dbConnection, cBuyMenuCallbackSQLCallback, qGetUsersCandy, param1);
 	}
 	else if (action == MenuAction_End)
@@ -1313,6 +1367,8 @@ public cBuyMenuCallbackSQLCallback(Handle:owner, Handle:hndl, String:error[], an
 	new iCurrentMoney = SQL_FetchInt(hndl, 0);
 	new String:sBuyEntry[32];
 	SQL_FetchString(hndl, 1, sBuyEntry, sizeof(sBuyEntry));
+	new String:sBuyGroup[32];
+	SQL_FetchString(hndl, 2, sBuyGroup, sizeof(sBuyGroup));
 	new iBuyEntry = StringToInt(sBuyEntry);
 	
 	Buying[data] = false;
@@ -1330,8 +1386,14 @@ public cBuyMenuCallbackSQLCallback(Handle:owner, Handle:hndl, String:error[], an
 		}
 		new Handle:kv = CreateKeyValues("Buymenu");
 		FileToKeyValues(kv, sFilePath);
-		if (!KvJumpToKey(kv, sBuyEntry))
+		if(!KvJumpToKey(kv, sBuyGroup))
 		{
+			PrintToServer("[%s] Error in buymenu.txt", sChatTag);
+			return;
+		}
+		if(!KvJumpToKey(kv, sBuyEntry))
+		{
+			PrintToServer("[%s] Error in buymenu.txt", sChatTag);
 			return;
 		}
 		
@@ -1356,8 +1418,8 @@ public cBuyMenuCallbackSQLCallback(Handle:owner, Handle:hndl, String:error[], an
 			return;
 		}
 
-		PrintDebug("Parsing ?$#~|^");
-		new String:sUserId[8], String:sPlayerName[128], String:sIndex[4], String:sSteamId[32], String:sQuotedName[128], String:sPlayerTeam[6];
+		PrintDebug("Parsing ?$#~|^&");
+		new String:sUserId[8], String:sPlayerName[128], String:sIndex[4], String:sSteamId[32], String:sQuotedName[128], String:sPlayerTeam[6], String:sEnemyTeam[6];
 		IntToString(GetClientUserId(data), sUserId, sizeof(sUserId));
 		GetClientName(data, sPlayerName, sizeof(sPlayerName));
 		GetClientAuthString(data, sSteamId, sizeof(sSteamId));
@@ -1366,10 +1428,12 @@ public cBuyMenuCallbackSQLCallback(Handle:owner, Handle:hndl, String:error[], an
 		if (GetClientTeam(data) == 2)
 		{
 			sPlayerTeam = "@red";
+			sEnemyTeam = "@blue";
 		}
 		else if (GetClientTeam(data) == 3)
 		{
 			sPlayerTeam = "@blue";
+			sEnemyTeam = "@red";
 		}
 		ReplaceChar("?", sUserId, sOnCmd);
 		ReplaceChar("$", sPlayerName, sOnCmd);
@@ -1377,6 +1441,7 @@ public cBuyMenuCallbackSQLCallback(Handle:owner, Handle:hndl, String:error[], an
 		ReplaceChar("~", sSteamId, sOnCmd);
 		ReplaceChar("|", sQuotedName, sOnCmd);
 		ReplaceChar("^", sPlayerTeam, sOnCmd);
+		ReplaceChar("&", sEnemyTeam, sOnCmd);
 
 		LogToFile(logfile, "[%s] %s (%i pkt) kupił %s (%i pkt).", sChatTag, sPlayerName, iCurrentMoney, sTitle, iPrice);
 			
@@ -1397,6 +1462,8 @@ public cBuyMenuCallbackSQLCallback(Handle:owner, Handle:hndl, String:error[], an
 			ReplaceChar("#", sIndex, sOffCmd);
 			ReplaceChar("~", sSteamId, sOffCmd);
 			ReplaceChar("|", sQuotedName, sOffCmd);
+			ReplaceChar("^", sPlayerTeam, sOffCmd);
+			ReplaceChar("&", sEnemyTeam, sOffCmd);
 
 			Format(sGroups[data], sizeof(sGroups), "%s%s", sGroups, sGroup);
 			
