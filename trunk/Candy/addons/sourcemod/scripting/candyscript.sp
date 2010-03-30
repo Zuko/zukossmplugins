@@ -36,6 +36,9 @@ new Handle:cvCustomChatTriggerPlayerStats2;
 new Handle:cvDelay;
 new Handle:cvDropCandy;
 
+new Handle:dropTimer = INVALID_HANDLE;
+new Handle:tickTimer = INVALID_HANDLE;
+
 new Handle:dbConnection = INVALID_HANDLE;
 
 new String:sChatTag[32];
@@ -297,12 +300,21 @@ public InitializeTimersAndCValues()
 	GetConVarString(cvCfgChatTag, sChatTag, sizeof(sChatTag));
 	GetConVarString(cvCfgTablePrefix, sTablePrefix, sizeof(sTablePrefix));
 	
+	if(tickTimer != INVALID_HANDLE)
+	{
+		KillTimer(tickTimer);
+	}
+	if(dropTimer != INVALID_HANDLE)
+	{
+		KillTimer(dropTimer);
+	}
+	
 	PrintDebug("Updating tick speed");
 	new iTickSpeed = GetConVarInt(cvCfgTickSpeed);
 	new iCreditEarn = GetConVarInt(cvCreditPerTick);
 	if ((iTickSpeed > 0) && (iCreditEarn > 0))
 	{
-		CreateTimer(float(iTickSpeed), tTick, _, TIMER_REPEAT);
+		tickTimer = CreateTimer(float(iTickSpeed), tTick, _, TIMER_REPEAT | TIMER_FLAG_NO_MAPCHANGE);
 	}
 	
 	for (new i = 0; i < sizeof(sConnectingClients); i++)
@@ -312,7 +324,7 @@ public InitializeTimersAndCValues()
 	new iDropEnabled = GetConVarInt(cvDropCandy);
 	if (iDropEnabled == 1)
 	{
-		CreateTimer(300.0, tDropCandy, _, TIMER_REPEAT);
+		dropTimer = CreateTimer(300.0, tDropCandy, _, TIMER_REPEAT | TIMER_FLAG_NO_MAPCHANGE);
 	}	
 }
 
