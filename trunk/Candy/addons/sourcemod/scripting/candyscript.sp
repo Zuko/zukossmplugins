@@ -709,8 +709,11 @@ public Action:cAddCandy(client, args)
 		}
 		
 		new String:sCandyNoise[255];
-		Format(sCandyNoise, sizeof(sCandyNoise), "[%s] %s jest dobrym adminem i podarował ci %i cukierków.", sChatTag, client, iAmount);
-		PrintNoise(sCandyNoise, 2, iTarget);
+		if (client != 0)
+		{
+			Format(sCandyNoise, sizeof(sCandyNoise), "[%s] %s jest dobrym adminem i podarował ci %i cukierków.", sChatTag, client, iAmount);
+			PrintNoise(sCandyNoise, 2, iTarget);
+		}
 	}
 	
 	return Plugin_Handled;

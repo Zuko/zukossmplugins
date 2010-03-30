@@ -104,6 +104,24 @@
 			"time"		"15"
 			"group"		"a"
 		}
+		"17"
+		{
+			"title"		"Auto Uber (50%)"
+			"price"		"500"
+			"oncmd"		"sm_autouber | 50"
+			"offcmd"	""
+			"time"		""
+			"class"		"5"
+		}
+		"18"
+		{
+			"title"		"Auto Uber (25%)"
+			"price"		"250"
+			"oncmd"		"sm_autouber | 25"
+			"offcmd"	""
+			"time"		""
+			"class"		"5"
+		}
 	}
 	"Kryty" // 2
 	{
@@ -323,7 +341,7 @@
 			"time"		""
 		}
 	}
-	"Różne / auto" // 4
+	"Różne" // 4
 	{
 		"41"
 		{
@@ -336,37 +354,43 @@
 		}
 		"42"
 		{
+			"title"		"Podaruj 250 cukierków!"
+			"price"		"300"
+			"oncmd"		"sm_candy_give_candy |"
+			"offcmd"	""
+			"time"		"0"
+		}
+		"43"
+		{
+			"title"		"Zgładź gracza! (A co!)"
+			"price"		"500"
+			"oncmd"		"sm_candy_buy_slay |"
+			"offcmd"	""
+			"time"		"0"
+		}
+		"44"
+		{
+			"title"		"Respawn"
+			"price"		"50"
+			"oncmd"		"sm_rplayer |"
+			"offcmd"	""
+			"time"		""
+		}		
+		"45"
+		{
 			"title"		"Auto Respawn (po 5 sek)"
 			"price"		"500"
 			"oncmd"		"sm_autorespawn | 5"
 			"offcmd"	""
 			"time"		""
 		}
-		"43"
+		"45"
 		{
 			"title"		"Auto Respawn (od razu)"
 			"price"		"700"
 			"oncmd"		"sm_autorespawn | 0"
 			"offcmd"	""
 			"time"		""
-		}
-		"44"
-		{
-			"title"		"Auto Uber (50%)"
-			"price"		"500"
-			"oncmd"		"sm_autouber | 50"
-			"offcmd"	""
-			"time"		""
-			"class"		"5"
-		}
-		"45"
-		{
-			"title"		"Auto Uber (25%)"
-			"price"		"250"
-			"oncmd"		"sm_autouber | 25"
-			"offcmd"	""
-			"time"		""
-			"class"		"5"
 		}
 	}
 	"Regeneracja" // 5
@@ -441,7 +465,7 @@
 			"class"		"9"
 		}	
 	}
-	"Rezerwacja" // 6
+	"Rezerwacja Slotu" // 6
 	{
 		"61"
 		{

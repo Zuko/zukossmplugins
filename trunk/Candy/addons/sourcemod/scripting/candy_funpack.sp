@@ -9,7 +9,6 @@
 #include <tf2>
 #include <tf2_stocks>
 
-new Handle:g_CountdownTimer = INVALID_HANDLE;
 new Handle:cvNoiseLevel;
 new Handle:HudCounter;
 new g_CounterTimeStart;
@@ -32,8 +31,10 @@ public OnPluginStart()
 	RegAdminCmd("sm_candy_buy_uber", cBuyUber, ADMFLAG_BAN, "Get instant uber (only  medic)");
 	RegAdminCmd("sm_candy_buy_regen", cBuyRegen, ADMFLAG_BAN, "Fill health and ammo");
 	RegAdminCmd("sm_candy_buy_powerplay", cBuyPowerPlay, ADMFLAG_BAN, "Robin Walker!");
+	RegAdminCmd("sm_candy_give_candy", cBuyCandyToPlayer, ADMFLAG_BAN, "Give candy to a player!");
 	RegAdminCmd("sm_candy_buy_slay", cBuySlay, ADMFLAG_BAN, "Slay a player!");
 	RegAdminCmd("sm_candy_countdown", cCountdown, ADMFLAG_BAN, "Countdown");
+	
 
 	HudCounter = CreateHudSynchronizer();
 	cvNoiseLevel = CreateConVar("sm_candy_buy_noiselevel", "2", "1 = silent, 2 = buyer only, 3 = everyone", FCVAR_PLUGIN, true, 1.0, true, 3.0);
@@ -305,6 +306,7 @@ public Action:cBuySlay(cclient, args)
 		PrintToServer(sErrStr);
 		return Plugin_Handled;
 	}
+	
 	new String:sclient[32];
 	GetCmdArg(1, sclient, sizeof(sclient));
 	new client = GetClientOfUserId(StringToInt(sclient));
@@ -313,18 +315,20 @@ public Action:cBuySlay(cclient, args)
 		PrintToServer(sErrStr);
 		return Plugin_Handled;
 	}
-	
+
 	new Handle:hMenu = CreateMenu(cSlayPlayer);
-	SetMenuTitle(hMenu, "Kto ci podpadł?");
+	SetMenuTitle(hMenu, "Slay who?");
 	for (new i = 1; i <= GetClientCount(); i++)
 	{
-		new String:sName[255], String:sInfo[4];
-		GetClientName(i, sName, sizeof(sName));
-		IntToString(i, sInfo, sizeof(sInfo));
-		AddMenuItem(hMenu, sInfo, sName);
+		if (IsClientConnected(i) && IsClientInGame(i))
+		{
+			new String:sName[255], String:sInfo[4];
+			GetClientName(i, sName, sizeof(sName));
+			IntToString(i, sInfo, sizeof(sInfo));
+			AddMenuItem(hMenu, sInfo, sName);
+		}
 	}
 	DisplayMenu(hMenu, client, 20);
-	
 	return Plugin_Handled;
 }
 
@@ -341,7 +345,7 @@ public cSlayPlayer(Handle:menu, MenuAction:action, client, result)
 		SlapPlayer(hTarget, GetClientHealth(hTarget) + 10, false); // +10 just to be sure
 		new noise = GetConVarInt(cvNoiseLevel);
 		if (noise > 1)
-		{
+		{		
 			PrintToChat(client, "Zgładziłeś %s", sVName);
 			PrintToChat(hTarget, "%s cię zgładził! Chyba mu podpadłeś ;P", sAName);
 		}
@@ -351,6 +355,64 @@ public cSlayPlayer(Handle:menu, MenuAction:action, client, result)
 		CloseHandle(menu)
 	}
 }
+
+public Action:cBuyCandyToPlayer(cclient, args)
+{
+	new String:sErrStr[] = "[candypack] Usage: sm_candy_give_candy <userid>";
+	if (args < 1)
+	{
+		PrintToServer(sErrStr);
+		return Plugin_Handled;
+	}
+	new String:sclient[32];
+	GetCmdArg(1, sclient, sizeof(sclient));
+	new client = GetClientOfUserId(StringToInt(sclient));
+	if (!FullCheckClient(client))
+	{
+		PrintToServer(sErrStr);
+		return Plugin_Handled;
+	}
+	
+	new Handle:hMenu = CreateMenu(cGiveCandy);
+	SetMenuTitle(hMenu, "Komu chcesz podarować cukierki?");
+	for (new i = 1; i <= GetClientCount(); i++)
+	{
+		if (IsClientConnected(i) && IsClientInGame(i))
+		{
+			new String:sName[255], String:sInfo[4];
+			GetClientName(i, sName, sizeof(sName));
+			IntToString(i, sInfo, sizeof(sInfo));
+			AddMenuItem(hMenu, sInfo, sName);
+		}
+	}
+	DisplayMenu(hMenu, client, 20);
+	return Plugin_Handled;
+}
+
+public cGiveCandy(Handle:menu, MenuAction:action, client, result)
+{
+	if (action == MenuAction_Select)
+	{
+		new String:info[32], String:sAName[255], String:sVName[255];
+		GetMenuItem(menu, result, info, sizeof(info))
+		new hTarget = StringToInt(info);
+		GetClientName(client, sAName, sizeof(sAName));
+		GetClientName(hTarget, sVName, sizeof(sVName));
+
+		ServerCommand("sm_candy_add %s 250", hTarget);
+		new noise = GetConVarInt(cvNoiseLevel);
+		if (noise > 1)
+		{		
+			PrintToChat(client, "Podarowałeś %s 250 cukierków.", sVName);
+			PrintToChat(hTarget, "%s podarował ci 250 cukierków ;P", sAName);
+		}
+	}
+	else if (action == MenuAction_End)
+	{
+		CloseHandle(menu)
+	}
+}
+
 
 public Action:cCountdown(client, args)
 {
@@ -402,7 +464,7 @@ public Action:cCountdown(client, args)
 
 PerformCounter(target)
 {
-	g_CountdownTimer = CreateTimer(1.0, Counter, target, TIMER_REPEAT | TIMER_FLAG_NO_MAPCHANGE)
+	CreateTimer(1.0, Counter, target, TIMER_REPEAT | TIMER_FLAG_NO_MAPCHANGE)
 }
 
 public Action:Counter(Handle:timer, any:target)
