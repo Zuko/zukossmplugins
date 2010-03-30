@@ -45,7 +45,7 @@
 // | - QuotedName
 // ^ - PlayerTeam
 // & - EnemyTeam
-// @ - QuotedSID
+// - - QuotedSID
 
 "Buymenu"
 {
@@ -167,7 +167,7 @@
 	{
 		"31"
 		{
-			"title"		"After Burner"
+			"title"		"(Pyro) After Burner"
 			"price"		"3000"
 			"oncmd"		"sm_rmf_give_licence - afterburner 86400"
 			"offcmd"	""
@@ -175,7 +175,7 @@
 		}
 		"32"
 		{
-			"title"		"Burnsday Present"
+			"title"		"(Pyro) Burnsday Present"
 			"price"		"3000"
 			"oncmd"		"sm_rmf_give_licence - burnsdaypresent 86400"
 			"offcmd"	""
@@ -183,7 +183,7 @@
 		}
 		"33"
 		{
-			"title"		"Centrifuge Rotor"
+			"title"		"(Heavy) Centrifuge Rotor"
 			"price"		"3000"
 			"oncmd"		"sm_rmf_give_licence - centrifugerotor 86400"
 			"offcmd"	""
@@ -191,7 +191,7 @@
 		}
 		"34"
 		{
-			"title"		"Curving Arrow"
+			"title"		"(Sniper) Curving Arrow"
 			"price"		"3000"
 			"oncmd"		"sm_rmf_give_licence - curvingarrow 86400"
 			"offcmd"	""
@@ -199,7 +199,7 @@
 		}
 		"35"
 		{
-			"title"		"Delicious Sandvich"
+			"title"		"(Heavy) Delicious Sandvich"
 			"price"		"3000"
 			"oncmd"		"sm_rmf_give_licence - delicioussandvich 86400"
 			"offcmd"	""
@@ -207,7 +207,7 @@
 		}
 		"36"
 		{
-			"title"		"Disguise Jutsu"
+			"title"		"(Pyro) Disguise Jutsu"
 			"price"		"3000"
 			"oncmd"		"sm_rmf_give_licence - disguisejutsu 86400"
 			"offcmd"	""
@@ -215,7 +215,7 @@
 		}
 		"37"
 		{
-			"title"		"Doping Injection"
+			"title"		"(Medyk) Doping Injection"
 			"price"		"3000"
 			"oncmd"		"sm_rmf_give_licence - dopinginjection 86400"
 			"offcmd"	""
@@ -223,7 +223,7 @@
 		}
 		"38"
 		{
-			"title"		"Drunk Bomb"
+			"title"		"(Demo) Drunk Bomb"
 			"price"		"3000"
 			"oncmd"		"sm_rmf_give_licence - drunkbomb 86400"
 			"offcmd"	""
@@ -231,7 +231,7 @@
 		}
 		"39"
 		{
-			"title"		"Flare Firework"
+			"title"		"(Pyro) Flare Firework"
 			"price"		"3000"
 			"oncmd"		"sm_rmf_give_licence - flarefirework 86400"
 			"offcmd"	""
@@ -239,7 +239,7 @@
 		}
 		"310"
 		{
-			"title"		"Flying Doctor"
+			"title"		"(Medyk) Flying Doctor"
 			"price"		"3000"
 			"oncmd"		"sm_rmf_give_licence - flyingdoctor 86400"
 			"offcmd"	""
@@ -247,7 +247,7 @@
 		}
 		"311"
 		{
-			"title"		"Homing Rocket"
+			"title"		"(Sold) Homing Rocket"
 			"price"		"3000"
 			"oncmd"		"sm_rmf_give_licence - homingrocket 86400"
 			"offcmd"	""
@@ -255,7 +255,7 @@
 		}
 		"312"
 		{
-			"title"		"King Kong Drumming"
+			"title"		"(Sold) King Kong Drumming"
 			"price"		"3000"
 			"oncmd"		"sm_rmf_give_licence - kingkongdrumming 86400"
 			"offcmd"	""
@@ -263,7 +263,7 @@
 		}
 		"313"
 		{
-			"title"		"Marking Shot"
+			"title"		"(Sniper) Marking Shot"
 			"price"		"3000"
 			"oncmd"		"sm_rmf_give_licence - markingshot 86400"
 			"offcmd"	""
@@ -271,7 +271,7 @@
 		}
 		"314"
 		{
-			"title"		"Metal Hopper"
+			"title"		"(Eng) Metal Hopper"
 			"price"		"3000"
 			"oncmd"		"sm_rmf_give_licence - metalhopper 86400"
 			"offcmd"	""
@@ -279,7 +279,7 @@
 		}
 		"315"
 		{
-			"title"		"Reverse Engineer"
+			"title"		"(Eng) Reverse Engineer"
 			"price"		"3000"
 			"oncmd"		"sm_rmf_give_licence - reverseengineer 86400"
 			"offcmd"	""
@@ -287,7 +287,7 @@
 		}
 		"316"
 		{
-			"title"		"Sapper Throw"
+			"title"		"(Spy) Sapper Throw"
 			"price"		"3000"
 			"oncmd"		"sm_rmf_give_licence - sapperthrow 86400"
 			"offcmd"	""
@@ -295,7 +295,7 @@
 		}
 		"317"
 		{
-			"title"		"Sleep Switch"
+			"title"		"(Eng) Sleep Switch"
 			"price"		"3000"
 			"oncmd"		"sm_rmf_give_licence - sleepswitch 86400"
 			"offcmd"	""
@@ -303,7 +303,7 @@
 		}
 		"318"
 		{
-			"title"		"Spike Shoes"
+			"title"		"(Scout) Spike Shoes"
 			"price"		"3000"
 			"oncmd"		"sm_rmf_give_licence - spikeshoes 86400"
 			"offcmd"	""
@@ -311,7 +311,7 @@
 		}
 		"319"
 		{
-			"title"		"Sticky Flash"
+			"title"		"(Demo) Sticky Flash"
 			"price"		"3000"
 			"oncmd"		"sm_rmf_give_licence - stickyflash 86400"
 			"offcmd"	""
@@ -319,7 +319,7 @@
 		}
 		"320"
 		{
-			"title"		"Styptic"
+			"title"		"(Medyk) Styptic"
 			"price"		"3000"
 			"oncmd"		"sm_rmf_give_licence - styptic 86400"
 			"offcmd"	""
@@ -327,7 +327,7 @@
 		}
 		"321"
 		{
-			"title"		"Supercharger"
+			"title"		"(Medyk) Supercharger"
 			"price"		"3000"
 			"oncmd"		"sm_rmf_give_licence - supercharger 86400"
 			"offcmd"	""
@@ -335,7 +335,7 @@
 		}
 		"322"
 		{
-			"title"		"Uber Transplant"
+			"title"		"(Medyk) Uber Transplant"
 			"price"		"3000"
 			"oncmd"		"sm_rmf_give_licence - ubertransplant 86400"
 			"offcmd"	""
@@ -373,26 +373,10 @@
 		{
 			"title"		"Respawn"
 			"price"		"50"
-			"oncmd"		"sm_rplayer ?"
+			"oncmd"		"sm_rplayer |"
 			"offcmd"	""
 			"time"		""
 		}		
-		"45"
-		{
-			"title"		"Auto Respawn (po 5 sek)"
-			"price"		"500"
-			"oncmd"		"sm_autorespawn ? 5"
-			"offcmd"	""
-			"time"		""
-		}
-		"45"
-		{
-			"title"		"Auto Respawn (od razu)"
-			"price"		"700"
-			"oncmd"		"sm_autorespawn ? 0"
-			"offcmd"	""
-			"time"		""
-		}
 	}
 	"Regeneracja" // 5
 	{
