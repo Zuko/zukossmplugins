@@ -1,6 +1,5 @@
 /*
  * TODO:
- * - Zabic timer jak ktos wyjdzie.
  * - dodac obsikanie, podpalenie, zbonkowanie
  * - Multi-Lang (może się kiedyś przyda | tylko jak zrobić multi-lang w buymenu...)
  */
@@ -13,8 +12,9 @@
 new Handle:cvNoiseLevel;
 new Handle:HudCounter;
 new Handle:dataPack[MAXPLAYERS];
-new g_CounterTimeStart;
-new g_Time;
+new Handle:CountdownTimer[MAXPLAYERS];
+new g_CounterTimeStart[MAXPLAYERS];
+new g_Time[MAXPLAYERS];
 
 #define PLUGIN_VERSION "0.6"
 
@@ -44,6 +44,14 @@ public OnPluginStart()
 	cvNoiseLevel = CreateConVar("sm_candy_buy_noiselevel", "2", "1 = silent, 2 = buyer only, 3 = everyone", FCVAR_PLUGIN, true, 1.0, true, 3.0);
 }
 
+public OnClientDisconnect(client)
+{
+	if (CountdownTimer[client] != INVALID_HANDLE)
+	{
+		KillTimer(CountdownTimer[client]);
+	}
+}
+
 public Action:cBuyCond(client, args)
 {
 	new String:sErrStr[] = "[candypack] Usage: sm_candy_buy_cond <#userid|name|@all|@red|@blue|@bots> <TFCond> <duration>";
@@ -66,6 +74,7 @@ public Action:cBuyCond(client, args)
 	new i_cond = StringToInt(cond);
 	GetCmdArg(3, duration, sizeof(duration));
 	new Float:f_duration = StringToFloat(duration);
+	new i_duration = StringToInt(duration);
 	new noise = GetConVarInt(cvNoiseLevel);
 
 	if (target[client] == -1)
@@ -92,7 +101,8 @@ public Action:cBuyCond(client, args)
 		if (IsClientConnected(target_list[i]) && IsClientInGame(target_list[i]))
 		{
 			TF2_AddCondition(target_list[i], TFCond:i_cond, f_duration);
-			
+			g_Time[client] = i_duration;
+			PerformCounter(target_list[i]);
 			if (noise == 2)
 			{
 				PrintToChat(target_list[i], "Towar zakupiony użyj go dobrze!");
@@ -546,14 +556,20 @@ public cCondPlayer(Handle:menu, MenuAction:action, client, result)
 		CloseHandle(dataPack[client]);
 		new i_cond = StringToInt(cond);
 		new Float:f_duration = StringToFloat(duration);
+		new i_duration = StringToInt(duration);
 
 		new String:info[32], String:sAName[255], String:sVName[255];
 		GetMenuItem(menu, result, info, sizeof(info))
 		new hTarget = StringToInt(info);
 		GetClientName(client, sAName, sizeof(sAName));
 		GetClientName(hTarget, sVName, sizeof(sVName));
-		
+
 		TF2_AddCondition(hTarget, TFCond:i_cond, f_duration);
+		g_Time[client] = i_duration;
+		if (CountdownTimer[client] == INVALID_HANDLE)
+		{
+			PerformCounter(hTarget);
+		}
 		new noise = GetConVarInt(cvNoiseLevel);
 		if (noise > 1)
 		{		
@@ -569,15 +585,13 @@ public cCondPlayer(Handle:menu, MenuAction:action, client, result)
 
 public Action:cCountdown(client, args)
 {
-	new String:sErrStr[] = "[candypack] Usage: sm_candy_countdown <#userid|name|@all|@red|@blue|@bots> [time]";
+	new String:sErrStr[] = "[candypack] Usage: sm_candy_countdown <#userid|name|@all|@red|@blue|@bots> <time>";
 	if (args < 2)
 	{
 		PrintToServer(sErrStr);
 		return Plugin_Handled;
 	}
 
-	g_CounterTimeStart = GetTime();
-	
 	decl String:target[MAXPLAYERS];
 	decl String:time[3];
 	decl String:target_name[MAX_TARGET_LENGTH];
@@ -587,7 +601,8 @@ public Action:cCountdown(client, args)
 
 	GetCmdArg(1, target, sizeof(target));
 	GetCmdArg(2, time, sizeof(time));
-	g_Time = StringToInt(time);
+	g_Time[client] = StringToInt(time);
+	g_CounterTimeStart[client] = GetTime();
 	
 	if (target[client] == -1)
 	{
@@ -617,38 +632,38 @@ public Action:cCountdown(client, args)
 
 PerformCounter(target)
 {
-	CreateTimer(1.0, Counter, target, TIMER_REPEAT | TIMER_FLAG_NO_MAPCHANGE)
+	CountdownTimer[target] = CreateTimer(1.0, Counter, target, TIMER_REPEAT | TIMER_FLAG_NO_MAPCHANGE)
 }
 
 public Action:Counter(Handle:timer, any:target)
 {
-	if (TimeRemaining() > 5)
+	if (TimeRemaining(target) > 5)
 	{
 		SetHudTextParams(-1.0, 0.52, 1.0, 0, 0, 255, 150);
 	}
-	else if(TimeRemaining() <= 5)
+	else if(TimeRemaining(target) <= 5)
 	{
 		SetHudTextParams(-1.0, 0.52, 1.0, 255, 0, 0, 150);
 	}
-	ShowSyncHudText(target, HudCounter, "%i s", TimeRemaining());
+	ShowSyncHudText(target, HudCounter, "%i s", TimeRemaining(target));
 
-	if (TimeRemaining() == 0)
+	if (TimeRemaining(target) == 0)
 	{
-		return Plugin_Stop;
+		KillTimer(CountdownTimer[target]);
 	}
 	return Plugin_Continue;
 }
 
-TimeRemaining()
+TimeRemaining(target)
 {
-	new RemainingTime = g_CounterTimeStart + g_Time - GetTime();
+	new RemainingTime = g_CounterTimeStart[target] + g_Time[target] - GetTime();
 	if (RemainingTime < 0)
 	{
 		return 0;
 	}
 	else
 	{
-		return RemainingTime;
+		return RemainingTime + 1;
 	}
 }
 

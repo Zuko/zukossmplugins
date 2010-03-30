@@ -55,7 +55,7 @@
 		{
 			"title"		"5 sekund"
 			"price"		"150"
-			"oncmd"		"sm_candy_buy_cond | 5 5; sm_candy_countdown | 5"
+			"oncmd"		"sm_candy_buy_cond | 5 5"
 			"offcmd"	""
 			"time"		"5"
 			"group"		"a"
@@ -64,7 +64,7 @@
 		{
 			"title"		"10 sekund"
 			"price"		"200"
-			"oncmd"		"sm_candy_buy_cond | 5 10; sm_candy_countdown | 10"
+			"oncmd"		"sm_candy_buy_cond | 5 10"
 			"offcmd"	""
 			"time"		"10"
 			"group"		"a"
@@ -73,7 +73,7 @@
 		{
 			"title"		"15 sekund"
 			"price"		"250"
-			"oncmd"		"sm_candy_buy_cond | 5 15; sm_candy_countdown | 15"
+			"oncmd"		"sm_candy_buy_cond | 5 15"
 			"offcmd"	""
 			"time"		"15"
 			"group"		"a"
@@ -82,7 +82,7 @@
 		{
 			"title"		"30 sekund"
 			"price"		"500"
-			"oncmd"		"sm_candy_buy_cond | 5 30; sm_candy_countdown | 30"
+			"oncmd"		"sm_candy_buy_cond | 5 30"
 			"offcmd"	""
 			"time"		"30"
 			"group"		"a"
@@ -91,7 +91,7 @@
 		{
 			"title"		"Uber + 100% Krytów (15 sek)"
 			"price"		"2000"
-			"oncmd"		"sm_candy_buy_cond | 5 15; sm_candy_buy_cond | 11 15; sm_candy_countdown | 15"
+			"oncmd"		"sm_candy_buy_cond | 5 15; sm_candy_buy_cond | 11 15"
 			"offcmd"	""
 			"time"		"15"
 			"group"		"a"
@@ -100,7 +100,7 @@
 		{
 			"title"		"Uber + 100% Krytów (Drużyna) (15 sek)"
 			"price"		"3000"
-			"oncmd"		"sm_candy_buy_cond ^ 5 15; sm_candy_buy_cond ^ 11 15; sm_candy_countdown ^ 15"
+			"oncmd"		"sm_candy_buy_cond ^ 5 15; sm_candy_buy_cond ^ 11 15"
 			"offcmd"	""
 			"time"		"15"
 			"group"		"a"
@@ -384,7 +384,7 @@
 		{
 			"title"		"Tryb Robina Walkera!"
 			"price"		"3000"
-			"oncmd"		"sm_candy_buy_powerplay | 1; sm_candy_countdown | 15"
+			"oncmd"		"sm_candy_buy_powerplay | 1"
 			"offcmd"	"sm_candy_buy_powerplay | 0"
 			"time"		"15"
 			"group"		"a"
@@ -505,6 +505,38 @@
 			"title"		"Zbonkuj gracza! (30 sekund)"
 			"price"		"1000"
 			"oncmd"		"sm_candy_buy_condplayer ? 14 30"
+			"offcmd"	""
+			"time"		""
+		}
+		"65"
+		{
+			"title"		"Obsikaj gracza! (5 sekund)"
+			"price"		"100"
+			"oncmd"		"sm_candy_buy_condplayer ? 22 5"
+			"offcmd"	""
+			"time"		""
+		}
+		"66"
+		{
+			"title"		"Obsikaj gracza! (10 sekund)"
+			"price"		"200"
+			"oncmd"		"sm_candy_buy_condplayer ? 22 10"
+			"offcmd"	""
+			"time"		""
+		}
+		"67"
+		{
+			"title"		"Obsikaj gracza! (15 sekund)"
+			"price"		"500"
+			"oncmd"		"sm_candy_buy_condplayer ? 22 15"
+			"offcmd"	""
+			"time"		""
+		}
+		"68"
+		{
+			"title"		"Obsikaj gracza! (30 sekund)"
+			"price"		"1000"
+			"oncmd"		"sm_candy_buy_condplayer ? 22 30"
 			"offcmd"	""
 			"time"		""
 		}
