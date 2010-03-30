@@ -5,7 +5,7 @@
 
 /* defines */
 #define PLUGIN_VERSION "1.0"
-#define DEBUG "0"
+// #define DEBUG "0"
 #define NULLNAME "$$NULL##"
 
 public Plugin:myinfo = 
@@ -1275,8 +1275,6 @@ public cBuyMenuGroupCallback(String:Group[], iCurrentMoney, client)
 		new String:sTitle[32], String:sCosts[32], String:sText[64], String:sGroup[8];
 		new iClass;
 		KvGetSectionName(kv, buffer, sizeof(buffer));
-		PrintToChatAll("bufor:");
-		PrintToChatAll(buffer);
 		KvGetString(kv, "title", sTitle, sizeof(sTitle));
 		KvGetString(kv, "price", sCosts, sizeof(sCosts));
 		KvGetString(kv, "group", sGroup, sizeof(sGroup));
