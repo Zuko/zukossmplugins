@@ -750,7 +750,11 @@ public TAbilityMenu(Handle: owner, Handle:hndl, const String:error[], any:client
 	if(allowCount > 0)
 	{
 		DisplayMenu(menu, client, 10);
-	}	
+	}
+	else
+	{
+		PrintToChat(client, "Nie mo¿esz niczego u¿yæ.");
+	}
 }
 
 /////////////////////////////////////////////////////////////////////
