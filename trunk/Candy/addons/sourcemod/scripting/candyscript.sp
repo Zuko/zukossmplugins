@@ -1419,13 +1419,14 @@ public cBuyMenuCallbackSQLCallback(Handle:owner, Handle:hndl, String:error[], an
 			return;
 		}
 
-		PrintDebug("Parsing ?$#~|^&");
-		new String:sUserId[8], String:sPlayerName[128], String:sIndex[4], String:sSteamId[32], String:sQuotedName[128], String:sPlayerTeam[6], String:sEnemyTeam[6];
+		PrintDebug("Parsing ?$#~|^&-");
+		new String:sUserId[8], String:sPlayerName[128], String:sIndex[4], String:sSteamId[32], String:sQuotedName[128], String:sPlayerTeam[6], String:sEnemyTeam[6], String:sQuotedSID[34];
 		IntToString(GetClientUserId(data), sUserId, sizeof(sUserId));
 		GetClientName(data, sPlayerName, sizeof(sPlayerName));
 		GetClientAuthString(data, sSteamId, sizeof(sSteamId));
 		IntToString(data, sIndex, sizeof(sIndex));
 		Format(sQuotedName, sizeof(sQuotedName), "\"%s\"", sPlayerName);
+		Format(sQuotedSID, sizeof(sQuotedSID), "\"%s\"", sSteamId);
 		if (GetClientTeam(data) == 2)
 		{
 			sPlayerTeam = "@red";
@@ -1443,6 +1444,7 @@ public cBuyMenuCallbackSQLCallback(Handle:owner, Handle:hndl, String:error[], an
 		ReplaceChar("|", sQuotedName, sOnCmd);
 		ReplaceChar("^", sPlayerTeam, sOnCmd);
 		ReplaceChar("&", sEnemyTeam, sOnCmd);
+		ReplaceChar("-", sQuotedSID, sOnCmd);
 
 		LogToFile(logfile, "[%s] %s (%i pkt) kupił %s (%i pkt).", sChatTag, sPlayerName, iCurrentMoney, sTitle, iPrice);
 			
@@ -1465,6 +1467,7 @@ public cBuyMenuCallbackSQLCallback(Handle:owner, Handle:hndl, String:error[], an
 			ReplaceChar("|", sQuotedName, sOffCmd);
 			ReplaceChar("^", sPlayerTeam, sOffCmd);
 			ReplaceChar("&", sEnemyTeam, sOffCmd);
+			ReplaceChar("@", sQuotedSID, sOffCmd);
 
 			Format(sGroups[data], sizeof(sGroups), "%s%s", sGroups, sGroup);
 			
