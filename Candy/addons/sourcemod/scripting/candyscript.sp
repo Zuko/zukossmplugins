@@ -1467,7 +1467,7 @@ public cBuyMenuCallbackSQLCallback(Handle:owner, Handle:hndl, String:error[], an
 			ReplaceChar("|", sQuotedName, sOffCmd);
 			ReplaceChar("^", sPlayerTeam, sOffCmd);
 			ReplaceChar("&", sEnemyTeam, sOffCmd);
-			ReplaceChar("@", sQuotedSID, sOffCmd);
+			ReplaceChar("-", sQuotedSID, sOffCmd);
 
 			Format(sGroups[data], sizeof(sGroups), "%s%s", sGroups, sGroup);
 			
