@@ -607,8 +607,6 @@ public Action:cCountdown(client, args)
 
 	GetCmdArg(1, target, sizeof(target));
 	GetCmdArg(2, time, sizeof(time));
-	g_Time[client] = StringToInt(time);
-	g_CounterTimeStart[client] = GetTime();
 	
 	if (target[client] == -1)
 	{
@@ -631,6 +629,8 @@ public Action:cCountdown(client, args)
 
 	for (new i = 0; i < target_count; i++)
 	{
+		g_Time[target_list[i]] = StringToInt(time);
+		g_CounterTimeStart[target_list[i]] = GetTime();
 		PerformCounter(target_list[i]);
 	}	
 	return Plugin_Handled;
