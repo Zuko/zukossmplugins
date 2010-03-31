@@ -190,6 +190,8 @@ public InitializeAdminCommands()
 	RegAdminCmd("sm_candy_resetdb", cResetDB, ADMFLAG_ROOT, "Reset the database (sm_candy_resetdb)");
 	RegAdminCmd("sm_candy_playerreset", cPlayerResetCandy, ADMFLAG_ROOT, "Reset the amount of candy of selected player to 0 (sm_candy_playerreset <#userid|name>)");
 	RegAdminCmd("sm_candy_forcedrop", cForceDrop, ADMFLAG_ROOT, "Force drop");
+	
+	RegConsoleCmd("say", cSay);
 }
 
 /**
@@ -300,8 +302,6 @@ public cDatabaseEstablished(Handle:owner, Handle:db, String:error[], any:data)
  */
 public InitializeTimersAndCValues()
 {
-	RegConsoleCmd("say", cSay);
-	
 	GetConVarString(cvCfgChatTag, sChatTag, sizeof(sChatTag));
 	GetConVarString(cvCfgTablePrefix, sTablePrefix, sizeof(sTablePrefix));
 	
