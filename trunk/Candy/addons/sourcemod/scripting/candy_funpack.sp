@@ -1,6 +1,5 @@
 /*
  * TODO:
- * - dodac zbonkowanie (czekac na native ;D)
  * - Multi-Lang (może się kiedyś przyda | tylko jak zrobić multi-lang w buymenu...)
  */
 
@@ -12,6 +11,7 @@
 new Handle:cvNoiseLevel;
 new Handle:HudCounter;
 new Handle:dataPack[MAXPLAYERS];
+new Handle:dataPackstun[MAXPLAYERS];
 new Handle:CountdownTimer[MAXPLAYERS];
 new g_CounterTimeStart[MAXPLAYERS];
 new g_Time[MAXPLAYERS];
@@ -21,7 +21,7 @@ new g_Time[MAXPLAYERS];
 public Plugin:myinfo = 
 {
 	name = "Fun package for Candy",
-	author = "Zuko (earlier GachL)",
+	author = "Zuko (based on GachL version)",
 	description = "This plugin is a pack of functions that work well with Candy for TF2.",
 	version = PLUGIN_VERSION,
 	url = "http://HLDS.pl"
@@ -31,6 +31,7 @@ public OnPluginStart()
 {
 	RegAdminCmd("sm_candy_buy_cond", cBuyCond, ADMFLAG_BAN, "Buy a Condition!");
 	RegAdminCmd("sm_candy_buy_condplayer", cBuyCondPlayer, ADMFLAG_BAN, "Buy a Condition against another player!");
+	RegAdminCmd("sm_candy_buy_stunplayer", cBuyStunPlayer, ADMFLAG_BAN, "Stun another player!");
 	RegAdminCmd("sm_candy_buy_uber", cBuyUber, ADMFLAG_BAN, "Get instant uber (only  medic)");
 	RegAdminCmd("sm_candy_buy_regen", cBuyRegen, ADMFLAG_BAN, "Fill health and ammo");
 	RegAdminCmd("sm_candy_buy_powerplay", cBuyPowerPlay, ADMFLAG_BAN, "Robin Walker!");
@@ -170,7 +171,7 @@ public Action:cBuyRegen(client, args)
 			
 			if (noise == 2)
 			{
-				PrintToChat(target_list[i], "Kupiłeś sobie Regenerację!");
+				PrintToChat(target_list[i], "Zostałeś zregenerowany!");
 			}
 			else if (noise == 3)
 			{
@@ -581,8 +582,111 @@ public cCondPlayer(Handle:menu, MenuAction:action, client, result)
 		new noise = GetConVarInt(cvNoiseLevel);
 		if (noise > 1)
 		{		
-			PrintToChat(client, "Zgładziłeś %s", sVName);
-			PrintToChat(hTarget, "%s cię zgładził! Chyba mu podpadłeś ;P", sAName);
+			PrintToChat(client, "Wkurzyłeś %s w wybrany przez siebie sposób!", sVName);
+			PrintToChat(hTarget, "%s stara się cię wkurzyć! Chyba mu podpadłeś ;P Ale pamiętaj że możesz się zemścić.", sAName);
+		}
+	}
+	else if (action == MenuAction_End)
+	{
+		CloseHandle(menu)
+	}
+}
+
+public Action:cBuyStunPlayer(cclient, args)
+{
+	new String:sErrStr[] = "[candypack] Usage: sm_candy_buy_stunplayer <#userid> <STUNFlags:0=LOSERSTATE|1=GHOSTSCARE|2=SMALLBONK|3=NORMALBONK|4=BIGBONK> <duration>";
+	
+	if (args < 3)
+	{
+		PrintToServer(sErrStr);
+		return Plugin_Handled;
+	}
+	
+	decl String:stunflag[3];
+	decl String:duration[3];
+	new String:sclient[32];
+	GetCmdArg(1, sclient, sizeof(sclient));
+	GetCmdArg(2, stunflag, sizeof(stunflag));
+	GetCmdArg(3, duration, sizeof(duration));
+	
+	if (StringToInt(stunflag) > 4)
+	{
+		PrintToServer(sErrStr);
+		return Plugin_Handled;
+	}
+
+	new client = GetClientOfUserId(StringToInt(sclient));
+	if (!FullCheckClient(client))
+	{
+		PrintToServer(sErrStr);
+		return Plugin_Handled;
+	}
+
+	new Handle:hMenu = CreateMenu(cStunPlayer);
+	SetMenuTitle(hMenu, "Wybierz swoją ofiarę!");
+	for (new i = 1; i <= GetClientCount(); i++)
+	{
+		if (IsClientConnected(i) && IsClientInGame(i))
+		{
+			new String:sName[255], String:sInfo[4];
+			GetClientName(i, sName, sizeof(sName));
+			IntToString(i, sInfo, sizeof(sInfo));
+			AddMenuItem(hMenu, sInfo, sName);
+		}
+	}
+
+	dataPackstun[client] = CreateDataPack();
+	WritePackString(dataPackstun[client], stunflag);
+	WritePackString(dataPackstun[client], duration);
+	
+	DisplayMenu(hMenu, client, 20);
+	return Plugin_Handled;
+}
+
+public cStunPlayer(Handle:menu, MenuAction:action, client, result)
+{
+	if (action == MenuAction_Select)
+	{
+		decl String:stunflag[3];
+		decl String:duration[3];
+		ResetPack(dataPackstun[client]);
+		ReadPackString(dataPackstun[client], stunflag, sizeof(stunflag));
+		ReadPackString(dataPackstun[client], duration, sizeof(duration));
+		CloseHandle(dataPackstun[client]);
+		new Float:f_duration = StringToFloat(duration);
+		new i_duration = StringToInt(duration);
+
+		new String:info[32], String:sAName[255], String:sVName[255];
+		GetMenuItem(menu, result, info, sizeof(info))
+		new hTarget = StringToInt(info);
+		GetClientName(client, sAName, sizeof(sAName));
+		GetClientName(hTarget, sVName, sizeof(sVName));
+
+		switch(StringToInt(stunflag))
+		{
+			case 0:
+				TF2_StunPlayer(hTarget, f_duration, Float:0.5, TF_STUNFLAGS_LOSERSTATE);
+			case 1:
+				TF2_StunPlayer(hTarget, f_duration, Float:0.5, TF_STUNFLAGS_GHOSTSCARE);
+			case 2:
+				TF2_StunPlayer(hTarget, f_duration, Float:0.5, TF_STUNFLAGS_SMALLBONK);
+			case 3:
+				TF2_StunPlayer(hTarget, f_duration, Float:0.5, TF_STUNFLAGS_NORMALBONK);
+			case 4:
+				TF2_StunPlayer(hTarget, f_duration, Float:0.5, TF_STUNFLAGS_BIGBONK);
+		}
+
+		if (CountdownTimer[client] == INVALID_HANDLE)
+		{
+			g_Time[client] = i_duration;
+			g_CounterTimeStart[client] = GetTime();
+			PerformCounter(hTarget);
+		}
+		new noise = GetConVarInt(cvNoiseLevel);
+		if (noise > 1)
+		{		
+			PrintToChat(client, "Ogłuszyłeś %s w wybrany przez siebie sposób!", sVName);
+			PrintToChat(hTarget, "%s cię ogłuszył! Chyba mu podpadłeś ;P Ale pamiętaj że możesz się zemścić.", sAName);
 		}
 	}
 	else if (action == MenuAction_End)
