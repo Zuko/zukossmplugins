@@ -573,10 +573,10 @@ public cCondPlayer(Handle:menu, MenuAction:action, client, result)
 		GetClientName(hTarget, sVName, sizeof(sVName));
 
 		TF2_AddCondition(hTarget, TFCond:i_cond, f_duration);
-		if (CountdownTimer[client] == INVALID_HANDLE)
+		if (CountdownTimer[hTarget] == INVALID_HANDLE)
 		{
-			g_Time[client] = i_duration;
-			g_CounterTimeStart[client] = GetTime();
+			g_Time[hTarget] = i_duration;
+			g_CounterTimeStart[hTarget] = GetTime();
 			PerformCounter(hTarget);
 		}
 		new noise = GetConVarInt(cvNoiseLevel);
@@ -676,10 +676,10 @@ public cStunPlayer(Handle:menu, MenuAction:action, client, result)
 				TF2_StunPlayer(hTarget, f_duration, Float:0.5, TF_STUNFLAGS_BIGBONK);
 		}
 
-		if (CountdownTimer[client] == INVALID_HANDLE)
+		if (CountdownTimer[hTarget] == INVALID_HANDLE)
 		{
-			g_Time[client] = i_duration;
-			g_CounterTimeStart[client] = GetTime();
+			g_Time[hTarget] = i_duration;
+			g_CounterTimeStart[hTarget] = GetTime();
 			PerformCounter(hTarget);
 		}
 		new noise = GetConVarInt(cvNoiseLevel);
