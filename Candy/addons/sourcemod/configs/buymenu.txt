@@ -374,7 +374,7 @@
 		{
 			"title"		"Tryb Robina Walkera! (30 sek)"
 			"price"		"3000"
-			"oncmd"		"sm_candy_buy_powerplay | 1; sm_candy_countdown 30"
+			"oncmd"		"sm_candy_buy_powerplay | 1; sm_candy_countdown | 30"
 			"offcmd"	"sm_candy_buy_powerplay | 0"
 			"time"		"30"
 			"group"		"a"
@@ -564,7 +564,7 @@
 		}
 		"613"
 		{
-			"title"		"Niech się poczuje jak przegrany! (5 sekund)"
+			"title"		"Przegrałeś? (5 sekund)"
 			"price"		"100"
 			"oncmd"		"sm_candy_buy_stunplayer ? 0 5"
 			"offcmd"	""
@@ -572,7 +572,7 @@
 		}
 		"614"
 		{
-			"title"		"Niech się poczuje jak przegrany! (10 sekund)"
+			"title"		"Przegrałeś? (10 sekund)"
 			"price"		"200"
 			"oncmd"		"sm_candy_buy_stunplayer ? 0 10"
 			"offcmd"	""
@@ -580,7 +580,7 @@
 		}
 		"615"
 		{
-			"title"		"Niech się poczuje jak przegrany! (15 sekund)"
+			"title"		"Przegrałeś? (15 sekund)"
 			"price"		"500"
 			"oncmd"		"sm_candy_buy_stunplayer ? 0 15"
 			"offcmd"	""
@@ -588,7 +588,7 @@
 		}
 		"616"
 		{
-			"title"		"Niech się poczuje jak przegrany! (30 sekund)"
+			"title"		"Przegrałeś? (30 sekund)"
 			"price"		"1000"
 			"oncmd"		"sm_candy_buy_stunplayer ? 0 30"
 			"offcmd"	""
@@ -597,7 +597,7 @@
 		"617"
 		{
 			"title"		"Mały BONK! (5 sekund)"
-			"price"		"1000"
+			"price"		"100"
 			"oncmd"		"sm_candy_buy_stunplayer ? 2 5"
 			"offcmd"	""
 			"time"		""

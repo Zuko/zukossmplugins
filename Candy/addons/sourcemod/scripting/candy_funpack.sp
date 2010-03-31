@@ -41,6 +41,7 @@ public OnPluginStart()
 	RegAdminCmd("sm_candy_countdown", cCountdown, ADMFLAG_BAN, "Countdown");
 
 	LoadTranslations("common.phrases");
+	HookEvent("player_death", EventPlayerDeath);
 
 	HudCounter = CreateHudSynchronizer();
 	cvNoiseLevel = CreateConVar("sm_candy_buy_noiselevel", "2", "1 = silent, 2 = buyer only, 3 = everyone", FCVAR_PLUGIN, true, 1.0, true, 3.0);
@@ -113,13 +114,13 @@ public Action:cBuyCond(client, args)
 			
 			if (noise == 2)
 			{
-				PrintToChat(target_list[i], "Towar zakupiony użyj go dobrze!");
+				PrintToChat(target_list[i], "\x04Towar zakupiony użyj go dobrze!");
 			}
 			else if (noise == 3)
 			{
 				new String:name[128];
 				GetClientName(target_list[i], name, sizeof(name));
-				PrintToChatAll("%s kupił sobie Ubera lub Kryty, uciekajcie!", name);
+				PrintToChatAll("\x04%s kupił sobie Ubera lub Kryty, uciekajcie!", name);
 			}
 		}
 	}
@@ -171,13 +172,13 @@ public Action:cBuyRegen(client, args)
 			
 			if (noise == 2)
 			{
-				PrintToChat(target_list[i], "Zostałeś zregenerowany!");
+				PrintToChat(target_list[i], "\x04Zostałeś zregenerowany!");
 			}
 			else if (noise == 3)
 			{
 				new String:name[128];
 				GetClientName(target_list[i], name, sizeof(name));
-				PrintToChatAll("%s kupił sobie regeneracje", name);
+				PrintToChatAll("\x04%s kupił sobie regeneracje", name);
 			}
 		}
 	}
@@ -244,13 +245,13 @@ public Action:cBuyUber(client, args)
 				}
 				if (noise == 2)
 				{
-					PrintToChat(target_list[i], "Kupiłeś sobie %i ubera!", iamount);
+					PrintToChat(target_list[i], "\x04Kupiłeś sobie %i ubera!", iamount);
 				}
 				else if (noise == 3)
 				{
 					new String:name[128];
 					GetClientName(target_list[i], name, sizeof(name));
-					PrintToChatAll("%s kupił sobie %i ubera", name, iamount);
+					PrintToChatAll("\x04%s kupił sobie %i ubera", name, iamount);
 				}
 			}
 			return Plugin_Handled;
@@ -315,20 +316,20 @@ public Action:cBuyPowerPlay(client, args)
 				{
 					new String:name[128];
 					GetClientName(target_list[i], name, sizeof(name));
-					PrintToChatAll("%s jest tak samo potężny jak Robin Walker!", name);
+					PrintToChatAll("\x04%s jest tak samo potężny jak Robin Walker!", name);
 				}
 			}
 			else
 			{
 				if (noise == 2)
 				{
-					PrintToChat(target_list[i], "Fajnie było ale się skończyło ;-)");
+					PrintToChat(target_list[i], "\x04Fajnie było ale się skończyło ;-)");
 				}
 				else if (noise == 3)
 				{
 					new String:name[128];
 					GetClientName(target_list[i], name, sizeof(name));
-					PrintToChatAll("%s jest znowu zwykłym n00bem!", name);
+					PrintToChatAll("\x04%s jest znowu zwykłym n00bem!", name);
 				}
 			}
 		}
@@ -384,8 +385,8 @@ public cSlayPlayer(Handle:menu, MenuAction:action, client, result)
 		new noise = GetConVarInt(cvNoiseLevel);
 		if (noise > 1)
 		{		
-			PrintToChat(client, "Zgładziłeś %s", sVName);
-			PrintToChat(hTarget, "%s cię zgładził! Chyba mu podpadłeś ;P", sAName);
+			PrintToChat(client, "\x04Zgładziłeś %s", sVName);
+			PrintToChat(hTarget, "\x04%s cię zgładził! Chyba mu podpadłeś ;P", sAName);
 		}
 	}
 	else if (action == MenuAction_End)
@@ -441,8 +442,8 @@ public cGiveCandy(Handle:menu, MenuAction:action, client, result)
 		new noise = GetConVarInt(cvNoiseLevel);
 		if (noise > 1)
 		{		
-			PrintToChat(client, "Podarowałeś %s 250 cukierków.", sVName);
-			PrintToChat(hTarget, "%s podarował ci 250 cukierków ;P", sAName);
+			PrintToChat(client, "\x04Podarowałeś %s 250 cukierków.", sVName);
+			PrintToChat(hTarget, "\x04%s podarował ci 250 cukierków ;P", sAName);
 		}
 	}
 	else if (action == MenuAction_End)
@@ -498,8 +499,8 @@ public cIgnite(Handle:menu, MenuAction:action, client, result)
 		new noise = GetConVarInt(cvNoiseLevel);
 		if (noise > 1)
 		{		
-			PrintToChat(client, "Podpaliłeś %s.", sVName);
-			PrintToChat(hTarget, "Zostałeś podpalony przez %s", sAName);
+			PrintToChat(client, "\x04Podpaliłeś %s.", sVName);
+			PrintToChat(hTarget, "\x04Zostałeś podpalony przez %s", sAName);
 		}
 	}
 	else if (action == MenuAction_End)
@@ -582,8 +583,8 @@ public cCondPlayer(Handle:menu, MenuAction:action, client, result)
 		new noise = GetConVarInt(cvNoiseLevel);
 		if (noise > 1)
 		{		
-			PrintToChat(client, "Wkurzyłeś %s w wybrany przez siebie sposób!", sVName);
-			PrintToChat(hTarget, "%s stara się cię wkurzyć! Chyba mu podpadłeś ;P Ale pamiętaj że możesz się zemścić.", sAName);
+			PrintToChat(client, "\x04Wkurzyłeś %s w wybrany przez siebie sposób!", sVName);
+			PrintToChat(hTarget, "\x04%s stara się cię wkurzyć! Chyba mu podpadłeś ;P\nAle pamiętaj że możesz się zemścić.", sAName);
 		}
 	}
 	else if (action == MenuAction_End)
@@ -685,8 +686,8 @@ public cStunPlayer(Handle:menu, MenuAction:action, client, result)
 		new noise = GetConVarInt(cvNoiseLevel);
 		if (noise > 1)
 		{		
-			PrintToChat(client, "Ogłuszyłeś %s w wybrany przez siebie sposób!", sVName);
-			PrintToChat(hTarget, "%s cię ogłuszył! Chyba mu podpadłeś ;P Ale pamiętaj że możesz się zemścić.", sAName);
+			PrintToChat(client, "\x04Ogłuszyłeś %s w wybrany przez siebie sposób!", sVName);
+			PrintToChat(hTarget, "\x04%s cię ogłuszył! Chyba mu podpadłeś ;P\nAle pamiętaj że możesz się zemścić.", sAName);
 		}
 	}
 	else if (action == MenuAction_End)
@@ -778,6 +779,16 @@ TimeRemaining(target)
 	else
 	{
 		return RemainingTime + 1;
+	}
+}
+
+public Action:EventPlayerDeath(Handle:event, const String:name[], bool:dontBroadcast)
+{
+	new client = GetClientOfUserId(GetEventInt(event, "userid"));
+	if (CountdownTimer[client] != INVALID_HANDLE)
+	{
+		KillTimer(CountdownTimer[client]);
+		CountdownTimer[client] = INVALID_HANDLE;
 	}
 }
 
