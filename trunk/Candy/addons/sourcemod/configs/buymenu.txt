@@ -1,19 +1,19 @@
-// Klasy:
-// 1 - Scout
-// 2 - Sniper
-// 3 - Soldier
-// 4 - Demoman
-// 5 - Medic
+// Klasy:							Flagi ogłuszenia:
+// 1 - Scout						0 - LOSERSTATE
+// 2 - Sniper						1 - GHOSTSCARE
+// 3 - Soldier						2 - SMALLBONK
+// 4 - Demoman						3 - NORMALBONK
+// 5 - Medic						4 - BIGBONK
 // 6 - Heavy
-// 7 - Pyro
-// 8 - Spy
-// 9 - Engineer
-
-// Grupy:
-// dowolny znak
-
-// Conditions
-// 0 - TFCond_Slowed
+// 7 - Pyro							Znaki:
+// 8 - Spy							? - UserID
+// 9 - Engineer						$ - PlayerName
+//									# - Index
+// Grupy:							~ - SteamID
+// dowolny znak						| - QuotedName
+//									^ - PlayerTeam
+// Conditions:						& - EnemyTeam
+// 0 - TFCond_Slowed				- - QuotedSID
 // 1 - TFCond_Zoomed
 // 2 - TFCond_Disguising
 // 3 - TFCond_Disguised
@@ -36,16 +36,6 @@
 // 20 - TFCond_OnFire
 // 21 - TFCond_Overhealed
 // 22 - TFCond_Jarated
-
-// Znaki:
-// ? - UserID
-// $ - PlayerName
-// # - Index
-// ~ - SteamID
-// | - QuotedName
-// ^ - PlayerTeam
-// & - EnemyTeam
-// - - QuotedSID
 
 "Buymenu"
 {
@@ -382,11 +372,11 @@
 	{
 		"41"
 		{
-			"title"		"Tryb Robina Walkera!"
+			"title"		"Tryb Robina Walkera! (30 sek)"
 			"price"		"3000"
-			"oncmd"		"sm_candy_buy_powerplay | 1"
+			"oncmd"		"sm_candy_buy_powerplay | 1; sm_candy_countdown 30"
 			"offcmd"	"sm_candy_buy_powerplay | 0"
-			"time"		"15"
+			"time"		"30"
 			"group"		"a"
 		}
 		"42"
@@ -537,6 +527,166 @@
 			"title"		"Obsikaj gracza! (30 sekund)"
 			"price"		"1000"
 			"oncmd"		"sm_candy_buy_condplayer ? 22 30"
+			"offcmd"	""
+			"time"		""
+		}
+		"69"
+		{
+			"title"		"Postrasz gracza duchem! (5 sekund)"
+			"price"		"100"
+			"oncmd"		"sm_candy_buy_stunplayer ? 1 5"
+			"offcmd"	""
+			"time"		""
+		}
+		"610"
+		{
+			"title"		"Postrasz gracza duchem! (10 sekund)"
+			"price"		"200"
+			"oncmd"		"sm_candy_buy_stunplayer ? 1 10"
+			"offcmd"	""
+			"time"		""
+		}
+		"611"
+		{
+			"title"		"Postrasz gracza duchem! (15 sekund)"
+			"price"		"500"
+			"oncmd"		"sm_candy_buy_stunplayer ? 1 15"
+			"offcmd"	""
+			"time"		""
+		}
+		"612"
+		{
+			"title"		"Postrasz gracza duchem! (30 sekund)"
+			"price"		"1000"
+			"oncmd"		"sm_candy_buy_stunplayer ? 1 30"
+			"offcmd"	""
+			"time"		""
+		}
+		"613"
+		{
+			"title"		"Niech się poczuje jak przegrany! (5 sekund)"
+			"price"		"100"
+			"oncmd"		"sm_candy_buy_stunplayer ? 0 5"
+			"offcmd"	""
+			"time"		""
+		}
+		"614"
+		{
+			"title"		"Niech się poczuje jak przegrany! (10 sekund)"
+			"price"		"200"
+			"oncmd"		"sm_candy_buy_stunplayer ? 0 10"
+			"offcmd"	""
+			"time"		""
+		}
+		"615"
+		{
+			"title"		"Niech się poczuje jak przegrany! (15 sekund)"
+			"price"		"500"
+			"oncmd"		"sm_candy_buy_stunplayer ? 0 15"
+			"offcmd"	""
+			"time"		""
+		}
+		"616"
+		{
+			"title"		"Niech się poczuje jak przegrany! (30 sekund)"
+			"price"		"1000"
+			"oncmd"		"sm_candy_buy_stunplayer ? 0 30"
+			"offcmd"	""
+			"time"		""
+		}
+		"617"
+		{
+			"title"		"Mały BONK! (5 sekund)"
+			"price"		"1000"
+			"oncmd"		"sm_candy_buy_stunplayer ? 2 5"
+			"offcmd"	""
+			"time"		""
+		}
+		"618"
+		{
+			"title"		"Mały BONK! (10 sekund)"
+			"price"		"200"
+			"oncmd"		"sm_candy_buy_stunplayer ? 2 10"
+			"offcmd"	""
+			"time"		""
+		}
+		"619"
+		{
+			"title"		"Mały BONK! (15 sekund)"
+			"price"		"500"
+			"oncmd"		"sm_candy_buy_stunplayer ? 2 15"
+			"offcmd"	""
+			"time"		""
+		}
+		"620"
+		{
+			"title"		"Mały BONK! (30 sekund)"
+			"price"		"1000"
+			"oncmd"		"sm_candy_buy_stunplayer ? 2 30"
+			"offcmd"	""
+			"time"		""
+		}
+		"621"
+		{
+			"title"		"Normalny BONK! (5 sekund)"
+			"price"		"100"
+			"oncmd"		"sm_candy_buy_stunplayer ? 3 5"
+			"offcmd"	""
+			"time"		""
+		}
+		"622"
+		{
+			"title"		"Normalny BONK! (10 sekund)"
+			"price"		"200"
+			"oncmd"		"sm_candy_buy_stunplayer ? 3 10"
+			"offcmd"	""
+			"time"		""
+		}
+		"623"
+		{
+			"title"		"Normalny BONK! (15 sekund)"
+			"price"		"500"
+			"oncmd"		"sm_candy_buy_stunplayer ? 3 15"
+			"offcmd"	""
+			"time"		""
+		}
+		"624"
+		{
+			"title"		"Normalny BONK! (30 sekund)"
+			"price"		"1000"
+			"oncmd"		"sm_candy_buy_stunplayer ? 3 30"
+			"offcmd"	""
+			"time"		""
+		}
+		"625"
+		{
+			"title"		"Duży BONK! (5 sekund)"
+			"price"		"100"
+			"oncmd"		"sm_candy_buy_stunplayer ? 4 5"
+			"offcmd"	""
+			"time"		""
+		}
+		"626"
+		{
+			"title"		"Duży BONK! (10 sekund)"
+			"price"		"200"
+			"oncmd"		"sm_candy_buy_stunplayer ? 4 10"
+			"offcmd"	""
+			"time"		""
+		}
+		"627"
+		{
+			"title"		"Duży BONK! (15 sekund)"
+			"price"		"500"
+			"oncmd"		"sm_candy_buy_stunplayer ? 4 15"
+			"offcmd"	""
+			"time"		""
+		}
+		"628"
+		{
+			"title"		"Duży BONK! (30 sekund)"
+			"price"		"1000"
+			"oncmd"		"sm_candy_buy_stunplayer ? 4 30"
 			"offcmd"	""
 			"time"		""
 		}
