@@ -759,10 +759,11 @@ public Action:Counter(Handle:timer, any:target)
 	}
 	ShowSyncHudText(target, HudCounter, "%i s", TimeRemaining(target));
 
-	if (TimeRemaining(target) == 0)
+	if ((TimeRemaining(target) == 0) && (CountdownTimer[target] != INVALID_HANDLE))
 	{
 		KillTimer(CountdownTimer[target]);
 		CountdownTimer[target] = INVALID_HANDLE;
+		return Plugin_Stop;
 	}
 	return Plugin_Continue;
 }
