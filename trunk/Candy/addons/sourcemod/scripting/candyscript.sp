@@ -35,6 +35,8 @@ new Handle:cvCustomChatTriggerPlayerStats1;
 new Handle:cvCustomChatTriggerPlayerStats2;
 new Handle:cvDelay;
 new Handle:cvDropCandy;
+new Handle:cvAssistsForCredit;
+new Handle:cvCreditPerAssist;
 
 new Handle:dropTimer = INVALID_HANDLE;
 new Handle:tickTimer = INVALID_HANDLE;
@@ -46,6 +48,7 @@ new String:sTablePrefix[32];
 new String:sCurrentDB[64];
 
 new iKills[MAXPLAYERS];
+new iAssists[MAXPLAYERS];
 
 new String:sGroups[MAXPLAYERS][256];
 new bool:CantBuy[MAXPLAYERS];
@@ -163,6 +166,8 @@ public InitializeConvars()
 	cvCustomChatTriggerPlayerStats2 = CreateConVar("sm_candy_chat_stats2", "", "Custom chat trigger for the player stats", FCVAR_PLUGIN);
 	cvDelay = CreateConVar("sm_candy_delay", "0.0", "Delay between buying", FCVAR_PLUGIN);
 	cvDropCandy = CreateConVar("sm_candy_dropcandy", "1.0", "Drop candy", FCVAR_PLUGIN);
+	cvAssistsForCredit = CreateConVar("sm_candy_assists_for_credit", "1", "Assists required to receive sm_candy_credit_per_assist", FCVAR_PLUGIN);
+	cvCreditPerAssist = CreateConVar("sm_candy_credit_per_assist", "1", "Credits a user gets for assiting", FCVAR_PLUGIN);
 	
 	PrintDebug("AutoExecConfig");
 	AutoExecConfig();
@@ -341,6 +346,7 @@ public ePlayerConnect(Handle:event, const String:name[], bool:dontBroadcast)
 	iUserId = GetEventInt(event, "userid");
 	hUserHimself = GetClientOfUserId(iUserId);
 	iKills[hUserHimself] = 0;
+	iAssists[hUserHimself] = 0;
 	CandyAfterDeath[hUserHimself] = 0;
 	
 	PrintDebug("Prechecking connecting user");
@@ -366,8 +372,10 @@ public ePlayerDeath(Handle:event, const String:name[], bool:dontBroadcast)
 	InitializeDatabase();
 	new attackerId = GetEventInt(event, "attacker");
 	new victimId = GetEventInt(event, "userid");
+	new assisterId = GetEventInt(event, "assister");
 	new attacker = GetClientOfUserId(attackerId);
 	new victim = GetClientOfUserId(victimId);
+	new assister = GetClientOfUserId(assisterId);
 	
 	if (!FullCheckClient(attacker) || !FullCheckClient(victim))
 	{
@@ -375,6 +383,21 @@ public ePlayerDeath(Handle:event, const String:name[], bool:dontBroadcast)
 		return;
 	}
 
+	if (FullCheckClient(assister))
+	{
+		PrintDebug("Asister found ;)");
+		new iAssistsForCredit = GetConVarInt(cvAssistsForCredit);
+		new iAssistCreditGain = GetConVarInt(cvCreditPerAssist);
+		if (iAssists[assister] >= iAssistsForCredit)
+		{
+			PrintDebug("Assister gets credits!");
+			AddCandy(assister, iAssistCreditGain);
+			CandyAfterDeath[assister]++;
+		}
+		else
+			iAssists[assister]++;
+	}
+	
 	if (CandyAfterDeath[victim] > 0)
 	{
 		new String:sNoise[128];
