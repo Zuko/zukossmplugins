@@ -199,13 +199,13 @@
 			"group"		"a"
 		}
 	}
-	"RMF (1 dzień)" // 3
+	"RMF (4 dni)" // 3
 	{
 		"31"
 		{
 			"title"		"(Pyro) After Burner"
 			"price"		"3000"
-			"oncmd"		"sm_rmf_give_licence - afterburner 86400"
+			"oncmd"		"sm_rmf_give_licence - afterburner 345600"
 			"offcmd"	""
 			"time"		""
 		}
@@ -213,7 +213,7 @@
 		{
 			"title"		"(Pyro) Burnsday Present"
 			"price"		"3000"
-			"oncmd"		"sm_rmf_give_licence - burnsdaypresent 86400"
+			"oncmd"		"sm_rmf_give_licence - burnsdaypresent 345600"
 			"offcmd"	""
 			"time"		""
 		}
@@ -221,7 +221,7 @@
 		{
 			"title"		"(Heavy) Centrifuge Rotor"
 			"price"		"3000"
-			"oncmd"		"sm_rmf_give_licence - centrifugerotor 86400"
+			"oncmd"		"sm_rmf_give_licence - centrifugerotor 345600"
 			"offcmd"	""
 			"time"		""
 		}
@@ -229,7 +229,7 @@
 		{
 			"title"		"(Sniper) Curving Arrow"
 			"price"		"3000"
-			"oncmd"		"sm_rmf_give_licence - curvingarrow 86400"
+			"oncmd"		"sm_rmf_give_licence - curvingarrow 345600"
 			"offcmd"	""
 			"time"		""
 		}
@@ -237,7 +237,7 @@
 		{
 			"title"		"(Heavy) Delicious Sandvich"
 			"price"		"3000"
-			"oncmd"		"sm_rmf_give_licence - delicioussandvich 86400"
+			"oncmd"		"sm_rmf_give_licence - delicioussandvich 345600"
 			"offcmd"	""
 			"time"		""
 		}
@@ -245,7 +245,7 @@
 		{
 			"title"		"(Pyro) Disguise Jutsu"
 			"price"		"3000"
-			"oncmd"		"sm_rmf_give_licence - disguisejutsu 86400"
+			"oncmd"		"sm_rmf_give_licence - disguisejutsu 345600"
 			"offcmd"	""
 			"time"		""
 		}
@@ -253,7 +253,7 @@
 		{
 			"title"		"(Medyk) Doping Injection"
 			"price"		"3000"
-			"oncmd"		"sm_rmf_give_licence - dopinginjection 86400"
+			"oncmd"		"sm_rmf_give_licence - dopinginjection 345600"
 			"offcmd"	""
 			"time"		""
 		}
@@ -261,7 +261,7 @@
 		{
 			"title"		"(Demo) Drunk Bomb"
 			"price"		"3000"
-			"oncmd"		"sm_rmf_give_licence - drunkbomb 86400"
+			"oncmd"		"sm_rmf_give_licence - drunkbomb 345600"
 			"offcmd"	""
 			"time"		""
 		}
@@ -269,7 +269,7 @@
 		{
 			"title"		"(Pyro) Flare Firework"
 			"price"		"3000"
-			"oncmd"		"sm_rmf_give_licence - flarefirework 86400"
+			"oncmd"		"sm_rmf_give_licence - flarefirework 345600"
 			"offcmd"	""
 			"time"		""
 		}
@@ -277,7 +277,7 @@
 		{
 			"title"		"(Medyk) Flying Doctor"
 			"price"		"3000"
-			"oncmd"		"sm_rmf_give_licence - flyingdoctor 86400"
+			"oncmd"		"sm_rmf_give_licence - flyingdoctor 345600"
 			"offcmd"	""
 			"time"		""
 		}
@@ -285,7 +285,7 @@
 		{
 			"title"		"(Sold) Homing Rocket"
 			"price"		"3000"
-			"oncmd"		"sm_rmf_give_licence - homingrocket 86400"
+			"oncmd"		"sm_rmf_give_licence - homingrocket 345600"
 			"offcmd"	""
 			"time"		""
 		}
@@ -293,7 +293,7 @@
 		{
 			"title"		"(Sold) King Kong Drumming"
 			"price"		"3000"
-			"oncmd"		"sm_rmf_give_licence - kingkongdrumming 86400"
+			"oncmd"		"sm_rmf_give_licence - kingkongdrumming 345600"
 			"offcmd"	""
 			"time"		""
 		}
@@ -301,7 +301,7 @@
 		{
 			"title"		"(Sniper) Marking Shot"
 			"price"		"3000"
-			"oncmd"		"sm_rmf_give_licence - markingshot 86400"
+			"oncmd"		"sm_rmf_give_licence - markingshot 345600"
 			"offcmd"	""
 			"time"		""
 		}
@@ -309,7 +309,7 @@
 		{
 			"title"		"(Eng) Metal Hopper"
 			"price"		"3000"
-			"oncmd"		"sm_rmf_give_licence - metalhopper 86400"
+			"oncmd"		"sm_rmf_give_licence - metalhopper 345600"
 			"offcmd"	""
 			"time"		""
 		}
@@ -317,7 +317,7 @@
 		{
 			"title"		"(Eng) Reverse Engineer"
 			"price"		"3000"
-			"oncmd"		"sm_rmf_give_licence - reverseengineer 86400"
+			"oncmd"		"sm_rmf_give_licence - reverseengineer 345600"
 			"offcmd"	""
 			"time"		""
 		}
@@ -325,7 +325,7 @@
 		{
 			"title"		"(Spy) Sapper Throw"
 			"price"		"3000"
-			"oncmd"		"sm_rmf_give_licence - sapperthrow 86400"
+			"oncmd"		"sm_rmf_give_licence - sapperthrow 345600"
 			"offcmd"	""
 			"time"		""
 		}
@@ -333,7 +333,7 @@
 		{
 			"title"		"(Eng) Sleep Switch"
 			"price"		"3000"
-			"oncmd"		"sm_rmf_give_licence - sleepswitch 86400"
+			"oncmd"		"sm_rmf_give_licence - sleepswitch 345600"
 			"offcmd"	""
 			"time"		""
 		}
@@ -341,7 +341,7 @@
 		{
 			"title"		"(Scout) Spike Shoes"
 			"price"		"3000"
-			"oncmd"		"sm_rmf_give_licence - spikeshoes 86400"
+			"oncmd"		"sm_rmf_give_licence - spikeshoes 345600"
 			"offcmd"	""
 			"time"		""
 		}
@@ -349,7 +349,7 @@
 		{
 			"title"		"(Demo) Sticky Flash"
 			"price"		"3000"
-			"oncmd"		"sm_rmf_give_licence - stickyflash 86400"
+			"oncmd"		"sm_rmf_give_licence - stickyflash 345600"
 			"offcmd"	""
 			"time"		""
 		}
@@ -357,7 +357,7 @@
 		{
 			"title"		"(Medyk) Styptic"
 			"price"		"3000"
-			"oncmd"		"sm_rmf_give_licence - styptic 86400"
+			"oncmd"		"sm_rmf_give_licence - styptic 345600"
 			"offcmd"	""
 			"time"		""
 		}
@@ -365,7 +365,7 @@
 		{
 			"title"		"(Medyk) Supercharger"
 			"price"		"3000"
-			"oncmd"		"sm_rmf_give_licence - supercharger 86400"
+			"oncmd"		"sm_rmf_give_licence - supercharger 345600"
 			"offcmd"	""
 			"time"		""
 		}
@@ -373,7 +373,7 @@
 		{
 			"title"		"(Medyk) Uber Transplant"
 			"price"		"3000"
-			"oncmd"		"sm_rmf_give_licence - ubertransplant 86400"
+			"oncmd"		"sm_rmf_give_licence - ubertransplant 345600"
 			"offcmd"	""
 			"time"		""
 		}

@@ -166,7 +166,7 @@ public InitializeConvars()
 	cvCustomChatTriggerPlayerStats2 = CreateConVar("sm_candy_chat_stats2", "", "Custom chat trigger for the player stats", FCVAR_PLUGIN);
 	cvDelay = CreateConVar("sm_candy_delay", "0.0", "Delay between buying", FCVAR_PLUGIN);
 	cvDropCandy = CreateConVar("sm_candy_dropcandy", "1.0", "Drop candy", FCVAR_PLUGIN);
-	cvAssistsForCredit = CreateConVar("sm_candy_assists_for_credit", "1", "Assists required to receive sm_candy_credit_per_assist", FCVAR_PLUGIN);
+	cvAssistsForCredit = CreateConVar("sm_candy_assists_for_credit", "3", "Assists required to receive sm_candy_credit_per_assist", FCVAR_PLUGIN);
 	cvCreditPerAssist = CreateConVar("sm_candy_credit_per_assist", "1", "Credits a user gets for assiting", FCVAR_PLUGIN);
 	
 	PrintDebug("AutoExecConfig");
@@ -393,6 +393,7 @@ public ePlayerDeath(Handle:event, const String:name[], bool:dontBroadcast)
 			PrintDebug("Assister gets credits!");
 			AddCandy(assister, iAssistCreditGain);
 			CandyAfterDeath[assister]++;
+			iAssists[assister] = 0;
 		}
 		else
 			iAssists[assister]++;
