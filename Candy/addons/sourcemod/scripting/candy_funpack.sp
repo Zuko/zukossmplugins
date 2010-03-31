@@ -38,7 +38,8 @@ public OnPluginStart()
 	RegAdminCmd("sm_candy_buy_slay", cBuySlay, ADMFLAG_BAN, "Slay a player!");
 	RegAdminCmd("sm_candy_ignite", cBuyIgnite, ADMFLAG_BAN, "Ignite Player!");
 	RegAdminCmd("sm_candy_countdown", cCountdown, ADMFLAG_BAN, "Countdown");
-	
+
+	LoadTranslations("common.phrases");
 
 	HudCounter = CreateHudSynchronizer();
 	cvNoiseLevel = CreateConVar("sm_candy_buy_noiselevel", "2", "1 = silent, 2 = buyer only, 3 = everyone", FCVAR_PLUGIN, true, 1.0, true, 3.0);
@@ -49,6 +50,7 @@ public OnClientDisconnect(client)
 	if (CountdownTimer[client] != INVALID_HANDLE)
 	{
 		KillTimer(CountdownTimer[client]);
+		CountdownTimer[client] = INVALID_HANDLE;
 	}
 }
 
@@ -656,6 +658,7 @@ public Action:Counter(Handle:timer, any:target)
 	if (TimeRemaining(target) == 0)
 	{
 		KillTimer(CountdownTimer[target]);
+		CountdownTimer[target] = INVALID_HANDLE;
 	}
 	return Plugin_Continue;
 }
