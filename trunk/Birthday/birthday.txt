@@ -1,0 +1,26 @@
+//Example file!
+
+//Types:
+// C - On player connect
+// S - On player spawn
+//
+//Triggers:
+// @ - "PlayerName"
+// # - PlayerName
+
+"birthday"
+{
+	"1"
+	{
+		"command"	"sm_drug @"
+		"type"		"S"
+		"delay"		"1"
+	}
+	"2"
+	{
+		"command"	"sm_say Happy Birthday, #!"
+		"type"		"C"
+		"delay"		"10"
+	}
+
+}
