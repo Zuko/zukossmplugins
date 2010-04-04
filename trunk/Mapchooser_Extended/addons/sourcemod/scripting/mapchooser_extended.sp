@@ -48,7 +48,7 @@
 public Plugin:myinfo =
 {
 	name = "Extended Mapvote",
-	author = "Zuko and AlliedModders LLC",
+	author = "Zuko, SM Community and AlliedModders LLC",
 	description = "Extended Mapvoting Plugin",
 	version = VERSION,
 	url = "http://www.sourcemod.net/"
@@ -78,6 +78,8 @@ new Handle:g_Cvar_RunOff = INVALID_HANDLE;
 new Handle:g_Cvar_RunOffPercent = INVALID_HANDLE;
 new Handle:g_Cvar_BlockSlots = INVALID_HANDLE;
 new Handle:g_Cvar_MaxRunOffs = INVALID_HANDLE;
+new Handle:g_Cvar_StartTimePercent = INVALID_HANDLE;
+new Handle:g_Cvar_StartTimePercentEnable = INVALID_HANDLE;
 
 new Handle:g_VoteTimer = INVALID_HANDLE;
 new Handle:g_RetryTimer = INVALID_HANDLE;
@@ -147,7 +149,9 @@ public OnPluginStart()
 	g_Cvar_RunOffPercent = CreateConVar("sm_mapvote_runoffpercent", "50", "If winning choice has less than this percent of votes, hold a runoff", _, true, 0.0, true, 100.0);
 	g_Cvar_BlockSlots = CreateConVar("sm_mapvote_blockslots", "1", "Block slots to prevent stupid votes.", _, true, 0.0, true, 1.0);
 	g_Cvar_MaxRunOffs = CreateConVar("sm_mapvote_maxrunoffs", "1", "Number of run off votes allowed each map.", _, true, 0.0);
-	
+	g_Cvar_StartTimePercent = CreateConVar("sm_mapvote_start_percent", "35.0", "Specifies when to start the vote based on percents.", _, true, 0.0, true, 100.0);
+	g_Cvar_StartTimePercentEnable = CreateConVar("sm_mapvote_start_percent_enable", "1", "Enable or Disable percentage calculations when to start vote.", _, true, 0.0, true, 1.0);
+
 	RegAdminCmd("sm_mapvote", Command_Mapvote, ADMFLAG_CHANGEMAP, "sm_mapvote - Forces MapChooser to attempt to run a map vote now.");
 	RegAdminCmd("sm_setnextmap", Command_SetNextmap, ADMFLAG_CHANGEMAP, "sm_setnextmap <map>");
 
@@ -328,9 +332,14 @@ public OnMapTimeLeftChanged()
 SetupTimeleftTimer()
 {
 	new time;
+	new startTime;
 	if (GetMapTimeLeft(time) && time > 0)
 	{
-		new startTime = GetConVarInt(g_Cvar_StartTime) * 60;
+		if (GetConVarBool(g_Cvar_StartTimePercentEnable))
+			startTime = (GetConVarInt(g_Cvar_StartTimePercent) * time / 100);
+		else
+			startTime = GetConVarInt(g_Cvar_StartTime) * 60;
+
 		if (time - startTime < 0 && GetConVarBool(g_Cvar_EndOfMapVote) && !g_MapVoteCompleted && !g_HasVoteStarted)
 		{
 			g_runoffvote = false;
@@ -801,7 +810,7 @@ public Handler_MapVoteFinished(Handle:menu,
 			GetMenuItem(menu, item_info[1][VOTEINFO_ITEM_INDEX], g_map2, sizeof(g_map2), _, g_mapd2, sizeof(g_mapd2));
 				
 			CreateTimer(5.0, RunOffVoteWarningDelay, _, TIMER_FLAG_NO_MAPCHANGE);
-			VoteEnded("%s", buffer_runoffvote);
+			VoteEnded(buffer_runoffvote);
 			g_RunOffs++;
 			return;
 		}
