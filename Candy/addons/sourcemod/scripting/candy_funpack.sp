@@ -758,7 +758,10 @@ public Action:Counter(Handle:timer, any:target)
 	{
 		SetHudTextParams(-1.0, 0.52, 1.0, 255, 0, 0, 150);
 	}
-	ShowSyncHudText(target, HudCounter, "%i s", TimeRemaining(target));
+	if (FullCheckClient(target))
+	{
+		ShowSyncHudText(target, HudCounter, "%i s", TimeRemaining(target));
+	}
 
 	if ((TimeRemaining(target) == 0) && (CountdownTimer[target] != INVALID_HANDLE))
 	{
