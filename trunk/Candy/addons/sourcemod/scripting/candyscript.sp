@@ -38,9 +38,6 @@ new Handle:cvDropCandy;
 new Handle:cvAssistsForCredit;
 new Handle:cvCreditPerAssist;
 
-new Handle:dropTimer = INVALID_HANDLE;
-new Handle:tickTimer = INVALID_HANDLE;
-
 new Handle:dbConnection = INVALID_HANDLE;
 
 new String:sChatTag[32];
@@ -310,7 +307,7 @@ public InitializeTimersAndCValues()
 	new iCreditEarn = GetConVarInt(cvCreditPerTick);
 	if ((iTickSpeed > 0) && (iCreditEarn > 0))
 	{
-		tickTimer = CreateTimer(float(iTickSpeed), tTick, _, TIMER_REPEAT | TIMER_FLAG_NO_MAPCHANGE);
+		CreateTimer(float(iTickSpeed), tTick, _, TIMER_REPEAT | TIMER_FLAG_NO_MAPCHANGE);
 	}
 
 	for (new i = 0; i < sizeof(sConnectingClients); i++)
@@ -320,7 +317,7 @@ public InitializeTimersAndCValues()
 	new iDropEnabled = GetConVarInt(cvDropCandy);
 	if (iDropEnabled == 1)
 	{
-		dropTimer = CreateTimer(300.0, tDropCandy, _, TIMER_REPEAT | TIMER_FLAG_NO_MAPCHANGE);
+		CreateTimer(300.0, tDropCandy, _, TIMER_REPEAT | TIMER_FLAG_NO_MAPCHANGE);
 	}	
 }
 
