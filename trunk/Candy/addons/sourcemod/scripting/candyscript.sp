@@ -305,15 +305,6 @@ public InitializeTimersAndCValues()
 	GetConVarString(cvCfgChatTag, sChatTag, sizeof(sChatTag));
 	GetConVarString(cvCfgTablePrefix, sTablePrefix, sizeof(sTablePrefix));
 	
-	if(tickTimer != INVALID_HANDLE)
-	{
-		KillTimer(tickTimer);
-	}
-	if(dropTimer != INVALID_HANDLE)
-	{
-		KillTimer(dropTimer);
-	}
-	
 	PrintDebug("Updating tick speed");
 	new iTickSpeed = GetConVarInt(cvCfgTickSpeed);
 	new iCreditEarn = GetConVarInt(cvCreditPerTick);
@@ -321,7 +312,7 @@ public InitializeTimersAndCValues()
 	{
 		tickTimer = CreateTimer(float(iTickSpeed), tTick, _, TIMER_REPEAT | TIMER_FLAG_NO_MAPCHANGE);
 	}
-	
+
 	for (new i = 0; i < sizeof(sConnectingClients); i++)
 	{
 		sConnectingClients[i] = "";
