@@ -5,6 +5,7 @@
 
 #define NAME "Game Description Override"
 #define VERSION "1.3"
+#define DEBUG "0"
 
 new String:g_szGameDesc[64] = "";
 new Handle:g_hCvarGameDesc = INVALID_HANDLE;
@@ -15,7 +16,7 @@ new currLine = 0;
 
 public Plugin:myinfo = {
 	name = NAME,
-	author = "psychonic (modified by Zuko and Luki)", //Mozesz mnie wywalic xP
+	author = "psychonic (modified by Zuko and Luki)",
 	description = "Allows changing of displayed game type in server browser",
 	version = VERSION,
 	url = "http://www.nicholashastings.com | http://HLDS.pl"
@@ -28,20 +29,18 @@ public OnPluginStart()
 	g_hCvarTimerTime = CreateConVar("gamedesc_auto_desc_changer_timer", "240.0", "How often description has to be changed. (in seconds, 0 - to disable)", FCVAR_PLUGIN);
 	
 	AutoExecConfig();
-	
-	if (GetConVarInt(g_hCvarTimerTime) > 0)
-	{
-		if (g_hTimerAutoChange != INVALID_HANDLE)
-		{
-			KillTimer(g_hTimerAutoChange);
-			g_hTimerAutoChange = INVALID_HANDLE;
-		}
-		g_hTimerAutoChange = CreateTimer(GetConVarFloat(g_hCvarTimerTime), timerProc, _, TIMER_REPEAT | TIMER_FLAG_NO_MAPCHANGE);
-	}
 
 	HookConVarChange(g_hCvarGameDesc, CvarChange_GameDesc);
-	
-	currLine = 0;
+	HookConVarChange(g_hCvarTimerTime, CvarChange_TimerTime);
+}
+
+public OnMapStart()
+{
+	if (GetConVarInt(g_hCvarTimerTime) > 0)
+	{
+		g_hTimerAutoChange = CreateTimer(GetConVarFloat(g_hCvarTimerTime), timerProc, _, TIMER_REPEAT | TIMER_FLAG_NO_MAPCHANGE);
+		currLine = 0;
+	}
 }
 
 public OnAllPluginsLoaded()
@@ -78,6 +77,9 @@ public Action:OnGetGameDescription(String:gameDesc[64])
 
 public Action:timerProc(Handle:timer)
 {
+	#if defined DEBUG
+		PrintToServer("Timer Executed");
+	#endif
 	new String:sFilePath[PLATFORM_MAX_PATH];
 	BuildPath(Path_SM, sFilePath, sizeof(sFilePath), "configs/gamedesc.txt");
 	new Handle:Descs = CreateArray(255, 0);
@@ -114,4 +116,20 @@ public CvarChange_GameDesc(Handle:cvar, const String:oldVal[], const String:newV
 	{
 		g_bChangeGameDesc = false;
 	}
+}
+
+public CvarChange_TimerTime(Handle:cvar, const String:oldVal[], const String:newVal[])
+{
+	#if defined DEBUG
+		PrintToServer("CvarChange_TimerTime Change Hook");
+	#endif
+	
+	if (g_hTimerAutoChange != INVALID_HANDLE)
+	{
+		KillTimer(g_hTimerAutoChange);
+		g_hTimerAutoChange = INVALID_HANDLE;
+	}
+
+	g_hTimerAutoChange = CreateTimer(GetConVarFloat(g_hCvarTimerTime), timerProc, _, TIMER_REPEAT | TIMER_FLAG_NO_MAPCHANGE);
+	currLine = 0;
 }
