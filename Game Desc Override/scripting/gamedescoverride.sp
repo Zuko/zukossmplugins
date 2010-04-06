@@ -19,14 +19,14 @@ public Plugin:myinfo = {
 	author = "psychonic (modified by Zuko and Luki)",
 	description = "Allows changing of displayed game type in server browser",
 	version = VERSION,
-	url = "http://www.nicholashastings.com | http://HLDS.pl"
+	url = "http://www.nicholashastings.com | http://HLDS.pl | www.strefagier.com.pl"
 };
 
 public OnPluginStart()
 {
 	CreateConVar("gamedesc_override_version", VERSION, NAME, FCVAR_PLUGIN|FCVAR_DONTRECORD|FCVAR_SPONLY|FCVAR_NOTIFY);
 	g_hCvarGameDesc = CreateConVar("gamedesc_override", "", "Game Description Override (set blank \"\" for default no override)", FCVAR_PLUGIN);
-	g_hCvarTimerTime = CreateConVar("gamedesc_auto_desc_changer_timer", "240.0", "How often description has to be changed. (in seconds, 0 - to disable)", FCVAR_PLUGIN);
+	g_hCvarTimerTime = CreateConVar("gamedesc_auto_change_time", "240.0", "How often description has to be changed. (in seconds, 0 - to disable)", FCVAR_PLUGIN);
 	
 	AutoExecConfig();
 
