@@ -5,13 +5,16 @@
 
 #define NAME "Game Description Override"
 #define VERSION "1.3"
-#define DEBUG "0"
+//#define DEBUG
 
 new String:g_szGameDesc[64] = "";
 new Handle:g_hCvarGameDesc = INVALID_HANDLE;
 new Handle:g_hCvarTimerTime = INVALID_HANDLE;
 new Handle:g_hTimerAutoChange = INVALID_HANDLE;
+new Handle:g_hCvarManiFix = INVALID_HANDLE;
 new bool:g_bChangeGameDesc = false;
+new bool:g_bMapRoaded = false;
+new bool:g_bManiFix = false;
 new currLine = 0;
 
 public Plugin:myinfo = {
@@ -26,21 +29,30 @@ public OnPluginStart()
 {
 	CreateConVar("gamedesc_override_version", VERSION, NAME, FCVAR_PLUGIN|FCVAR_DONTRECORD|FCVAR_SPONLY|FCVAR_NOTIFY);
 	g_hCvarGameDesc = CreateConVar("gamedesc_override", "", "Game Description Override (set blank \"\" for default no override)", FCVAR_PLUGIN);
+	g_hCvarManiFix = CreateConVar("gamedesc_manifix", "0", "Mani Fix. Enable if 3rd party plugins have trouble detecting gametype. 0-Disabled (default), 1-Enabled", FCVAR_PLUGIN);
 	g_hCvarTimerTime = CreateConVar("gamedesc_auto_change_time", "240.0", "How often description has to be changed. (in seconds, 0 - to disable)", FCVAR_PLUGIN);
 	
 	AutoExecConfig();
 
 	HookConVarChange(g_hCvarGameDesc, CvarChange_GameDesc);
+	HookConVarChange(g_hCvarManiFix, CvarChange_ManiFix);
 	HookConVarChange(g_hCvarTimerTime, CvarChange_TimerTime);
 }
 
 public OnMapStart()
 {
+	g_bMapRoaded = true;
+
 	if (GetConVarInt(g_hCvarTimerTime) > 0)
 	{
 		g_hTimerAutoChange = CreateTimer(GetConVarFloat(g_hCvarTimerTime), timerProc, _, TIMER_REPEAT | TIMER_FLAG_NO_MAPCHANGE);
 		currLine = 0;
 	}
+}
+
+public OnMapEnd()
+{
+	g_bMapRoaded = false;
 }
 
 public OnAllPluginsLoaded()
@@ -66,7 +78,7 @@ SDKHooksFail()
 
 public Action:OnGetGameDescription(String:gameDesc[64])
 {
-	if (g_bChangeGameDesc)
+	if (g_bChangeGameDesc && (g_bMapRoaded || !g_bManiFix))
 	{
 		strcopy(gameDesc, sizeof(gameDesc), g_szGameDesc);
 		return Plugin_Changed;
@@ -132,4 +144,9 @@ public CvarChange_TimerTime(Handle:cvar, const String:oldVal[], const String:new
 
 	g_hTimerAutoChange = CreateTimer(GetConVarFloat(g_hCvarTimerTime), timerProc, _, TIMER_REPEAT | TIMER_FLAG_NO_MAPCHANGE);
 	currLine = 0;
+}
+
+public CvarChange_ManiFix(Handle:cvar, const String:oldVal[], const String:newVal[])
+{
+	g_bManiFix = bool:StringToInt(newVal);
 }
