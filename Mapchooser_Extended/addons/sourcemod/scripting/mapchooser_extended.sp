@@ -150,7 +150,7 @@ public OnPluginStart()
 	g_Cvar_BlockSlots = CreateConVar("sm_mapvote_blockslots", "1", "Block slots to prevent stupid votes.", _, true, 0.0, true, 1.0);
 	g_Cvar_MaxRunOffs = CreateConVar("sm_mapvote_maxrunoffs", "1", "Number of run off votes allowed each map.", _, true, 0.0);
 	g_Cvar_StartTimePercent = CreateConVar("sm_mapvote_start_percent", "35.0", "Specifies when to start the vote based on percents.", _, true, 0.0, true, 100.0);
-	g_Cvar_StartTimePercentEnable = CreateConVar("sm_mapvote_start_percent_enable", "1", "Enable or Disable percentage calculations when to start vote.", _, true, 0.0, true, 1.0);
+	g_Cvar_StartTimePercentEnable = CreateConVar("sm_mapvote_start_percent_enable", "0", "Enable or Disable percentage calculations when to start vote.", _, true, 0.0, true, 1.0);
 
 	RegAdminCmd("sm_mapvote", Command_Mapvote, ADMFLAG_CHANGEMAP, "sm_mapvote - Forces MapChooser to attempt to run a map vote now.");
 	RegAdminCmd("sm_setnextmap", Command_SetNextmap, ADMFLAG_CHANGEMAP, "sm_setnextmap <map>");
