@@ -129,6 +129,11 @@
 	}
 	
 	// Bullet Based
+	"RifleM60"
+	{
+		"en"		"M60"
+	}
+	
 	"HuntingRifle"
 	{
 		"en"		"Hunting Rifle"
@@ -363,7 +368,12 @@
 	{
 		"en"		"Frying Pan"
 	}
-	
+
+	"GolfClub"
+	{
+		"en"		"Golf Club"
+	}
+
 	"Katana"
 	{
 		"en"		"Katana"
