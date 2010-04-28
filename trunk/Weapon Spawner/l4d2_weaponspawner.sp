@@ -45,6 +45,8 @@
  *
  * ####
  * Changelog:
+ * v0.8
+ *	o Added new weapons from DLC
  * v0.7a
  *	o Added missing "Full Health"
  *	o Debug informations now are disabled by default
@@ -98,7 +100,7 @@
 #undef REQUIRE_PLUGIN
 #include <adminmenu>
 
-#define VERSION "0.7"
+#define VERSION "0.8"
 
 /* TopMenu Handle */
 new Handle:hAdminMenu = INVALID_HANDLE;
@@ -147,6 +149,8 @@ public OnPluginStart()
 	RegAdminCmd("sm_removemachinegun", Command_RemoveMinigun, ADMFLAG_SLAY, "Remove Machine Gun.");
 	RegAdminCmd("sm_rmg", Command_RemoveMinigun, ADMFLAG_SLAY, "Remove Machine Gun.");
 
+	RegAdminCmd("sm_guncontroldebug", Cmd_ReadGunData, ADMFLAG_ROOT, "Reads your current weapons data");
+	RegAdminCmd("sm_getpropclassname", Cmd_ReadPropData, ADMFLAG_ROOT, "Reads prop classname");
 
 	/* Max Ammo ConVars */
 	AssaultMaxAmmo = CreateConVar("sm_spawnweapon_assaultammo", "360", "How much Ammo for AK74, M4A1, SG552 and Desert Rifle.", FCVAR_PLUGIN, true, 0.0, true, 360.0);
@@ -269,8 +273,9 @@ public Action:Command_SpawnWeapon(client, args)
 			DispatchSpawn(iWeapon); //Spawn weapon (entity)
 			if (!StrEqual(weapon, "weapon_ammo_spawn", false))
 			{
-				SetEntProp(iWeapon, Prop_Send, "m_iExtraPrimaryAmmo", maxammo ,4); //Adds max ammo for weapon
-				AcceptEntityInput(iWeapon, "RemoveHealth");
+				//SetEntProp(iWeapon, Prop_Send, "m_iExtraPrimaryAmmo", maxammo, 4); //Adds max ammo for weapon
+				//SetEntProp(iWeapon, Prop_Send, "m_iClip1", 250, 1);
+				//AcceptEntityInput(iWeapon, "RemoveHealth");
 			}
 			g_pos[2] -= 10.0-(i*2);
 			TeleportEntity(iWeapon, g_pos, NULL_VECTOR, NULL_VECTOR); //Teleport spawned weapon
@@ -561,10 +566,11 @@ BuildBulletBasedMenu(client)
 {
 	decl String:hunting_rifle[40], String:pistol[40], String:pistol_magnum[40], String:rifle[40], String:title[40];
 	decl String:rifle_desert[40], String:smg[40], String:smg_silenced[40], String:sniper_military[40], String:rifle_ak47[40];
-	decl String:rifle_sg552[40], String:smg_mp5[40], String:sniper_awp[40], String:sniper_scout[40];
+	decl String:rifle_sg552[40], String:smg_mp5[40], String:sniper_awp[40], String:sniper_scout[40], String:rifle_m60[40];
 
 	new Handle:menu = CreateMenu(MenuHandler_SpawnWeapon);
-	
+	Format(rifle_m60, sizeof(rifle_m60),"%T", "RifleM60", LANG_SERVER)
+	AddMenuItem(menu, "weapon_rifle_m60", rifle_m60)
 	Format(hunting_rifle, sizeof(hunting_rifle),"%T", "HuntingRifle", LANG_SERVER)
 	AddMenuItem(menu, "weapon_hunting_rifle", hunting_rifle)
 	Format(pistol, sizeof(pistol),"%T", "Pistol", LANG_SERVER)
@@ -763,6 +769,7 @@ switch(action)
 				if (!StrEqual(weapon, "weapon_ammo_spawn", false))
 				{
 					SetEntProp(iWeapon, Prop_Send, "m_iExtraPrimaryAmmo", maxammo ,4); //Adds max ammo for weapon
+					SetEntProp(iWeapon, Prop_Send, "m_iClip1", 250, 1);
 				}
 				g_pos[2] -= 10.0;
 				TeleportEntity(iWeapon, g_pos, NULL_VECTOR, NULL_VECTOR); //Teleport spawned weapon
@@ -878,7 +885,7 @@ public MenuHandler_GiveWeapons(Handle:menu, MenuAction:action, param1, param2)
 BuildMeleeGiveMenu(client)
 {
 	decl String:baseball_bat[40], String:cricket_bat[40], String:crowbar[40], String:electric_guitar[40], String:fireaxe[40];
-	decl String:frying_pan[40], String:katana[40], String:machete[40], String:tonfa[40], String:knife[40], String:title[40]
+	decl String:frying_pan[40], String:katana[40], String:machete[40], String:tonfa[40], String:knife[40], String:title[40], String:golfclub[40];
 
 	if (GetConVarInt(DebugInformations))
 	{
@@ -1041,6 +1048,8 @@ BuildMeleeGiveMenu(client)
 			AddMenuItem(menu, "fireaxe", fireaxe)
 			Format(frying_pan, sizeof(frying_pan),"%T", "FryingPan", LANG_SERVER)
 			AddMenuItem(menu, "frying_pan", frying_pan)
+			Format(golfclub, sizeof(golfclub),"%T", "GolfClub", LANG_SERVER)
+			AddMenuItem(menu, "golfclub", golfclub)
 			Format(katana, sizeof(katana),"%T", "Katana", LANG_SERVER)
 			AddMenuItem(menu, "katana", katana)
 			Format(machete, sizeof(machete),"%T", "Machete", LANG_SERVER)
@@ -1078,6 +1087,8 @@ BuildMeleeGiveMenu(client)
 		AddMenuItem(menu, "fireaxe", fireaxe)
 		Format(frying_pan, sizeof(frying_pan),"%T", "FryingPan", LANG_SERVER)
 		AddMenuItem(menu, "frying_pan", frying_pan)
+		Format(golfclub, sizeof(golfclub),"%T", "GolfClub", LANG_SERVER)
+		AddMenuItem(menu, "golfclub", golfclub)
 		Format(katana, sizeof(katana),"%T", "Katana", LANG_SERVER)
 		AddMenuItem(menu, "katana", katana)
 		Format(machete, sizeof(machete),"%T", "Machete", LANG_SERVER)
@@ -1101,10 +1112,12 @@ BuildBulletBasedGiveMenu(client)
 {
 	decl String:hunting_rifle[40], String:pistol[40], String:pistol_magnum[40], String:rifle[40], String:rifle_desert[40];
 	decl String:smg[40], String:smg_silenced[40], String:sniper_military[40], String:rifle_ak47[40], String:rifle_sg552[40];
-	decl String:smg_mp5[40], String:sniper_awp[40], String:sniper_scout[40], String:title[40];
+	decl String:smg_mp5[40], String:sniper_awp[40], String:sniper_scout[40], String:title[40], String:rifle_m60[40];
 
 	new Handle:menu = CreateMenu(MenuHandler_GiveWeapon);
 	
+	Format(rifle_m60, sizeof(rifle_m60),"%T", "RifleM60", LANG_SERVER)
+	AddMenuItem(menu, "rifle_m60", rifle_m60)
 	Format(hunting_rifle, sizeof(hunting_rifle),"%T", "HuntingRifle", LANG_SERVER)
 	AddMenuItem(menu, "hunting_rifle", hunting_rifle)
 	Format(pistol, sizeof(pistol),"%T", "Pistol", LANG_SERVER)
@@ -1543,3 +1556,75 @@ public bool:TraceEntityFilterPlayer(entity, contentsMask)
 	return entity > GetMaxClients() || !entity;
 }
 /* >>> end of Teleport Entity */
+
+
+public Action:Cmd_ReadGunData(client, args) //Code from L4D2 Gun Control by AtomicStryker
+{
+	if (!client || !IsClientInGame(client))
+	{
+		ReplyToCommand(client, "Can only use this command ingame");
+		return Plugin_Handled;
+	}
+	
+	new targetgun = GetPlayerWeaponSlot(client, 0); //get the players primary weapon
+	if (!IsValidEdict(targetgun)) return Plugin_Handled; //check for validity
+	
+	decl String:name[256];
+	GetEdictClassname(targetgun, name, sizeof(name));
+	PrintToChat(client, "Gun Class: %s", name);
+	
+	new iAmmoOffset = FindDataMapOffs(client, "m_iAmmo"); //get the iAmmo Offset
+	PrintToChat(client, "m_iAmmo Offset: %i", iAmmoOffset);
+	
+	for (new offset = 0; offset <= 128 ; offset += 4)
+	{
+		PrintToChat(client, "Offset %i Value: %i", offset, GetEntData(client, (iAmmoOffset + offset)));
+	}
+	
+	PrintToChat(client, "m_iClip1 Value in gun: %i", GetEntProp(targetgun, Prop_Data, "m_iClip1", 1));
+	PrintToChat(client, "m_iClip2 Value in gun: %i", GetEntProp(targetgun, Prop_Data, "m_iClip2", 1));
+	PrintToChat(client, "m_iExtraPrimaryAmmo Value in gun: %i", GetEntProp(targetgun, Prop_Data, "m_iExtraPrimaryAmmo", 4));
+	return Plugin_Handled;
+}
+
+public Action:Cmd_ReadPropData(client, args)
+{
+	if(!client)
+	{
+		ReplyToCommand(client, "%t", "Command is in-game only", LANG_SERVER);
+		return Plugin_Handled;	
+	}
+
+	ReadInfo(client);
+	return Plugin_Handled;
+}
+
+public ReadInfo(client)
+{
+	decl String:Classname[256];
+	decl String:NetClassname[256];
+	decl String:ModelName[256];
+	new prop = GetClientAimTarget(client, false);
+
+	if ((prop == -1) || (!IsValidEntity (prop)))
+	{
+		ReplyToCommand(client, "Error!");
+		return Plugin_Handled;
+	}
+
+	GetEdictClassname(prop, Classname, sizeof(Classname));
+	PrintToChat(client, "EntClass: %s", Classname);
+	GetEntityNetClass(prop, NetClassname, sizeof(NetClassname));
+	PrintToChat(client, "NetEntClass: %s", NetClassname);
+	GetEntPropString(prop, Prop_Data, "m_ModelName", ModelName, 128)
+	PrintToChat(client, "m_ModelName: %s", ModelName);
+	//weapon_pain_pills_spawn
+	//weapon_molotov_spawn
+	//weapon_pipe_bomb_spawn
+	//weapon_adrenaline_spawn
+	//weapon_first_aid_kit_spawn
+	
+	//m_itemCount
+	//m_spawnflags
+	return Plugin_Handled;
+}
