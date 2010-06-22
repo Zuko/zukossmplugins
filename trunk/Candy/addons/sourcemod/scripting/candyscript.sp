@@ -837,6 +837,7 @@ public Action:cRemoveCandy(client, args)
 			PrintToServer("[%s] Usage: sm_candy_remove userid amount", sChatTag);
 		return Plugin_Handled;
 	}
+	iAmount = StringToInt(sAmount);
 	
 	if ((target_count = ProcessTargetString(
 			sTarget,

@@ -438,7 +438,7 @@ public cGiveCandy(Handle:menu, MenuAction:action, client, result)
 		GetClientName(client, sAName, sizeof(sAName));
 		GetClientName(hTarget, sVName, sizeof(sVName));
 
-		ServerCommand("sm_candy_add %s 250", hTarget);
+		ServerCommand("sm_candy_add \"%s\" 250", sVName);
 		new noise = GetConVarInt(cvNoiseLevel);
 		if (noise > 1)
 		{		
