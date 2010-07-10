@@ -13,14 +13,15 @@ new const String:officialmaps[][] = { "arena_badlands", "arena_granary", "arena_
 								"ctf_sawmill", "ctf_turbine", "ctf_well", "koth_harvest_event", 
 								"koth_harvest_final", "koth_nucleus", "koth_sawmill", 
 								"koth_viaduct", "pl_badwater", "pl_goldrush", "pl_hoodoo_final", 
-								"plr_pipeline", "tc_hydro", "cs_assault", "cs_compound", 
+								"plr_pipeline", "tc_hydro", "pl_upward", "pl_thundermountain", 
+								"cp_coldfront", "plr_hightower", "cs_assault", "cs_compound", 
 								"cs_havana", "cs_italy", "cs_militia", "cs_office", "de_aztec", 
 								"de_cbble", "de_chateau", "de_dust", "de_dust2", "de_inferno", 
 								"de_nuke", "de_piranesi", "de_port", "de_prodigy", "de_tides", 
 								"de_train", "dod_anzio", "dod_argentan", "dod_avalanche", 
 								"dod_colmar", "dod_donner", "dod_flash", "dod_jagd", "dod_kalt", 
 								"dod_palermo", "dm_lockdown", "dm_overwatch", "dm_powerhouse", 
-								"dm_resistance", "dm_runoff", "dm_steamlab", "dm_underpass" };
+								"dm_resistance", "dm_runoff", "dm_steamlab", "dm_underpass",};
 // official map list for: 	Team Fortress 2, Counter-Strike: Source, Day of Defeat: Source,
 //							Half-Life 2: Deathmatch
 
