@@ -21,7 +21,7 @@ new const String:officialmaps[][] = { "arena_badlands", "arena_granary", "arena_
 								"de_train", "dod_anzio", "dod_argentan", "dod_avalanche", 
 								"dod_colmar", "dod_donner", "dod_flash", "dod_jagd", "dod_kalt", 
 								"dod_palermo", "dm_lockdown", "dm_overwatch", "dm_powerhouse", 
-								"dm_resistance", "dm_runoff", "dm_steamlab", "dm_underpass",};
+								"dm_resistance", "dm_runoff", "dm_steamlab", "dm_underpass"};
 // official map list for: 	Team Fortress 2, Counter-Strike: Source, Day of Defeat: Source,
 //							Half-Life 2: Deathmatch
 
