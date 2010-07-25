@@ -1,10 +1,10 @@
 // ==UserScript==
 // @name         Steam price comparison (edited by Zuko)
 // @version      1.1.4-1
-// @namespace    http://code.google.com/p/steam-prices/
+// @namespace    http://code.google.com/p/zukossmplugins/
 // @description  Displays prices from all regions in the Steam webshop
 // @copyright    2009+, Tor (http://code.google.com/p/steam-prices/)
-// @homepage     http://code.google.com/p/steam-prices/
+// @homepage     http://code.google.com/p/zukossmplugins/
 // @license      MIT License; http://www.opensource.org/licenses/mit-license.php
 // @include      http://store.steampowered.com/app/*
 // @include      https://store.steampowered.com/app/*
