@@ -44,7 +44,7 @@
 		"11"
 		{
 			"title"		"5 sekund"
-			"price"		"150"
+			"price"		"250"
 			"oncmd"		"sm_candy_buy_cond | 5 5"
 			"offcmd"	""
 			"time"		"5"
@@ -53,7 +53,7 @@
 		"12"
 		{
 			"title"		"10 sekund"
-			"price"		"200"
+			"price"		"300"
 			"oncmd"		"sm_candy_buy_cond | 5 10"
 			"offcmd"	""
 			"time"		"10"
@@ -62,7 +62,7 @@
 		"13"
 		{
 			"title"		"15 sekund"
-			"price"		"250"
+			"price"		"350"
 			"oncmd"		"sm_candy_buy_cond | 5 15"
 			"offcmd"	""
 			"time"		"15"
@@ -89,29 +89,11 @@
 		"16"
 		{
 			"title"		"Uber + 100% Krytów (Drużyna) (15 sek)"
-			"price"		"3000"
+			"price"		"4000"
 			"oncmd"		"sm_candy_buy_cond ^ 5 15; sm_candy_buy_cond ^ 11 15"
 			"offcmd"	""
 			"time"		"15"
 			"group"		"a"
-		}
-		"17"
-		{
-			"title"		"Auto Uber (50%)"
-			"price"		"500"
-			"oncmd"		"sm_autouber | 50"
-			"offcmd"	""
-			"time"		""
-			"class"		"5"
-		}
-		"18"
-		{
-			"title"		"Auto Uber (25%)"
-			"price"		"250"
-			"oncmd"		"sm_autouber | 25"
-			"offcmd"	""
-			"time"		""
-			"class"		"5"
 		}
 		"19"
 		{
@@ -134,7 +116,7 @@
 		"111"
 		{
 			"title"		"400% Ubera (Dla Medyka)"
-			"price"		"400"
+			"price"		"500"
 			"oncmd"		"sm_candy_buy_uber | 400"
 			"offcmd"	""
 			"time"		"0"
@@ -143,7 +125,7 @@
 		"112"
 		{
 			"title"		"1000% Ubera (Dla Medyka)"
-			"price"		"500"
+			"price"		"750"
 			"oncmd"		"sm_candy_buy_uber | 1000"
 			"offcmd"	""
 			"time"		"0"
@@ -155,7 +137,7 @@
 		"21"
 		{
 			"title"		"5 sekund"
-			"price"		"75"
+			"price"		"250"
 			"oncmd"		"sm_candy_buy_cond | 11 5; sm_candy_countdown | 5"
 			"offcmd"	""
 			"time"		"5"
@@ -164,7 +146,7 @@
 		"22"
 		{
 			"title"		"10 sekund"
-			"price"		"150"
+			"price"		"300"
 			"oncmd"		"sm_candy_buy_cond | 11 10; sm_candy_countdown | 10"
 			"offcmd"	""
 			"time"		"10"
@@ -173,7 +155,7 @@
 		"23"
 		{
 			"title"		"15 sekund"
-			"price"		"200"
+			"price"		"350"
 			"oncmd"		"sm_candy_buy_cond | 11 15; sm_candy_countdown | 15"
 			"offcmd"	""
 			"time"		"15"
@@ -182,190 +164,11 @@
 		"24"
 		{
 			"title"		"30 sekund"
-			"price"		"1000"
+			"price"		"500"
 			"oncmd"		"sm_candy_buy_cond | 11 30; sm_candy_countdown | 30"
 			"offcmd"	""
 			"time"		"30"
 			"group"		"a"
-		}
-	}
-	"RMF (4 dni)" // 3
-	{
-		"31"
-		{
-			"title"		"(Pyro) After Burner"
-			"price"		"3000"
-			"oncmd"		"sm_rmf_give_licence - afterburner 345600"
-			"offcmd"	""
-			"time"		""
-		}
-		"32"
-		{
-			"title"		"(Pyro) Burnsday Present"
-			"price"		"3000"
-			"oncmd"		"sm_rmf_give_licence - burnsdaypresent 345600"
-			"offcmd"	""
-			"time"		""
-		}
-		"33"
-		{
-			"title"		"(Heavy) Centrifuge Rotor"
-			"price"		"3000"
-			"oncmd"		"sm_rmf_give_licence - centrifugerotor 345600"
-			"offcmd"	""
-			"time"		""
-		}
-		"34"
-		{
-			"title"		"(Sniper) Curving Arrow"
-			"price"		"3000"
-			"oncmd"		"sm_rmf_give_licence - curvingarrow 345600"
-			"offcmd"	""
-			"time"		""
-		}
-		"35"
-		{
-			"title"		"(Heavy) Delicious Sandvich"
-			"price"		"3000"
-			"oncmd"		"sm_rmf_give_licence - delicioussandvich 345600"
-			"offcmd"	""
-			"time"		""
-		}
-		"36"
-		{
-			"title"		"(Pyro) Disguise Jutsu"
-			"price"		"3000"
-			"oncmd"		"sm_rmf_give_licence - disguisejutsu 345600"
-			"offcmd"	""
-			"time"		""
-		}
-		"37"
-		{
-			"title"		"(Medyk) Doping Injection"
-			"price"		"3000"
-			"oncmd"		"sm_rmf_give_licence - dopinginjection 345600"
-			"offcmd"	""
-			"time"		""
-		}
-		"38"
-		{
-			"title"		"(Demo) Drunk Bomb"
-			"price"		"3000"
-			"oncmd"		"sm_rmf_give_licence - drunkbomb 345600"
-			"offcmd"	""
-			"time"		""
-		}
-		"39"
-		{
-			"title"		"(Pyro) Flare Firework"
-			"price"		"3000"
-			"oncmd"		"sm_rmf_give_licence - flarefirework 345600"
-			"offcmd"	""
-			"time"		""
-		}
-		"310"
-		{
-			"title"		"(Medyk) Flying Doctor"
-			"price"		"3000"
-			"oncmd"		"sm_rmf_give_licence - flyingdoctor 345600"
-			"offcmd"	""
-			"time"		""
-		}
-		"311"
-		{
-			"title"		"(Sold) Homing Rocket"
-			"price"		"3000"
-			"oncmd"		"sm_rmf_give_licence - homingrocket 345600"
-			"offcmd"	""
-			"time"		""
-		}
-		"312"
-		{
-			"title"		"(Sold) King Kong Drumming"
-			"price"		"3000"
-			"oncmd"		"sm_rmf_give_licence - kingkongdrumming 345600"
-			"offcmd"	""
-			"time"		""
-		}
-		"313"
-		{
-			"title"		"(Sniper) Marking Shot"
-			"price"		"3000"
-			"oncmd"		"sm_rmf_give_licence - markingshot 345600"
-			"offcmd"	""
-			"time"		""
-		}
-		"314"
-		{
-			"title"		"(Eng) Metal Hopper"
-			"price"		"3000"
-			"oncmd"		"sm_rmf_give_licence - metalhopper 345600"
-			"offcmd"	""
-			"time"		""
-		}
-		"315"
-		{
-			"title"		"(Eng) Reverse Engineer"
-			"price"		"3000"
-			"oncmd"		"sm_rmf_give_licence - reverseengineer 345600"
-			"offcmd"	""
-			"time"		""
-		}
-		"316"
-		{
-			"title"		"(Spy) Sapper Throw"
-			"price"		"3000"
-			"oncmd"		"sm_rmf_give_licence - sapperthrow 345600"
-			"offcmd"	""
-			"time"		""
-		}
-		"317"
-		{
-			"title"		"(Eng) Sleep Switch"
-			"price"		"3000"
-			"oncmd"		"sm_rmf_give_licence - sleepswitch 345600"
-			"offcmd"	""
-			"time"		""
-		}
-		"318"
-		{
-			"title"		"(Scout) Spike Shoes"
-			"price"		"3000"
-			"oncmd"		"sm_rmf_give_licence - spikeshoes 345600"
-			"offcmd"	""
-			"time"		""
-		}
-		"319"
-		{
-			"title"		"(Demo) Sticky Flash"
-			"price"		"3000"
-			"oncmd"		"sm_rmf_give_licence - stickyflash 345600"
-			"offcmd"	""
-			"time"		""
-		}
-		"320"
-		{
-			"title"		"(Medyk) Styptic"
-			"price"		"3000"
-			"oncmd"		"sm_rmf_give_licence - styptic 345600"
-			"offcmd"	""
-			"time"		""
-		}
-		"321"
-		{
-			"title"		"(Medyk) Supercharger"
-			"price"		"3000"
-			"oncmd"		"sm_rmf_give_licence - supercharger 345600"
-			"offcmd"	""
-			"time"		""
-		}
-		"322"
-		{
-			"title"		"(Medyk) Uber Transplant"
-			"price"		"3000"
-			"oncmd"		"sm_rmf_give_licence - ubertransplant 345600"
-			"offcmd"	""
-			"time"		""
 		}
 	}
 	"Różne" // 4
@@ -390,7 +193,7 @@
 		"43"
 		{
 			"title"		"Zgładź gracza! (A co!)"
-			"price"		"500"
+			"price"		"1000"
 			"oncmd"		"sm_candy_buy_slay ?"
 			"offcmd"	""
 			"time"		"0"
@@ -398,15 +201,15 @@
 		"44"
 		{
 			"title"		"Respawn"
-			"price"		"50"
-			"oncmd"		"sm_rplayer |"
+			"price"		"100"
+			"oncmd"		"sm_rp |"
 			"offcmd"	""
 			"time"		""
 		}
 		"45"
 		{
 			"title"		"Regeneracja (Siebie)"
-			"price"		"50"
+			"price"		"100"
 			"oncmd"		"sm_candy_buy_regen |"
 			"offcmd"	""
 			"time"		""
@@ -414,7 +217,7 @@
 		"46"
 		{
 			"title"		"Regeneracja (Drużyny)"
-			"price"		"50"
+			"price"		"250"
 			"oncmd"		"sm_candy_buy_regen ^"
 			"offcmd"	""
 			"time"		""
@@ -422,27 +225,18 @@
 		"47"
 		{
 			"title"		"Regeneracja (Wszystkich)"
-			"price"		"50"
+			"price"		"300"
 			"oncmd"		"sm_candy_buy_regen @all"
 			"offcmd"	""
 			"time"		""
-		}
-		"48"
-		{
-			"title"		"200 Metalu (Dla Inżyniera)"
-			"price"		"200"
-			"oncmd"		"sm_setmetal | 200"
-			"offcmd"	""
-			"time"		"0"
-			"class"		"9"
-		}			
+		}	
 	}
 	"Rezerwacja Slotu" // 5
 	{
 		"51"
 		{
 			"title"		"Rezerwacja slotu - 1 tydzień"
-			"price"		"6000"
+			"price"		"8000"
 			"oncmd"		"sm_addtimedreserved ? 604800"
 			"offcmd"	""
 			"time"		""
@@ -450,7 +244,7 @@
 		"52"
 		{
 			"title"		"Rezerwacja slotu - 2 tygodnie"
-			"price"		"8000"
+			"price"		"11000"
 			"oncmd"		"sm_addtimedreserved ? 1209600"
 			"offcmd"	""
 			"time"		""
@@ -458,7 +252,7 @@
 		"53"
 		{
 			"title"		"Rezerwacja slotu - 4 tygodnie"
-			"price"		"10000"
+			"price"		"14000"
 			"oncmd"		"sm_addtimedreserved ? 2419200"
 			"offcmd"	""
 			"time"		""
