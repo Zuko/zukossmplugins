@@ -566,7 +566,10 @@ public Action:tDropCandy(Handle:timer)
 	if (GetConVarInt(cvDropCandy) == 1)
 	{
 		PrintDebug("Drop Candy Tick!");
-		if (GetRandomInt(0, 9) == GetRandomInt(8, 19))
+		
+		new rand = GetRandomInt(0, 99);
+		
+		if (rand < 1)
 		{
 			new randomPlayer = GetRandomInt(1, GetClientCount());
 			if (!FullCheckClient(randomPlayer))
@@ -574,7 +577,7 @@ public Action:tDropCandy(Handle:timer)
 				PrintDebug("Drop Candy: Invalid Client");
 				return;
 			}
-			new cndCount = GetRandomInt(10, 100);
+			new cndCount = GetRandomInt(100, 10000);
 			new String:playerName[255];
 			GetClientName(randomPlayer, playerName, sizeof(playerName));
 			new String:message[255];
@@ -652,7 +655,7 @@ public Action:tTick(Handle:timer)
 public Action:cForceDrop(client, args)
 {
 	new randomPlayer = GetRandomInt(1, GetClientCount());
-	new cndCount = GetRandomInt(10, 100);
+	new cndCount = GetRandomInt(100, 10000);
 	new String:playerName[255];
 	GetClientName(randomPlayer, playerName, sizeof(playerName));
 	new String:message[255];
