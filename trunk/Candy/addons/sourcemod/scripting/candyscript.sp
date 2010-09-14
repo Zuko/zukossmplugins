@@ -180,13 +180,13 @@ public InitializeConvars()
  */
 public InitializeAdminCommands()
 {
-	RegAdminCmd("sm_candy_add", cAddCandy, ADMFLAG_ROOT, "Give an user some credits (sm_candy_add <#userid|name> amount)");
-	RegAdminCmd("sm_candy_remove", cRemoveCandy, ADMFLAG_ROOT, "Remove some credits (sm_candy_remove <#userid|name> amount)");
+//	RegAdminCmd("sm_candy_add", cAddCandy, ADMFLAG_ROOT, "Give an user some credits (sm_candy_add <#userid|name> amount)");
+//	RegAdminCmd("sm_candy_remove", cRemoveCandy, ADMFLAG_ROOT, "Remove some credits (sm_candy_remove <#userid|name> amount)");
 	RegAdminCmd("sm_candy_get", cGetCandy, ADMFLAG_ROOT, "Get the amount of candy (sm_candy_get <#userid|name>)");
-	RegAdminCmd("sm_candy_reset", cResetCandy, ADMFLAG_ROOT, "Reset the amount of candy of every player to a certain amount (sm_candy_reset amount)");
-	RegAdminCmd("sm_candy_resetdb", cResetDB, ADMFLAG_ROOT, "Reset the database (sm_candy_resetdb)");
-	RegAdminCmd("sm_candy_playerreset", cPlayerResetCandy, ADMFLAG_ROOT, "Reset the amount of candy of selected player to 0 (sm_candy_playerreset <#userid|name>)");
-	RegAdminCmd("sm_candy_forcedrop", cForceDrop, ADMFLAG_ROOT, "Force drop");
+//	RegAdminCmd("sm_candy_reset", cResetCandy, ADMFLAG_ROOT, "Reset the amount of candy of every player to a certain amount (sm_candy_reset amount)");
+//	RegAdminCmd("sm_candy_resetdb", cResetDB, ADMFLAG_ROOT, "Reset the database (sm_candy_resetdb)");
+//	RegAdminCmd("sm_candy_playerreset", cPlayerResetCandy, ADMFLAG_ROOT, "Reset the amount of candy of selected player to 0 (sm_candy_playerreset <#userid|name>)");
+//	RegAdminCmd("sm_candy_forcedrop", cForceDrop, ADMFLAG_ROOT, "Force drop");
 	
 	RegConsoleCmd("say", cSay);
 }
@@ -317,7 +317,7 @@ public InitializeTimersAndCValues()
 	new iDropEnabled = GetConVarInt(cvDropCandy);
 	if (iDropEnabled == 1)
 	{
-		CreateTimer(300.0, tDropCandy, _, TIMER_REPEAT | TIMER_FLAG_NO_MAPCHANGE);
+		CreateTimer(600.0, tDropCandy, _, TIMER_REPEAT | TIMER_FLAG_NO_MAPCHANGE);
 	}	
 }
 
@@ -577,7 +577,7 @@ public Action:tDropCandy(Handle:timer)
 				PrintDebug("Drop Candy: Invalid Client");
 				return;
 			}
-			new cndCount = GetRandomInt(100, 10000);
+			new cndCount = GetRandomInt(100, 5000);
 			new String:playerName[255];
 			GetClientName(randomPlayer, playerName, sizeof(playerName));
 			new String:message[255];
@@ -655,7 +655,7 @@ public Action:tTick(Handle:timer)
 public Action:cForceDrop(client, args)
 {
 	new randomPlayer = GetRandomInt(1, GetClientCount());
-	new cndCount = GetRandomInt(100, 10000);
+	new cndCount = GetRandomInt(100, 5000);
 	new String:playerName[255];
 	GetClientName(randomPlayer, playerName, sizeof(playerName));
 	new String:message[255];
