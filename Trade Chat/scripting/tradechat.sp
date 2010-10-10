@@ -66,7 +66,7 @@ public OnClientPostAdminCheck(client)
 public Action:Command_TradeChat(client, args)
 {
 	new String:text[512], String:name[MAX_NAME_LENGTH], String:steamID[32];
-	GetCmdArg(1, text, sizeof(text));
+	GetCmdArgString(text, sizeof(text));
 	GetClientName(client, name, sizeof(name));
 	GetClientAuthString(client, steamID, sizeof(steamID));
 	
