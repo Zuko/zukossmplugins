@@ -7,7 +7,7 @@ public Plugin:myinfo =
 	name = "Trade Chat",
 	author = "Luki",
 	description = "",
-	version = "0.0",
+	version = "1.0",
 	url = "http://luki.net.pl"
 };
 
