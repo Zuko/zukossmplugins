@@ -7,22 +7,35 @@ public Plugin:myinfo =
 	name = "Trade Chat",
 	author = "Luki",
 	description = "",
-	version = "1.0",
+	version = "1.1",
 	url = "http://luki.net.pl"
 };
 
 new Handle:hCookie = INVALID_HANDLE;
 new HideTradeChat[MAXPLAYERS + 1];
+new TradeChatGag[MAXPLAYERS + 1];
 new String:logfile[255];
 
 public OnPluginStart()
 {
+	LoadTranslations("common.phrases");
+	LoadTranslations("tradechat.phrases");
+
+	RegConsoleCmd("sm_t", Command_TradeChat);
+	RegConsoleCmd("sm_lf", Command_TradeChat);
+	RegConsoleCmd("sm_wts", Command_TradeChat);
+	RegConsoleCmd("sm_wtt", Command_TradeChat);
+	RegConsoleCmd("sm_wtb", Command_TradeChat);
+	
 	RegConsoleCmd("sm_trade", Command_TradeChat);
 	RegConsoleCmd("sm_hidechat", Command_HideChat);
 	
+	RegAdminCmd("sm_trade_gag", Command_TradeGag, ADMFLAG_CHAT);
+	RegAdminCmd("sm_trade_ungag", Command_TradeUnGag, ADMFLAG_CHAT);
+	
 	BuildPath(Path_SM, logfile, sizeof(logfile), "logs/tradechat.log");
 	
-	CreateTimer(120.0, AdTimer, _, TIMER_REPEAT);
+	CreateTimer(180.0, AdTimer, _, TIMER_REPEAT);
 }
 
 public OnAllPluginsLoaded()
@@ -37,6 +50,7 @@ public OnAllPluginsLoaded()
 
 public OnClientPostAdminCheck(client)
 {
+	TradeChatGag[client] = 0;
 	if (hCookie != INVALID_HANDLE)
 	{
 		new String:cookie[4];
@@ -72,7 +86,13 @@ public Action:Command_TradeChat(client, args)
 	
 	if (HideTradeChat[client])
 	{
-		CPrintToChat(client, "{green}[Trade Chat] {lightgreen}Nie możesz używać {green}/trade {lightgreen}gdy wyłączyłeś widok wiadomości na temat wymiany przedmiotów.");
+		CPrintToChat(client, "%t", "TradeDisabledForYou");
+		return Plugin_Handled;
+	}
+	
+	if (TradeChatGag[client])
+	{
+		CPrintToChat(client, "%t", "TradeBanned");
 		return Plugin_Handled;
 	}
 	
@@ -88,6 +108,90 @@ public Action:Command_TradeChat(client, args)
 	return Plugin_Handled;
 }
 
+public Action:Command_TradeGag(client, args)
+{
+	new String:sTarget[MAX_NAME_LENGTH];
+
+	if (!GetCmdArg(1, sTarget, sizeof(sTarget)))
+	{
+		ReplyToCommand(client, "%t", "TradeGagUsage");
+		return Plugin_Handled;
+	}
+	
+	decl target_list[MAXPLAYERS], target_count, bool:tn_is_ml, String:target_name[MAX_TARGET_LENGTH];
+	
+	if ((target_count = ProcessTargetString(
+			sTarget,
+			client,
+			target_list,
+			MAXPLAYERS,
+			COMMAND_FILTER_CONNECTED || COMMAND_FILTER_NO_MULTI,
+			target_name,
+			sizeof(target_name),
+			tn_is_ml)) <= 0)
+	{
+		ReplyToTargetError(client, target_count);
+		return Plugin_Handled;
+	}
+	
+	for (new i = 0; i < target_count; i++)
+	{
+		new String:name[MAX_NAME_LENGTH], String:clientSID[32], String:targetSID[32];
+		GetClientName(target_list[i], sTarget, sizeof(sTarget));
+		GetClientName(client, name, sizeof(name));
+		GetClientAuthString(client, clientSID, sizeof(clientSID));
+		GetClientAuthString(target_list[i], targetSID, sizeof(targetSID));
+		TradeChatGag[target_list[i]] = 1;
+
+		CPrintToChatAll("%t", "TradeBan", name, sTarget);
+		LogToFile(logfile, "\"%s<%d><%s><>\" has disabled trade chat for \"%s<%d><%s><>\"", name, GetClientUserId(client), clientSID, sTarget, GetClientUserId(target_list[i]), targetSID);
+	}
+	
+	return Plugin_Handled;
+}
+
+public Action:Command_TradeUnGag(client, args)
+{
+	new String:sTarget[MAX_NAME_LENGTH];
+
+	if (!GetCmdArg(1, sTarget, sizeof(sTarget)))
+	{
+		ReplyToCommand(client, "%t", "TradeGagUsage");
+		return Plugin_Handled;
+	}
+	
+	decl target_list[MAXPLAYERS], target_count, bool:tn_is_ml, String:target_name[MAX_TARGET_LENGTH];
+	
+	if ((target_count = ProcessTargetString(
+			sTarget,
+			client,
+			target_list,
+			MAXPLAYERS,
+			COMMAND_FILTER_CONNECTED || COMMAND_FILTER_NO_MULTI,
+			target_name,
+			sizeof(target_name),
+			tn_is_ml)) <= 0)
+	{
+		ReplyToTargetError(client, target_count);
+		return Plugin_Handled;
+	}
+	
+	for (new i = 0; i < target_count; i++)
+	{
+		new String:name[MAX_NAME_LENGTH], String:clientSID[32], String:targetSID[32];
+		GetClientName(target_list[i], sTarget, sizeof(sTarget));
+		GetClientName(client, name, sizeof(name));
+		GetClientAuthString(client, clientSID, sizeof(clientSID));
+		GetClientAuthString(target_list[i], targetSID, sizeof(targetSID));
+		TradeChatGag[target_list[i]] = 0;
+
+		CPrintToChatAll("%t", "TradeUnBan", name, sTarget);
+		LogToFile(logfile, "\"%s<%d><%s><>\" has enabled trade chat for \"%s<%d><%s><>\"", name, GetClientUserId(client), clientSID, sTarget, GetClientUserId(target_list[i]), targetSID);
+	}
+	
+	return Plugin_Handled;
+}
+
 public Action:Command_HideChat(client, args)
 {
 	if (hCookie != INVALID_HANDLE)
@@ -99,15 +203,15 @@ public Action:Command_HideChat(client, args)
 		{
 			SetClientCookie(client, hCookie, "on");
 			HideTradeChat[client] = 1;
-			CPrintToChat(client, "{green}[Trade Chat] {lightgreen}Od teraz {green}nie będziesz {lightgreen}widział wiadomości dotyczących wymiany przedmiotów.");
-			LogToFile(logfile, "\"%s<%d><%s><>\" wyłączył widok wiadomości na temat wymiany przedmiotów.", name, GetClientUserId(client), steamID);
+			CPrintToChat(client, "%t", "HideChatOn");
+			LogToFile(logfile, "\"%s<%d><%s><>\" has disabled trade chat.", name, GetClientUserId(client), steamID);
 		}
 		else
 		{
 			SetClientCookie(client, hCookie, "off");
 			HideTradeChat[client] = 0;
-			CPrintToChat(client, "{green}[Trade Chat] {lightgreen}Od teraz {green}będziesz {lightgreen}widział wiadomości dotyczących wymiany przedmiotów.");
-			LogToFile(logfile, "\"%s<%d><%s><>\" włączył widok wiadomości na temat wymiany przedmiotów.", name, GetClientUserId(client), steamID);
+			CPrintToChat(client, "%t", "HideChatOff");
+			LogToFile(logfile, "\"%s<%d><%s><>\" has enabled trade chat.", name, GetClientUserId(client), steamID);
 		}
 	}
 	
@@ -116,7 +220,7 @@ public Action:Command_HideChat(client, args)
 
 public Action:AdTimer(Handle:timer)
 {
-	CPrintToChatAll("{green}[Trade Chat] {default}Pamiętaj, by wszelkie wiadomości na temat wymiany przedmiotów poprzedzać {lightgreen}/trade{default}!");
-	CPrintToChatAll("{green}[Trade Chat] {default}Jeśli nie chcesz widzieć wiadomości na temat wymiany, wpisz {lightgreen}/hidechat{default}!");
+	CPrintToChatAll("%t", "Advert1");
+	CPrintToChatAll("%t", "Advert2");
 	return Plugin_Continue;
 }
