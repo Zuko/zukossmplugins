@@ -1,5 +1,5 @@
 /*
- * Zuko / #hlds.pl @ Qnet / zuko.isports.pl /
+ * Zuko / #hlds.pl @ Qnet / zuko.steamunpowered.eu /
  */
 
 #include <sourcemod>
@@ -8,13 +8,14 @@
 
 #define ITEM_MAX_LENGTH 128
 #define CLIENT_MAX_LENGTH	32
-#define PLUGIN_VERSION "1.3"
+#define PLUGIN_VERSION "1.4"
 
 new Handle:g_Cvar_PrintVotes = INVALID_HANDLE;
 new Handle:g_Cvar_ShowVotes = INVALID_HANDLE;
 new Handle:g_AllowedVoters = INVALID_HANDLE;
 new Handle:g_timer_ShowVotes = INVALID_HANDLE;
 new Handle:g_Cvar_Average = INVALID_HANDLE;
+new Handle:g_Cvar_A = INVALID_HANDLE;
 
 new g_VoteTimeStart2;
 new g_PlayerVotes[MAXPLAYERS+1];
@@ -26,7 +27,7 @@ public Plugin:myinfo =
 	author = "Zuko",
 	description = "How long map should be played. Enable or disable crits?",
 	version = PLUGIN_VERSION,
-	url = "http://zuko.isports.pl"
+	url = "http://zuko.steamunpowered.eu"
 }
 
 public OnPluginStart()
@@ -40,6 +41,7 @@ public OnPluginStart()
 	g_Cvar_PrintVotes = CreateConVar("sm_maptimevote_printvotes", "0", "Should the option that a player vote on get printed (1 - yes print player votes, 0 - don't print).", _, true, 0.0, true, 1.0);
 	g_Cvar_ShowVotes = CreateConVar("sm_maptimevote_showvotes", "3", "How many vote options the hint box should show. 0 will disable it", _, true, 0.0, true, 3.0);
 	g_Cvar_Average = CreateConVar("sm_maptimevote_average", "1", "Count average map time from all votes.", _, true, 0.0, true, 1.0);
+	g_Cvar_A = CreateConVar("sm_maptimevote_aa", "30", "", _, true, 0.0); //Kiedy startowac glosowanie
 	g_AllowedVoters = CreateArray(1);
 }
 
@@ -73,43 +75,51 @@ public OnClientPostAdminCheck()
 {
 	if (!anyplayerconnected)
 	{
-		CreateTimer(90.0, StartVote)
+		CreateTimer(GetConVarFloat(g_Cvar_A), StartVote)
 		anyplayerconnected = true
 	}
 }
 
 public Action:StartVote(Handle:timer)
 {
-	if (IsVoteInProgress())
+	if (GetRealClientCount() > 1)
 	{
-		return;
+		if (IsVoteInProgress())
+		{
+			return;
+		}
+	 
+		new Handle:menu = CreateMenu(Handle_VoteMenu);
+		SetVoteResultCallback(menu, Handler_MapVoteFinished);
+		SetMenuPagination(menu, MENU_NO_PAGINATION);
+		
+		decl String:lineone[128], String:linetwo[128];
+		decl String:title[100], String:menuitem1[100], String:menuitem2[100], String:menuitem3[100], String:menuitem4[100];
+		Format(title, sizeof(title),"%t", "VoteMenuTitle", LANG_SERVER);
+		SetMenuTitle(menu, title);
+		AddMenuItem(menu, "nothing", " ", ITEMDRAW_SPACER);
+		Format(lineone, sizeof(lineone),"%T", "Line One", LANG_SERVER);
+		AddMenuItem(menu, "nothing", lineone, ITEMDRAW_DISABLED);
+		Format(linetwo, sizeof(linetwo),"%T", "Line Two", LANG_SERVER);
+		AddMenuItem(menu, "nothing", linetwo, ITEMDRAW_DISABLED);
+		AddMenuItem(menu, "nothing", " ", ITEMDRAW_SPACER);
+		AddMenuItem(menu, "nothing", " ", ITEMDRAW_SPACER);
+		Format(menuitem1, sizeof(menuitem1),"%T", "MenuItem01", LANG_SERVER);
+		AddMenuItem(menu, "15", menuitem1);
+		Format(menuitem2, sizeof(menuitem2),"%T", "MenuItem02", LANG_SERVER);
+		AddMenuItem(menu, "25", menuitem2);
+		Format(menuitem3, sizeof(menuitem3),"%T", "MenuItem03", LANG_SERVER);
+		AddMenuItem(menu, "35", menuitem3);
+		Format(menuitem4, sizeof(menuitem4),"%T", "MenuItem04", LANG_SERVER);
+		AddMenuItem(menu, "45", menuitem4);
+		SetMenuExitButton(menu, false)
+		VoteMenuToAll(menu, 30);
 	}
- 
-	new Handle:menu = CreateMenu(Handle_VoteMenu);
-	SetVoteResultCallback(menu, Handler_MapVoteFinished);
-	SetMenuPagination(menu, MENU_NO_PAGINATION);
-	
-	decl String:lineone[128], String:linetwo[128];
-	decl String:title[100], String:menuitem1[100], String:menuitem2[100], String:menuitem3[100], String:menuitem4[100];
-	Format(title, sizeof(title),"%t", "VoteMenuTitle", LANG_SERVER);
-	SetMenuTitle(menu, title);
-	AddMenuItem(menu, "nothing", " ", ITEMDRAW_SPACER);
-	Format(lineone, sizeof(lineone),"%T", "Line One", LANG_SERVER);
-	AddMenuItem(menu, "nothing", lineone, ITEMDRAW_DISABLED);
-	Format(linetwo, sizeof(linetwo),"%T", "Line Two", LANG_SERVER);
-	AddMenuItem(menu, "nothing", linetwo, ITEMDRAW_DISABLED);
-	AddMenuItem(menu, "nothing", " ", ITEMDRAW_SPACER);
-	AddMenuItem(menu, "nothing", " ", ITEMDRAW_SPACER);
-	Format(menuitem1, sizeof(menuitem1),"%T", "MenuItem01", LANG_SERVER);
-	AddMenuItem(menu, "15", menuitem1);
-	Format(menuitem2, sizeof(menuitem2),"%T", "MenuItem02", LANG_SERVER);
-	AddMenuItem(menu, "25", menuitem2);
-	Format(menuitem3, sizeof(menuitem3),"%T", "MenuItem03", LANG_SERVER);
-	AddMenuItem(menu, "35", menuitem3);
-	Format(menuitem4, sizeof(menuitem4),"%T", "MenuItem04", LANG_SERVER);
-	AddMenuItem(menu, "45", menuitem4);
-	SetMenuExitButton(menu, false)
-	VoteMenuToAll(menu, 30);
+	else
+	{
+		anyplayerconnected = false;
+		KillTimer(Handle:timer);
+	}
 }
 
 public Handle_VoteMenu(Handle:menu, MenuAction:action, param1, param2)
@@ -186,26 +196,26 @@ public Handler_MapVoteFinished(Handle:menu,
 		GetMenuItem(menu, item_info[1][VOTEINFO_ITEM_INDEX], option2, sizeof(option2));
 		GetMenuItem(menu, item_info[2][VOTEINFO_ITEM_INDEX], option3, sizeof(option3));
 		GetMenuItem(menu, item_info[3][VOTEINFO_ITEM_INDEX], option4, sizeof(option4));
-		
+			
 		new ivotes = RoundToFloor(float(item_info[0][VOTEINFO_ITEM_VOTES]));
 		new ivotes2 = RoundToFloor(float(item_info[1][VOTEINFO_ITEM_VOTES]));
 		new ivotes3 = RoundToFloor(float(item_info[2][VOTEINFO_ITEM_VOTES]));
 		new ivotes4 = RoundToFloor(float(item_info[3][VOTEINFO_ITEM_VOTES]));
-		
+			
 		new ioption = StringToInt(option);
 		new ioption2 = StringToInt(option2);
 		new ioption3 = StringToInt(option3);
 		new ioption4 = StringToInt(option4);
-			
+		
 		new result = (((ioption*ivotes)+(ioption2*ivotes2)+(ioption3*ivotes3)+(ioption4*ivotes4))/num_votes)
-
+	
 		Format(buffer2, sizeof(buffer2), "mp_timelimit %i", result);
-		new H_mp_timelimit = FindConVar("mp_timelimit");
+		new Handle:H_mp_timelimit = FindConVar("mp_timelimit");
 		new flags = GetConVarFlags(H_mp_timelimit);
 		SetConVarFlags(H_mp_timelimit, flags & ~FCVAR_NOTIFY);
 		ServerCommand(buffer2);
 		SetConVarFlags(H_mp_timelimit, flags|FCVAR_NOTIFY);
-
+		
 		CPrintToChatAll("%T", "VoteEnd_Average", LANG_SERVER, result);
 		Format(buffer, sizeof(buffer), "%T", "VoteEnd_Hintbox_Average", LANG_SERVER, result);
 		VoteEnded(buffer);
@@ -213,12 +223,12 @@ public Handler_MapVoteFinished(Handle:menu,
 		CreateTimer(5.0, StartVote2);
 	}
 	else
-	{
+	{	
 		decl String:option[128], String:buffer[128], String:buffer2[128];
 		GetMenuItem(menu, item_info[0][VOTEINFO_ITEM_INDEX], option, sizeof(option));
 
-		Format(buffer2, sizeof(buffer2), "mp_timelimit %s", result);
-		new H_mp_timelimit = FindConVar("mp_timelimit");
+		Format(buffer2, sizeof(buffer2), "mp_timelimit %s", option);
+		new Handle:H_mp_timelimit = FindConVar("mp_timelimit");
 		new flags = GetConVarFlags(H_mp_timelimit);
 		SetConVarFlags(H_mp_timelimit, flags & ~FCVAR_NOTIFY);
 		ServerCommand(buffer2);
@@ -332,13 +342,15 @@ public Handler_MapVoteFinished2(Handle:menu2,
 
 	Format(buffer2, sizeof(buffer2), "tf_weapon_criticals %s", option);
 	
-	new flags = GetConVarFlags(tf_weapon_criticals);
-	new flags2 = GetConVarFlags(sv_tags);
-	SetConVarFlags(tf_weapon_criticals, flags & ~FCVAR_NOTIFY);
-	SetConVarFlags(sv_tags, flags2 & ~FCVAR_NOTIFY);
+	new Handle:H_tf_weapon_criticals = FindConVar("tf_weapon_criticals");
+	new Handle:H_sv_tags = FindConVar("sv_tags");
+	new flags = GetConVarFlags(H_tf_weapon_criticals);
+	new flags2 = GetConVarFlags(H_sv_tags);
+	SetConVarFlags(H_tf_weapon_criticals, flags & ~FCVAR_NOTIFY);
+	SetConVarFlags(H_sv_tags, flags2 & ~FCVAR_NOTIFY);
 	ServerCommand(buffer2);
-	SetConVarFlags(tf_weapon_criticals, flags|FCVAR_NOTIFY);
-	SetConVarFlags(sv_tags, flags2|FCVAR_NOTIFY);
+	SetConVarFlags(H_tf_weapon_criticals, flags|FCVAR_NOTIFY);
+	SetConVarFlags(H_sv_tags, flags2|FCVAR_NOTIFY);
 
 	if (strcmp(option, "1") == 0)
 	{
@@ -489,4 +501,14 @@ GetNrReceivedVotes()
 			nrVotes++;
 	}
 	return nrVotes;
+}
+
+stock GetRealClientCount( bool:inGameOnly = true ) {
+	new clients = 0;
+	for( new i = 1; i <= GetMaxClients(); i++ ) {
+		if( ( ( inGameOnly ) ? IsClientInGame( i ) : IsClientConnected( i ) ) && !IsFakeClient( i ) ) {
+			clients++;
+		}
+	}
+	return clients;
 }
