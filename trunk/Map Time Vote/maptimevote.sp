@@ -196,19 +196,54 @@ public Handler_MapVoteFinished(Handle:menu,
 		GetMenuItem(menu, item_info[1][VOTEINFO_ITEM_INDEX], option2, sizeof(option2));
 		GetMenuItem(menu, item_info[2][VOTEINFO_ITEM_INDEX], option3, sizeof(option3));
 		GetMenuItem(menu, item_info[3][VOTEINFO_ITEM_INDEX], option4, sizeof(option4));
-			
-		new ivotes = RoundToFloor(float(item_info[0][VOTEINFO_ITEM_VOTES]));
-		new ivotes2 = RoundToFloor(float(item_info[1][VOTEINFO_ITEM_VOTES]));
-		new ivotes3 = RoundToFloor(float(item_info[2][VOTEINFO_ITEM_VOTES]));
-		new ivotes4 = RoundToFloor(float(item_info[3][VOTEINFO_ITEM_VOTES]));
-			
-		new ioption = StringToInt(option);
-		new ioption2 = StringToInt(option2);
-		new ioption3 = StringToInt(option3);
-		new ioption4 = StringToInt(option4);
+
+		new result;
 		
-		new result = (((ioption*ivotes)+(ioption2*ivotes2)+(ioption3*ivotes3)+(ioption4*ivotes4))/num_votes)
-	
+		if (num_items == 1)
+		{
+			new ivotes = RoundToFloor(float(item_info[0][VOTEINFO_ITEM_VOTES]));
+			
+			new ioption = StringToInt(option);
+			
+			result = (((ioption*ivotes))/num_votes)
+		}
+		if (num_items == 2)
+		{
+			new ivotes = RoundToFloor(float(item_info[0][VOTEINFO_ITEM_VOTES]));
+			new ivotes2 = RoundToFloor(float(item_info[1][VOTEINFO_ITEM_VOTES]));
+			
+			new ioption = StringToInt(option);
+			new ioption2 = StringToInt(option2);
+			
+			result = (((ioption*ivotes)+(ioption2*ivotes2))/num_votes)
+		}
+		if (num_items == 3)
+		{
+			new ivotes = RoundToFloor(float(item_info[0][VOTEINFO_ITEM_VOTES]));
+			new ivotes2 = RoundToFloor(float(item_info[1][VOTEINFO_ITEM_VOTES]));
+			new ivotes3 = RoundToFloor(float(item_info[2][VOTEINFO_ITEM_VOTES]));
+			
+			new ioption = StringToInt(option);
+			new ioption2 = StringToInt(option2);
+			new ioption3 = StringToInt(option3);
+
+			result = (((ioption*ivotes)+(ioption2*ivotes2)+(ioption3*ivotes3))/num_votes)
+		}
+		if (num_items == 4)
+		{
+			new ivotes = RoundToFloor(float(item_info[0][VOTEINFO_ITEM_VOTES]));
+			new ivotes2 = RoundToFloor(float(item_info[1][VOTEINFO_ITEM_VOTES]));
+			new ivotes3 = RoundToFloor(float(item_info[2][VOTEINFO_ITEM_VOTES]));
+			new ivotes4 = RoundToFloor(float(item_info[3][VOTEINFO_ITEM_VOTES]));
+			
+			new ioption = StringToInt(option);
+			new ioption2 = StringToInt(option2);
+			new ioption3 = StringToInt(option3);
+			new ioption4 = StringToInt(option4);
+
+			result = (((ioption*ivotes)+(ioption2*ivotes2)+(ioption3*ivotes3)+(ioption4*ivotes4))/num_votes)
+		}
+
 		Format(buffer2, sizeof(buffer2), "mp_timelimit %i", result);
 		new Handle:H_mp_timelimit = FindConVar("mp_timelimit");
 		new flags = GetConVarFlags(H_mp_timelimit);
