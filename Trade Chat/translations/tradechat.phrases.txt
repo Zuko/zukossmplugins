@@ -3,46 +3,55 @@
 	"Advert1"
 	{
 		"en"		"{green}[Trade Chat] {default}Remember, say {lightgreen}/trade {default} before messages about trading."
-		"pl"		"{green}[Trade Chat] {default}Pamiętaj, by wszelkie wiadomości na temat wymiany przedmiotów poprzedzać {lightgreen}/trade"
+		"ru"		"{green}[Trade Chat] {default}Пишите {lightgreen}/trade {default} перед сообщением об обмене вещами."
+		"pl"		"{green}[Trade Chat] {default}Pamietaj, by wszelkie wiadomosci na temat wymiany przedmiotow poprzedzac {lightgreen}/trade"
 	}
 	"Advert2"
 	{
 		"en"		"{green}[Trade Chat] {default}If you don't want to see trade chat, say {lightgreen}/hidechat"
-		"pl"		"{green}[Trade Chat] {default}Jeśli nie chcesz widzieć wiadomości na temat wymiany, wpisz {lightgreen}/hidechat"
+		"ru"		"{green}[Trade Chat] {default}Если вы не хотите видеть торговый чат, напишите {lightgreen}/hidechat"
+		"pl"		"{green}[Trade Chat] {default}Jesli nie chcesz widziec wiadomosci na temat wymiany, wpisz {lightgreen}/hidechat"
 	}
 	"HideChatOn"
 	{
 		"en"		"{green}[Trade Chat] {lightgreen}You {green}will not {lightgreen}see the trade chat."
-		"pl"		"{green}[Trade Chat] {lightgreen}Od teraz {green}nie będziesz {lightgreen}widział wiadomości dotyczących wymiany przedmiotów."
+		"ru"		"{green}[Trade Chat] {lightgreen}Торговый чат {green}спрятан{lightgreen}."
+		"pl"		"{green}[Trade Chat] {lightgreen}Od teraz {green}nie bedziesz {lightgreen}widzial wiadomosci dotyczacych wymiany przedmiotow."
 	}
 	"HideChatOff"
 	{
 		"en"		"{green}[Trade Chat] {lightgreen}You {green}will {lightgreen}see the trade chat."
-		"pl"		"{green}[Trade Chat] {lightgreen}Od teraz {green}będziesz {lightgreen}widział wiadomości dotyczące wymiany przedmiotów."
+		"ru"		"{green}[Trade Chat] {lightgreen}Торговый чат {green}отображён{lightgreen}."
+		"pl"		"{green}[Trade Chat] {lightgreen}Od teraz {green}bedziesz {lightgreen}widzial wiadomosci dotyczace wymiany przedmiotow."
 	}
 	"TradeDisabledForYou"
 	{
 		"en"		"{green}[Trade Chat] {lightgreen}You can't use {green}/trade {lightgreen}when you have disabled trade chat."
-		"pl"		"{green}[Trade Chat] {lightgreen}Nie możesz używać {green}/trade {lightgreen}gdy wyłączyłeś widok wiadomości na temat wymiany przedmiotów."
+		"ru"		"{green}[Trade Chat] {lightgreen}Вы не можете использовать {green}/trade {lightgreen}потому что вы отключили торговый чат."
+		"pl"		"{green}[Trade Chat] {lightgreen}Nie mozesz uzywac {green}/trade {lightgreen}gdy wylaczyles widok wiadomosci na temat wymiany przedmiotow."
 	}
 	"TradeBanned"
 	{
 		"en"		"{green}[Trade Chat] {lightgreen}You are banned from trade chat."
-		"pl"		"{green}[Trade Chat] {lightgreen}Zostałeś pozbawiony możliwości korzystania z {green}/trade"
+		"ru"		"{green}[Trade Chat] {lightgreen}Вас забанили в торговом чате."
+		"pl"		"{green}[Trade Chat] {lightgreen}Zostales pozbawiony mozliwosci korzystania z {green}/trade"
 	}
 	"TradeBan"
 	{
 		"en"		"{green}[Trade Chat] {lightgreen}%s {default}has banned {lightgreen}%s {default}from trade chat"
-		"pl"		"{green}[Trade Chat] {lightgreen}%s {default}zablokował {lightgreen}%s {default}możliwość korzystania z {green}/trade"
+		"ru"		"{green}[Trade Chat] {lightgreen}%s {default}забанен {lightgreen}%s {default}в торговом чате"
+		"pl"		"{green}[Trade Chat] {lightgreen}%s {default}zablokowal {lightgreen}%s {default}mozliwosc korzystania z {green}/trade"
 	}
 	"TradeUnBan"
 	{
 		"en"		"{green}[Trade Chat] {lightgreen}%s {default}has unbanned {lightgreen}%s {default}from trade chat"
-		"pl"		"{green}[Trade Chat] {lightgreen}%s {default}odblokował {lightgreen}%s {default}możliwość korzystania z {green}/trade"
+		"ru"		"{green}[Trade Chat] {lightgreen}%s {default}разбанен {lightgreen}%s {default}в торговом чате"
+		"pl"		"{green}[Trade Chat] {lightgreen}%s {default}odblokowal {lightgreen}%s {default}mozliwosc korzystania z {green}/trade"
 	}
 	"TradeGagUsage"
 	{
 		"en"		"Usage: sm_trade_gag <#userid|name> | sm_trade_ungag <#userid|name>"
-		"pl"		"Użycie: sm_trade_gag <#userid|name> | sm_trade_ungag <#userid|name>"
+		"ru"		"Использование: sm_trade_gag <#userid или имя игрока> | sm_trade_ungag <#userid или имя игрока>"
+		"pl"		"Uzycie: sm_trade_gag <#userid|name> | sm_trade_ungag <#userid|name>"
 	}
 }
