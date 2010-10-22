@@ -2,19 +2,28 @@
 #include <clientprefs>
 #include <colors>
 
+#define PLUGIN_VERSION "1.1"
+
 public Plugin:myinfo = 
 {
 	name = "Trade Chat",
 	author = "Luki",
 	description = "",
-	version = "1.1",
+	version = PLUGIN_VERSION,
 	url = "http://luki.net.pl"
 };
 
 new Handle:hCookie = INVALID_HANDLE;
+new Handle:hAdTimerInterval = INVALID_HANDLE;
+new Handle:hAntiSpamDelay = INVALID_HANDLE;
+new Handle:hAntiSpamMaxCount = INVALID_HANDLE;
 new HideTradeChat[MAXPLAYERS + 1];
 new TradeChatGag[MAXPLAYERS + 1];
+new LastMessageTime[MAXPLAYERS + 1];
+new SpamCount[MAXPLAYERS + 1];
 new String:logfile[255];
+new iAntiSpamDelay = 0;
+new iAntiSpamMaxCount = 0;
 
 public OnPluginStart()
 {
@@ -33,9 +42,21 @@ public OnPluginStart()
 	RegAdminCmd("sm_trade_gag", Command_TradeGag, ADMFLAG_CHAT);
 	RegAdminCmd("sm_trade_ungag", Command_TradeUnGag, ADMFLAG_CHAT);
 	
+	CreateConVar("sm_trade_version", PLUGIN_VERSION, "", FCVAR_PLUGIN|FCVAR_SPONLY|FCVAR_REPLICATED|FCVAR_NOTIFY|FCVAR_DONTRECORD);
+	hAdTimerInterval = CreateConVar("sm_trade_adinterval" , "180", "", FCVAR_PLUGIN|FCVAR_REPLICATED, true, 0.0);
+	hAntiSpamDelay = CreateConVar("sm_trade_antispam_delay", "5", "", FCVAR_PLUGIN|FCVAR_REPLICATED, true, 0.0, true, 60.0);
+	hAntiSpamMaxCount = CreateConVar("sm_trade_antispam_max", "5", "", FCVAR_PLUGIN|FCVAR_REPLICATED, true, 0.0, true, 15.0);
+	
+	if (hAntiSpamDelay != INVALID_HANDLE)
+		HookConVarChange(hAntiSpamDelay, OnAntiSpamDelayChange);
+		
+	if (hAntiSpamMaxCount != INVALID_HANDLE)
+		HookConVarChange(hAntiSpamMaxCount, OnAntiSpamMaxCountChange);
+	
 	BuildPath(Path_SM, logfile, sizeof(logfile), "logs/tradechat.log");
 	
-	CreateTimer(180.0, AdTimer, _, TIMER_REPEAT);
+	if (GetConVarFloat(hAdTimerInterval) != 0.0)
+		CreateTimer(GetConVarFloat(hAdTimerInterval), AdTimer, _, TIMER_REPEAT);
 }
 
 public OnAllPluginsLoaded()
@@ -51,6 +72,8 @@ public OnAllPluginsLoaded()
 public OnClientPostAdminCheck(client)
 {
 	TradeChatGag[client] = 0;
+	LastMessageTime[client] = 0;
+	SpamCount[client] = 0;
 	if (hCookie != INVALID_HANDLE)
 	{
 		new String:cookie[4];
@@ -95,6 +118,22 @@ public Action:Command_TradeChat(client, args)
 		CPrintToChat(client, "%t", "TradeBanned");
 		return Plugin_Handled;
 	}
+	
+	if (((LastMessageTime[client] - GetTime()) <= iAntiSpamDelay) && (iAntiSpamDelay != 0))
+	{
+		SpamCount[client]++;
+		if ((SpamCount[client] > iAntiSpamMaxCount) && (iAntiSpamMaxCount != 0))
+		{
+			TradeChatGag[client] = 1;
+			CPrintToChatAll("%t", "AntiSpamAutoGag", client);
+			return Plugin_Handled;
+		}
+		CPrintToChat(client, "%t", "AntiSpamBlocked");
+		return Plugin_Handled;
+	}
+	
+	SpamCount[client] = 0;
+	LastMessageTime[client] = GetTime();
 	
 	for (new i = 1; i <= GetMaxClients(); i++)
 	{
@@ -223,4 +262,14 @@ public Action:AdTimer(Handle:timer)
 	CPrintToChatAll("%t", "Advert1");
 	CPrintToChatAll("%t", "Advert2");
 	return Plugin_Continue;
+}
+
+public OnAntiSpamDelayChange(Handle:cvar, const String:oldVal[], const String:newVal[])
+{
+	iAntiSpamDelay = StringToInt(newVal);
+}
+
+public OnAntiSpamMaxCountChange(Handle:cvar, const String:oldVal[], const String:newVal[])
+{
+	iAntiSpamMaxCount = StringToInt(newVal);
 }
