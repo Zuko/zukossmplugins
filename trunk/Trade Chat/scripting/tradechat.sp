@@ -47,6 +47,9 @@ public OnPluginStart()
 	hAntiSpamDelay = CreateConVar("sm_trade_antispam_delay", "5", "", FCVAR_PLUGIN|FCVAR_REPLICATED, true, 0.0, true, 60.0);
 	hAntiSpamMaxCount = CreateConVar("sm_trade_antispam_max", "5", "", FCVAR_PLUGIN|FCVAR_REPLICATED, true, 0.0, true, 15.0);
 	
+	iAntiSpamDelay = 5;
+	iAntiSpamMaxCount = 5;
+	
 	if (hAntiSpamDelay != INVALID_HANDLE)
 		HookConVarChange(hAntiSpamDelay, OnAntiSpamDelayChange);
 		
@@ -72,7 +75,7 @@ public OnAllPluginsLoaded()
 public OnClientPostAdminCheck(client)
 {
 	TradeChatGag[client] = 0;
-	LastMessageTime[client] = 0;
+	LastMessageTime[client] = GetTime();
 	SpamCount[client] = 0;
 	if (hCookie != INVALID_HANDLE)
 	{
@@ -118,8 +121,8 @@ public Action:Command_TradeChat(client, args)
 		CPrintToChat(client, "%t", "TradeBanned");
 		return Plugin_Handled;
 	}
-	
-	if (((LastMessageTime[client] - GetTime()) <= iAntiSpamDelay) && (iAntiSpamDelay != 0))
+
+	if (((GetTime() - LastMessageTime[client]) <= iAntiSpamDelay) && (iAntiSpamDelay != 0))
 	{
 		SpamCount[client]++;
 		if ((SpamCount[client] > iAntiSpamMaxCount) && (iAntiSpamMaxCount != 0))
@@ -128,6 +131,7 @@ public Action:Command_TradeChat(client, args)
 			CPrintToChatAll("%t", "AntiSpamAutoGag", client);
 			return Plugin_Handled;
 		}
+		LastMessageTime[client] = GetTime();
 		CPrintToChat(client, "%t", "AntiSpamBlocked");
 		return Plugin_Handled;
 	}
