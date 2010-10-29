@@ -58,10 +58,12 @@
 	{
 		"en"		"{green}[Trade Chat] {lightgreen}%s {default}was automatically banned from trade chat"
 		"pl"		"{green}[Trade Chat] {lightgreen}%s {default}został automatycznie pozbawiony możliwości korzystania z {green}/trade"
+		"ru"		"{green}[Trade Chat] {lightgreen}%s {default}was automatically banned from trade chat"
 	}
 	"AntiSpamBlocked"
 	{
 		"en"		"{green}[Trade Chat] {lightgreen}You must wait before sending next offer."
 		"pl"		"{green}[Trade Chat] {lightgreen}Musisz poczekać przed wysłaniem kolejnej oferty."
+		"ru"		"{green}[Trade Chat] {lightgreen}You must wait before sending next offer."
 	}
 }
