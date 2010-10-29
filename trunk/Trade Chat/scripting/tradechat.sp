@@ -128,7 +128,7 @@ public Action:Command_TradeChat(client, args)
 		if ((SpamCount[client] > iAntiSpamMaxCount) && (iAntiSpamMaxCount != 0))
 		{
 			TradeChatGag[client] = 1;
-			CPrintToChatAll("%t", "AntiSpamAutoGag", client);
+			CPrintToChatAll("%t", "AntiSpamAutoGag", name);
 			return Plugin_Handled;
 		}
 		LastMessageTime[client] = GetTime();

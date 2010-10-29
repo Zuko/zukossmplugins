@@ -54,4 +54,14 @@
 		"pl"		"Użycie: sm_trade_gag <#userid|name> | sm_trade_ungag <#userid|name>"
 		"ru"		"Использование: sm_trade_gag <#userid или имя игрока> | sm_trade_ungag <#userid или имя игрока>"
 	}
+	"AntiSpamAutoGag"
+	{
+		"en"		"{green}[Trade Chat] {lightgreen}%s {default}was automatically banned from trade chat"
+		"pl"		"{green}[Trade Chat] {lightgreen}%s {default}został automatycznie pozbawiony możliwości korzystania z {green}/trade"
+	}
+	"AntiSpamBlocked"
+	{
+		"en"		"{green}[Trade Chat] {lightgreen}You must wait before sending next offer."
+		"pl"		"{green}[Trade Chat] {lightgreen}Musisz poczekać przed wysłaniem kolejnej oferty."
+	}
 }
