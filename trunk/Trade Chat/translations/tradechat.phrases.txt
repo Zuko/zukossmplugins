@@ -2,8 +2,8 @@
 {
 	"Advert1"
 	{
-		"en"		"{green}[Trade Chat] {default}Remember, say {lightgreen}/trade {default} before messages about trading."
-		"pl"		"{green}[Trade Chat] {default}Pamiętaj, by wszelkie wiadomości na temat wymiany przedmiotów poprzedzać {lightgreen}/trade"
+		"en"		"{green}[Trade Chat] {default}Remember, say {lightgreen}/t {default} before messages about trading."
+		"pl"		"{green}[Trade Chat] {default}Pamiętaj, by wszelkie wiadomości na temat wymiany przedmiotów poprzedzać {lightgreen}/t"
 		"ru"		"{green}[Обмен] {default}Пишите {lightgreen}/t {default} перед сообщением об обмене вещами."
 	}
 	"Advert2"
@@ -26,26 +26,26 @@
 	}
 	"TradeDisabledForYou"
 	{
-		"en"		"{green}[Trade Chat] {lightgreen}You can't use {green}/trade {lightgreen}when you have disabled trade chat."
-		"pl"		"{green}[Trade Chat] {lightgreen}Nie możesz używać {green}/trade {lightgreen}gdy wyłączyłeś widok wiadomości na temat wymiany przedmiotów."
+		"en"		"{green}[Trade Chat] {lightgreen}You can't use {green}/t {lightgreen}when you have disabled trade chat."
+		"pl"		"{green}[Trade Chat] {lightgreen}Nie możesz używać {green}/t {lightgreen}gdy wyłączyłeś widok wiadomości na temat wymiany przedmiotów."
 		"ru"		"{green}[Обмен] {lightgreen}Вы не можете использовать {green}/t{lightgreen}, потому что вы отключили торговый чат."
 	}
 	"TradeBanned"
 	{
 		"en"		"{green}[Trade Chat] {lightgreen}You are banned from trade chat."
-		"pl"		"{green}[Trade Chat] {lightgreen}Zostałeś pozbawiony możliwości korzystania z {green}/trade"
+		"pl"		"{green}[Trade Chat] {lightgreen}Zostałeś pozbawiony możliwości korzystania z {green}/t"
 		"ru"		"{green}[Обмен] {lightgreen}Вам заблокировали торговый чат."
 	}
 	"TradeBan"
 	{
 		"en"		"{green}[Trade Chat] {lightgreen}%s {default}has banned {lightgreen}%s {default}from trade chat"
-		"pl"		"{green}[Trade Chat] {lightgreen}%s {default}zablokował {lightgreen}%s {default}możliwość korzystania z {green}/trade"
+		"pl"		"{green}[Trade Chat] {lightgreen}%s {default}zablokował {lightgreen}%s {default}możliwość korzystania z {green}/t"
 		"ru"		"{green}[Обмен] {lightgreen}%s {default}заблокировали {lightgreen}%s {default}в торговый чат"
 	}
 	"TradeUnBan"
 	{
 		"en"		"{green}[Trade Chat] {lightgreen}%s {default}has unbanned {lightgreen}%s {default}from trade chat"
-		"pl"		"{green}[Trade Chat] {lightgreen}%s {default}odblokował {lightgreen}%s {default}możliwość korzystania z {green}/trade"
+		"pl"		"{green}[Trade Chat] {lightgreen}%s {default}odblokował {lightgreen}%s {default}możliwość korzystania z {green}/t"
 		"ru"		"{green}[Обмен] {lightgreen}%s {default}разблокирован {lightgreen}%s {default}в торговом чате"
 	}
 	"TradeGagUsage"
@@ -57,7 +57,7 @@
 	"AntiSpamAutoGag"
 	{
 		"en"		"{green}[Trade Chat] {lightgreen}%s {default}was automatically banned from trade chat"
-		"pl"		"{green}[Trade Chat] {lightgreen}%s {default}został automatycznie pozbawiony możliwości korzystania z {green}/trade"
+		"pl"		"{green}[Trade Chat] {lightgreen}%s {default}został automatycznie pozbawiony możliwości korzystania z {green}/t"
 		"ru"		"{green}[Обмен] {lightgreen}%s {default}был заблокирован в торговом чате"
 	}
 	"AntiSpamBlocked"
