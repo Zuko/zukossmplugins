@@ -4,49 +4,49 @@
 	{
 		"en"		"{green}[Trade Chat] {default}Remember, say {lightgreen}/trade {default} before messages about trading."
 		"pl"		"{green}[Trade Chat] {default}Pamiętaj, by wszelkie wiadomości na temat wymiany przedmiotów poprzedzać {lightgreen}/trade"
-		"ru"		"{green}[Trade Chat] {default}Пишите {lightgreen}/trade {default} перед сообщением об обмене вещами."
+		"ru"		"{green}[Обмен] {default}Пишите {lightgreen}/t {default} перед сообщением об обмене вещами."
 	}
 	"Advert2"
 	{
 		"en"		"{green}[Trade Chat] {default}If you don't want to see trade chat, say {lightgreen}/hidechat"
 		"pl"		"{green}[Trade Chat] {default}Jeśli nie chcesz widzieć wiadomości na temat wymiany, wpisz {lightgreen}/hidechat"
-		"ru"		"{green}[Trade Chat] {default}Если вы не хотите видеть торговый чат, напишите {lightgreen}/hidechat"
+		"ru"		"{green}[Обмен] {default}Если вы не хотите видеть торговый чат, напишите {lightgreen}/hidechat"
 	}
 	"HideChatOn"
 	{
 		"en"		"{green}[Trade Chat] {lightgreen}You {green}will not {lightgreen}see the trade chat."
 		"pl"		"{green}[Trade Chat] {lightgreen}Od teraz {green}nie będziesz {lightgreen}widział wiadomości dotyczących wymiany przedmiotów."
-		"ru"		"{green}[Trade Chat] {lightgreen}Торговый чат {green}спрятан{lightgreen}."
+		"ru"		"{green}[Обмен] {lightgreen}Торговый чат теперь {green}спрятан{lightgreen}."
 	}
 	"HideChatOff"
 	{
 		"en"		"{green}[Trade Chat] {lightgreen}You {green}will {lightgreen}see the trade chat."
 		"pl"		"{green}[Trade Chat] {lightgreen}Od teraz {green}będziesz {lightgreen}widział wiadomości dotyczące wymiany przedmiotów."
-		"ru"		"{green}[Trade Chat] {lightgreen}Торговый чат {green}отображён{lightgreen}."
+		"ru"		"{green}[Обмен] {lightgreen}Торговый чат теперь {green}включен{lightgreen}."
 	}
 	"TradeDisabledForYou"
 	{
 		"en"		"{green}[Trade Chat] {lightgreen}You can't use {green}/trade {lightgreen}when you have disabled trade chat."
 		"pl"		"{green}[Trade Chat] {lightgreen}Nie możesz używać {green}/trade {lightgreen}gdy wyłączyłeś widok wiadomości na temat wymiany przedmiotów."
-		"ru"		"{green}[Trade Chat] {lightgreen}Вы не можете использовать {green}/trade {lightgreen}потому что вы отключили торговый чат."
+		"ru"		"{green}[Обмен] {lightgreen}Вы не можете использовать {green}/t{lightgreen}, потому что вы отключили торговый чат."
 	}
 	"TradeBanned"
 	{
 		"en"		"{green}[Trade Chat] {lightgreen}You are banned from trade chat."
 		"pl"		"{green}[Trade Chat] {lightgreen}Zostałeś pozbawiony możliwości korzystania z {green}/trade"
-		"ru"		"{green}[Trade Chat] {lightgreen}Вас забанили в торговом чате."
+		"ru"		"{green}[Обмен] {lightgreen}Вам заблокировали торговый чат."
 	}
 	"TradeBan"
 	{
 		"en"		"{green}[Trade Chat] {lightgreen}%s {default}has banned {lightgreen}%s {default}from trade chat"
 		"pl"		"{green}[Trade Chat] {lightgreen}%s {default}zablokował {lightgreen}%s {default}możliwość korzystania z {green}/trade"
-		"ru"		"{green}[Trade Chat] {lightgreen}%s {default}забанен {lightgreen}%s {default}в торговом чате"
+		"ru"		"{green}[Обмен] {lightgreen}%s {default}заблокировали {lightgreen}%s {default}в торговый чат"
 	}
 	"TradeUnBan"
 	{
 		"en"		"{green}[Trade Chat] {lightgreen}%s {default}has unbanned {lightgreen}%s {default}from trade chat"
 		"pl"		"{green}[Trade Chat] {lightgreen}%s {default}odblokował {lightgreen}%s {default}możliwość korzystania z {green}/trade"
-		"ru"		"{green}[Trade Chat] {lightgreen}%s {default}разбанен {lightgreen}%s {default}в торговом чате"
+		"ru"		"{green}[Обмен] {lightgreen}%s {default}разблокирован {lightgreen}%s {default}в торговом чате"
 	}
 	"TradeGagUsage"
 	{
@@ -58,12 +58,12 @@
 	{
 		"en"		"{green}[Trade Chat] {lightgreen}%s {default}was automatically banned from trade chat"
 		"pl"		"{green}[Trade Chat] {lightgreen}%s {default}został automatycznie pozbawiony możliwości korzystania z {green}/trade"
-		"ru"		"{green}[Trade Chat] {lightgreen}%s {default}was automatically banned from trade chat"
+		"ru"		"{green}[Обмен] {lightgreen}%s {default}был заблокирован в торговом чате"
 	}
 	"AntiSpamBlocked"
 	{
 		"en"		"{green}[Trade Chat] {lightgreen}You must wait before sending next offer."
 		"pl"		"{green}[Trade Chat] {lightgreen}Musisz poczekać przed wysłaniem kolejnej oferty."
-		"ru"		"{green}[Trade Chat] {lightgreen}You must wait before sending next offer."
+		"ru"		"{green}[Обмен] {lightgreen}Не отправляйте сообщения так часто."
 	}
 }
