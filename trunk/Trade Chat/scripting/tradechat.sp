@@ -75,7 +75,7 @@ public OnAllPluginsLoaded()
 public OnClientPostAdminCheck(client)
 {
 	TradeChatGag[client] = 0;
-	LastMessageTime[client] = GetTime();
+	LastMessageTime[client] = 0;
 	SpamCount[client] = 0;
 	if (hCookie != INVALID_HANDLE)
 	{
@@ -233,6 +233,8 @@ public Action:Command_TradeUnGag(client, args)
 		GetClientAuthString(client, clientSID, sizeof(clientSID));
 		GetClientAuthString(target_list[i], targetSID, sizeof(targetSID));
 		TradeChatGag[target_list[i]] = 0;
+		LastMessageTime[target_list[i]] = 0;
+		SpamCount[target_list[i]] = 0;
 
 		CPrintToChatAll("%t", "TradeUnBan", name, sTarget);
 		LogToFile(logfile, "\"%s<%d><%s><>\" has enabled trade chat for \"%s<%d><%s><>\"", name, GetClientUserId(client), clientSID, sTarget, GetClientUserId(target_list[i]), targetSID);
