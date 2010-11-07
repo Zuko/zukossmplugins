@@ -2,7 +2,7 @@
 #include <clientprefs>
 #include <colors>
 
-#define PLUGIN_VERSION "1.2"
+#define PLUGIN_VERSION "1.2.1"
 
 public Plugin:myinfo = 
 {
@@ -31,11 +31,6 @@ public OnPluginStart()
 	LoadTranslations("tradechat.phrases");
 
 	RegConsoleCmd("sm_t", Command_TradeChat);
-	RegConsoleCmd("sm_lf", Command_TradeChat);
-	RegConsoleCmd("sm_wts", Command_TradeChat);
-	RegConsoleCmd("sm_wtt", Command_TradeChat);
-	RegConsoleCmd("sm_wtb", Command_TradeChat);
-	
 	RegConsoleCmd("sm_trade", Command_TradeChat);
 	RegConsoleCmd("sm_hidechat", Command_HideChat);
 	
@@ -43,12 +38,9 @@ public OnPluginStart()
 	RegAdminCmd("sm_trade_ungag", Command_TradeUnGag, ADMFLAG_CHAT);
 	
 	CreateConVar("sm_trade_version", PLUGIN_VERSION, "", FCVAR_PLUGIN|FCVAR_SPONLY|FCVAR_REPLICATED|FCVAR_NOTIFY|FCVAR_DONTRECORD);
-	hAdTimerInterval = CreateConVar("sm_trade_adinterval" , "180", "", FCVAR_PLUGIN|FCVAR_REPLICATED, true, 0.0);
-	hAntiSpamDelay = CreateConVar("sm_trade_antispam_delay", "5", "", FCVAR_PLUGIN|FCVAR_REPLICATED, true, 0.0, true, 60.0);
-	hAntiSpamMaxCount = CreateConVar("sm_trade_antispam_max", "5", "", FCVAR_PLUGIN|FCVAR_REPLICATED, true, 0.0, true, 15.0);
-	
-	iAntiSpamDelay = 5;
-	iAntiSpamMaxCount = 5;
+	hAdTimerInterval = CreateConVar("sm_trade_adinterval" , "180", "Interval between displaying the advert (0 = disable)", FCVAR_PLUGIN|FCVAR_REPLICATED, true, 0.0);
+	hAntiSpamDelay = CreateConVar("sm_trade_antispam_delay", "5", "Minimum delay between messages from one client (0 = disable)", FCVAR_PLUGIN|FCVAR_REPLICATED, true, 0.0, true, 60.0);
+	hAntiSpamMaxCount = CreateConVar("sm_trade_antispam_max", "5", "Maximum number of messages, that player can send during block time before autogag (0 = disable)", FCVAR_PLUGIN|FCVAR_REPLICATED, true, 0.0, true, 15.0);
 	
 	if (hAntiSpamDelay != INVALID_HANDLE)
 		HookConVarChange(hAntiSpamDelay, OnAntiSpamDelayChange);
@@ -58,8 +50,16 @@ public OnPluginStart()
 	
 	BuildPath(Path_SM, logfile, sizeof(logfile), "logs/tradechat.log");
 	
+	AutoExecConfig(true);
+}
+
+public OnConfigsExecuted()
+{
 	if (GetConVarFloat(hAdTimerInterval) != 0.0)
-		CreateTimer(GetConVarFloat(hAdTimerInterval), AdTimer, _, TIMER_REPEAT);
+		CreateTimer(GetConVarFloat(hAdTimerInterval), AdTimer, _, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
+
+	iAntiSpamDelay = GetConVarInt(hAntiSpamDelay);
+	iAntiSpamMaxCount = GetConVarInt(hAntiSpamMaxCount);
 }
 
 public OnAllPluginsLoaded()
@@ -110,6 +110,10 @@ public Action:Command_TradeChat(client, args)
 	GetClientName(client, name, sizeof(name));
 	GetClientAuthString(client, steamID, sizeof(steamID));
 	
+	TrimString(text);
+	if (strlen(text) == 0)
+		return Plugin_Handled;
+	
 	if (HideTradeChat[client])
 	{
 		CPrintToChat(client, "%t", "TradeDisabledForYou");
@@ -128,10 +132,12 @@ public Action:Command_TradeChat(client, args)
 		if ((SpamCount[client] > iAntiSpamMaxCount) && (iAntiSpamMaxCount != 0))
 		{
 			TradeChatGag[client] = 1;
+			LogToFile(logfile, "\"%s<%d><%s><>\" was automatically banned from trade chat", name, GetClientUserId(client), steamID);
 			CPrintToChatAll("%t", "AntiSpamAutoGag", name);
 			return Plugin_Handled;
 		}
 		LastMessageTime[client] = GetTime();
+		LogToFile(logfile, "\"%s<%d><%s><>\" was blocked from sending offer", name, GetClientUserId(client), steamID);
 		CPrintToChat(client, "%t", "AntiSpamBlocked");
 		return Plugin_Handled;
 	}
@@ -168,7 +174,7 @@ public Action:Command_TradeGag(client, args)
 			client,
 			target_list,
 			MAXPLAYERS,
-			COMMAND_FILTER_CONNECTED || COMMAND_FILTER_NO_MULTI,
+			COMMAND_FILTER_CONNECTED | COMMAND_FILTER_NO_MULTI | COMMAND_FILTER_NO_BOTS,
 			target_name,
 			sizeof(target_name),
 			tn_is_ml)) <= 0)
