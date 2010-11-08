@@ -238,7 +238,7 @@ public Action:cBuyUber(client, args)
 			new TFClassType:class = TF2_GetPlayerClass(target_list[i]);
 			if(class == TFClass_Medic)
 			{
-				new iSlot = GetPlayerWeaponSlot(client, 1);
+				new iSlot = GetPlayerWeaponSlot(target_list[i], 1);
 				if (iSlot > 0)
 				{
 					SetEntPropFloat(iSlot, Prop_Send, "m_flChargeLevel", iamount*0.01);
