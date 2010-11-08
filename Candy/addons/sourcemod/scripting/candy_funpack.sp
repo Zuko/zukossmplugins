@@ -206,7 +206,7 @@ public Action:cBuyUber(client, args)
 	new iamount = StringToInt(amount);
 	new noise = GetConVarInt(cvNoiseLevel);
 
-	if (iamount > 0)
+	if (iamount < 0)
 	{
 		PrintToServer(sErrStr);
 		return Plugin_Handled;
