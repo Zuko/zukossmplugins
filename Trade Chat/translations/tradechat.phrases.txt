@@ -2,7 +2,7 @@
 {
 	"Advert1"
 	{
-		"en"		"{green}[Trade Chat] {default}Remember, say {lightgreen}/t {default} before messages about trading."
+		"en"		"{green}[Trade Chat] {default}Remember, say {lightgreen}/t {default}before messages about trading."
 		"pl"		"{green}[Trade Chat] {default}Pamiętaj, by wszelkie wiadomości na temat wymiany przedmiotów poprzedzać {lightgreen}/t"
 		"ru"		"{green}[Обмен] {default}Пишите {lightgreen}/t {default} перед сообщением об обмене вещами."
 	}
