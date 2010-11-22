@@ -132,12 +132,12 @@ public Action:Command_TradeChat(client, args)
 		if ((SpamCount[client] > iAntiSpamMaxCount) && (iAntiSpamMaxCount != 0))
 		{
 			TradeChatGag[client] = 1;
-			LogToFile(logfile, "\"%s<%d><%s><>\" was automatically banned from trade chat", name, GetClientUserId(client), steamID);
+			LogToFile(logfile, "%L was automatically banned from trade chat", client);
 			CPrintToChatAll("%t", "AntiSpamAutoGag", name);
 			return Plugin_Handled;
 		}
 		LastMessageTime[client] = GetTime();
-		LogToFile(logfile, "\"%s<%d><%s><>\" was blocked from sending offer", name, GetClientUserId(client), steamID);
+		LogToFile(logfile, "%L was blocked from sending offer", client);
 		CPrintToChat(client, "%t", "AntiSpamBlocked");
 		return Plugin_Handled;
 	}
@@ -145,14 +145,14 @@ public Action:Command_TradeChat(client, args)
 	SpamCount[client] = 0;
 	LastMessageTime[client] = GetTime();
 	
-	for (new i = 1; i <= GetMaxClients(); i++)
+	for (new i = 1; i <= MaxClients; i++)
 	{
 		if (IsClientInGame(i) && !IsFakeClient(i))
 			if (!HideTradeChat[i])
 				CPrintToChat(i, "{green}[Trade Chat] {lightgreen}%s: {default}%s", name, text);
 	}
 	
-	LogToFile(logfile, "\"%s<%d><%s><>\" say \"%s\"", name, GetClientUserId(client), steamID, text);
+	LogToFile(logfile, "%L say \"%s\"", client, text);
 	
 	return Plugin_Handled;
 }
@@ -193,7 +193,7 @@ public Action:Command_TradeGag(client, args)
 		TradeChatGag[target_list[i]] = 1;
 
 		CPrintToChatAll("%t", "TradeBan", name, sTarget);
-		LogToFile(logfile, "\"%s<%d><%s><>\" has disabled trade chat for \"%s<%d><%s><>\"", name, GetClientUserId(client), clientSID, sTarget, GetClientUserId(target_list[i]), targetSID);
+		LogToFile(logfile, "%L has disabled trade chat for %L", client, target_list[i]);
 	}
 	
 	return Plugin_Handled;
@@ -237,7 +237,7 @@ public Action:Command_TradeUnGag(client, args)
 		SpamCount[target_list[i]] = 0;
 
 		CPrintToChatAll("%t", "TradeUnBan", name, sTarget);
-		LogToFile(logfile, "\"%s<%d><%s><>\" has enabled trade chat for \"%s<%d><%s><>\"", name, GetClientUserId(client), clientSID, sTarget, GetClientUserId(target_list[i]), targetSID);
+		LogToFile(logfile, "%L has enabled trade chat for %L", client, target_list[i]);
 	}
 	
 	return Plugin_Handled;
@@ -255,14 +255,14 @@ public Action:Command_HideChat(client, args)
 			SetClientCookie(client, hCookie, "on");
 			HideTradeChat[client] = 1;
 			CPrintToChat(client, "%t", "HideChatOn");
-			LogToFile(logfile, "\"%s<%d><%s><>\" has disabled trade chat.", name, GetClientUserId(client), steamID);
+			LogToFile(logfile, "%L has disabled trade chat.", client);
 		}
 		else
 		{
 			SetClientCookie(client, hCookie, "off");
 			HideTradeChat[client] = 0;
 			CPrintToChat(client, "%t", "HideChatOff");
-			LogToFile(logfile, "\"%s<%d><%s><>\" has enabled trade chat.", name, GetClientUserId(client), steamID);
+			LogToFile(logfile, "%L has enabled trade chat.", client);
 		}
 	}
 	
@@ -271,7 +271,7 @@ public Action:Command_HideChat(client, args)
 
 public Action:AdTimer(Handle:timer)
 {
-	for (new i = 1; i <= GetMaxClients(); i++)
+	for (new i = 1; i <= MaxClients; i++)
 	{
 		if (IsClientInGame(i) && !IsFakeClient(i))
 			if (!HideTradeChat[i])
