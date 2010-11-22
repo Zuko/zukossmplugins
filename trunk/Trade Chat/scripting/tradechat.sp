@@ -2,7 +2,7 @@
 #include <clientprefs>
 #include <colors>
 
-#define PLUGIN_VERSION "1.2.1"
+#define PLUGIN_VERSION "1.2.2"
 
 public Plugin:myinfo = 
 {
@@ -271,8 +271,15 @@ public Action:Command_HideChat(client, args)
 
 public Action:AdTimer(Handle:timer)
 {
-	CPrintToChatAll("%t", "Advert1");
-	CPrintToChatAll("%t", "Advert2");
+	for (new i = 1; i <= GetMaxClients(); i++)
+	{
+		if (IsClientInGame(i) && !IsFakeClient(i))
+			if (!HideTradeChat[i])
+			{
+				CPrintToChat(i, "%t", "Advert1");
+				CPrintToChat(i, "%t", "Advert2");
+			}
+	}
 	return Plugin_Continue;
 }
 
