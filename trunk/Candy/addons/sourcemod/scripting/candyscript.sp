@@ -677,7 +677,7 @@ public Action:cForceDrop(client, args)
 public Action:cAddCandy(client, args)
 {
 	if (client != 0)
-		return;
+		return Plugin_Continue;
 	InitializeDatabase();
 	if (dbConnection == INVALID_HANDLE)
 		return Plugin_Handled;
