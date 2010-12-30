@@ -180,7 +180,7 @@ public InitializeConvars()
  */
 public InitializeAdminCommands()
 {
-//	RegAdminCmd("sm_candy_add", cAddCandy, ADMFLAG_ROOT, "Give an user some credits (sm_candy_add <#userid|name> amount)");
+	RegAdminCmd("sm_candy_add", cAddCandy, ADMFLAG_ROOT, "Give an user some credits (sm_candy_add <#userid|name> amount)");
 //	RegAdminCmd("sm_candy_remove", cRemoveCandy, ADMFLAG_ROOT, "Remove some credits (sm_candy_remove <#userid|name> amount)");
 	RegAdminCmd("sm_candy_get", cGetCandy, ADMFLAG_ROOT, "Get the amount of candy (sm_candy_get <#userid|name>)");
 //	RegAdminCmd("sm_candy_reset", cResetCandy, ADMFLAG_ROOT, "Reset the amount of candy of every player to a certain amount (sm_candy_reset amount)");
@@ -676,6 +676,8 @@ public Action:cForceDrop(client, args)
  */
 public Action:cAddCandy(client, args)
 {
+	if (client != 0)
+		return;
 	InitializeDatabase();
 	if (dbConnection == INVALID_HANDLE)
 		return Plugin_Handled;
