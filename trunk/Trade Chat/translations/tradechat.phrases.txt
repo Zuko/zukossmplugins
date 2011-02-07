@@ -7,6 +7,7 @@
 		"ru"		"{green}[Обмен] {default}Пишите {lightgreen}/t {default} перед сообщением об обмене вещами."
 		"es"		"{green}[Trade Chat] {default}Recuerda, pon {lightgreen}/t {default} antes de cualquier mensaje relacionado con el comercio."
 		"fr"		"{green}[Trade Chat] {default}N'oubliez pas, tapez {lightgreen}/t {default}avant les messages pour trade."
+		"pt"		"{green}[Trade Chat] {default}Lembre-se, digite {lightgreen}/t {default}antes de mensagens sobre trocas."
 	}
 	"Advert2"
 	{
@@ -15,6 +16,7 @@
 		"ru"		"{green}[Обмен] {default}Если вы не хотите видеть торговый чат, напишите {lightgreen}/hidechat"
 		"es"		"{green}[Trade Chat] {default}Si no quieres ver el chat de comercio, escribe {lightgreen}/hidechat"
 		"fr"		"{green}[Trade Chat] {default}Si vous ne voulez pas voir le chat de trade, tapez {lightgreen}/hidechat"
+		"pt"		"{green}[Trade Chat] {default}Se você não quer ver o chat de trocas, envie {lightgreen}/hidechat"
 	}
 	"HideChatOn"
 	{
@@ -23,6 +25,7 @@
 		"ru"		"{green}[Обмен] {lightgreen}Торговый чат теперь {green}спрятан{lightgreen}."
 		"es"		"{green}[Trade Chat] {lightgreen}Ya {green}no {lightgreen}verás el chat de comercio."
 		"fr"		"{green}[Trade Chat] {lightgreen}Vous {green}n'allez pas {lightgreen}voir le chat de trade."
+		"pt"		"{green}[Trade Chat] {lightgreen}Voce {green}não verá {lightgreen}o chat de trocas."
 	}
 	"HideChatOff"
 	{
@@ -31,6 +34,7 @@
 		"ru"		"{green}[Обмен] {lightgreen}Торговый чат теперь {green}включен{lightgreen}."
 		"es"		"{green}[Trade Chat] {lightgreen}Ahora {green}verás {lightgreen} el chat de comercio."
 		"fr"		"{green}[Trade Chat] {lightgreen}Vous {green}allez {lightgreen}voir le chat de trade."
+		"pt"		"{green}[Trade Chat] {lightgreen}Você {green}verá {lightgreen}o chat de trocas."
 	}
 	"TradeDisabledForYou"
 	{
@@ -39,6 +43,7 @@
 		"ru"		"{green}[Обмен] {lightgreen}Вы не можете использовать {green}/t{lightgreen}, потому что вы отключили торговый чат."
 		"es"		"{green}[Trade Chat] {lightgreen}No puedes usar {green}/t {lightgreen}si tienes desactivado el chat de comercio."
 		"fr"		"{green}[Trade Chat] {lightgreen}Vous ne pouvez pas utiliser {green}/t {lightgreen}si vous avez desactive le chat de trade."
+		"pt"		"{green}[Trade Chat] {lightgreen}Você não pode usar {green}/t {lightgreen}com o chat de trocas desabilitado."
 	}
 	"TradeBanned"
 	{
@@ -47,6 +52,7 @@
 		"ru"		"{green}[Обмен] {lightgreen}Вам заблокировали торговый чат."
 		"es"		"{green}[Trade Chat] {lightgreen}Has sido baneado del chat de comercio."
 		"fr"		"{green}[Trade Chat] {lightgreen}Vous etes banni du chat de trade."
+		"pt"		"{green}[Trade Chat] {lightgreen}Você está banido do chat de trocas."
 	}
 	"TradeBan"
 	{
@@ -55,6 +61,7 @@
 		"ru"		"{green}[Обмен] {lightgreen}%s {default}заблокировали {lightgreen}%s {default}в торговый чат"
 		"es"		"{green}[Trade Chat] {lightgreen}%s {default}ha baneado a {lightgreen}%s {default}del chat de comercio."
 		"fr" 		"{green}[Trade Chat] {lightgreen}%s {default}a banni {lightgreen}%s {default}du chat de trade."
+		"pt"		"{green}[Trade Chat] {lightgreen}%s {default}baniu {lightgreen}%s {default}do chat de trocas"
 	}
 	"TradeUnBan"
 	{
@@ -63,6 +70,7 @@
 		"ru"		"{green}[Обмен] {lightgreen}%s {default}разблокирован {lightgreen}%s {default}в торговом чате"
 		"es"		"{green}[Trade Chat] {lightgreen}%s {default}ha desbaneado a {lightgreen}%s {default}del chat de comercio."
 		"fr"		"{green}[Trade Chat] {lightgreen}%s {default}a debanni {lightgreen}%s {default}du chat de trade."
+		"pt"		"{green}[Trade Chat] {lightgreen}%s {default}desbaniu {lightgreen}%s {default}do chat de trocas"
 	}
 	"TradeGagUsage"
 	{
@@ -71,6 +79,7 @@
 		"ru"		"Использование: sm_trade_gag <#userid или имя игрока> | sm_trade_ungag <#userid или имя игрока>"
 		"es"		"Uso: sm_trade_gag <#userid|name> | sm_trade_ungag <#userid|name>"
 		"fr"		"Utilisation: sm_trade_gag <#userid|name> | sm_trade_ungag <#userid|name>"
+		"pt"		"Uso: sm_trade_gag <#userid|name> | sm_trade_ungag <#userid|name>"
 	}
 	"AntiSpamAutoGag"
 	{
@@ -79,6 +88,7 @@
 		"ru"		"{green}[Обмен] {lightgreen}%s {default}был заблокирован в торговом чате"
 		"es"		"{green}[Trade Chat] {lightgreen}%s {default}fue baneado automáticamente del chat de comercio"
 		"fr"		"{green}[Trade Chat] {lightgreen}%s {default}a ete banni automatiquement du chat de trade."
+		"pt"		"{green}[Trade Chat] {lightgreen}%s {default}foi banido automaticamente do chat de trocas"
 	}
 	"AntiSpamBlocked"
 	{
@@ -87,5 +97,6 @@
 		"ru"		"{green}[Обмен] {lightgreen}Не отправляйте сообщения так часто."
 		"es"		"{green}[Trade Chat] {lightgreen}Debes esperar para poder enviar tu siguiente oferta."
 		"fr"		"{green}[Trade Chat] {lightgreen}Vous devez attendre avant d'envoyer la prochaine offre."
+		"pt"		"{green}[Trade Chat] {lightgreen}Você deve esperar antes de enviar sua próxima oferta."
 	}
 }
