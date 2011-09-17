@@ -18,6 +18,11 @@
 		"fr"		"{green}[Trade Chat] {default}Si vous ne voulez pas voir le chat de trade, tapez {lightgreen}/hidechat"
 		"pt"		"{green}[Trade Chat] {default}Se você não quer ver o chat de trocas, envie {lightgreen}/hidechat"
 	}
+	"Advert3"
+	{
+		"en"		"{green}[Trade Chat] {default}To send again your last offer, say {lightgreen}/lt"
+		"pl"		"{green}[Trade Chat] {default}By wysłać ponownie poprzednią ofertę, wpisz {lightgreen}/lt"
+	}
 	"HideChatOn"
 	{
 		"en"		"{green}[Trade Chat] {lightgreen}You {green}will not {lightgreen}see the trade chat."
@@ -98,5 +103,10 @@
 		"es"		"{green}[Trade Chat] {lightgreen}Debes esperar para poder enviar tu siguiente oferta."
 		"fr"		"{green}[Trade Chat] {lightgreen}Vous devez attendre avant d'envoyer la prochaine offre."
 		"pt"		"{green}[Trade Chat] {lightgreen}Você deve esperar antes de enviar sua próxima oferta."
+	}
+	"LastMessageIsEmpty"
+	{
+		"en"		"{green}[Trade Chat] {lightgreen}You was not send any offer yet."
+		"pl"		"{green}[Trade Chat] {lightgreen}Nie wysłałeś jeszcze żadnej oferty."
 	}
 }
