@@ -2,18 +2,19 @@
 #include <clientprefs>
 #include <colors>
 
-#define PLUGIN_VERSION "1.3 - not tested"
+#define PLUGIN_VERSION "1.4"
 
 public Plugin:myinfo = 
 {
 	name = "Trade Chat",
 	author = "Luki",
-	description = "",
+	description = "This plugin adds a special trade chat, players can hide it.",
 	version = PLUGIN_VERSION,
 	url = "http://luki.net.pl"
 };
 
 new Handle:hCookie = INVALID_HANDLE;
+new Handle:hLastMsgCookie = INVALID_HANDLE;
 new Handle:hAdTimerInterval = INVALID_HANDLE;
 new Handle:hAntiSpamDelay = INVALID_HANDLE;
 new Handle:hAntiSpamMaxCount = INVALID_HANDLE;
@@ -29,9 +30,11 @@ new SpamCount[MAXPLAYERS + 1];
 new String:logfile[255];
 new iAntiSpamDelay = 0;
 new iAntiSpamMaxCount = 0;
+new iNextAdvert = 1;
 new String:sChatTrigger1[32] = "trade";
 new String:sChatTrigger2[32] = "sell";
 new String:sChatTrigger3[32] = "buy";
+new String:sLastMessage[MAXPLAYERS + 1][512];
 
 public OnPluginStart()
 {
@@ -42,6 +45,8 @@ public OnPluginStart()
 	RegConsoleCmd("say_team", Command_Say);
 	RegConsoleCmd("sm_t", Command_TradeChat);
 	RegConsoleCmd("sm_trade", Command_TradeChat);
+	RegConsoleCmd("sm_lt", Command_LastTradeChat);
+	RegConsoleCmd("sm_lasttrade", Command_LastTradeChat);
 	RegConsoleCmd("sm_hidechat", Command_HideChat);
 	
 	RegAdminCmd("sm_trade_gag", Command_TradeGag, ADMFLAG_CHAT);
@@ -91,7 +96,10 @@ public OnAllPluginsLoaded()
 	if ((Plugin_ClientPrefs == INVALID_HANDLE) || (Plugin_ClientPrefs_Status != Plugin_Running))
 		LogError("This plugin require clientprefs plugin to allow users to disable trade chat.");
 	else
-		hCookie = RegClientCookie("tradechat", "Hide trade chat", CookieAccess_Protected);
+	{
+		hCookie = RegClientCookie("tradechat", "Hides trade chat", CookieAccess_Protected);
+		hLastMsgCookie = RegClientCookie("tradechat_lastmsg", "Your last message", CookieAccess_Protected);
+	}
 }
 
 public OnClientPostAdminCheck(client)
@@ -99,29 +107,34 @@ public OnClientPostAdminCheck(client)
 	TradeChatGag[client] = 0;
 	LastMessageTime[client] = 0;
 	SpamCount[client] = 0;
-	if (hCookie != INVALID_HANDLE)
+	if (AreClientCookiesCached(client))
 	{
-		new String:cookie[4];
-		if (AreClientCookiesCached(client))
+		if (hCookie != INVALID_HANDLE)
 		{
+			new String:cookie[4];
 			GetClientCookie(client, hCookie, cookie, sizeof(cookie));
 			if (StrEqual(cookie, "on"))
 			{
 				HideTradeChat[client] = 1;
-				return;
 			}
-			if (StrEqual(cookie, "off"))
+			else if (StrEqual(cookie, "off"))
 			{
 				HideTradeChat[client] = 0;
-				return;
 			}
 		}
-		SetClientCookie(client, hCookie, "off");
-		HideTradeChat[client] = 0;
-	}
-	else
-	{
-		HideTradeChat[client] = 0;
+		else
+		{
+			SetClientCookie(client, hCookie, "off");
+			HideTradeChat[client] = 0;
+		}
+		if (hLastMsgCookie != INVALID_HANDLE)
+		{
+			new String:lastMsg[512];
+			GetClientCookie(client, hLastMsgCookie, lastMsg, sizeof(lastMsg));
+			Format(sLastMessage[client], sizeof(sLastMessage[]), "%s", lastMsg);
+		}
+		else
+			Format(sLastMessage[client], sizeof(sLastMessage[]), "");
 	}
 }
 
@@ -134,10 +147,12 @@ public Action:Command_Say(client, args)
 	new String:text[512];
 	GetCmdArgString(text, sizeof(text));
 	
-	if ((strcmp(text, sChatTrigger1, false) == 0) ||
-		((checkTriggers >= 2) && (strcmp(text, sChatTrigger2, false) == 0)) || 
-		((checkTriggers >= 3) && (strcmp(text, sChatTrigger3, false) == 0)))
+	if (!(FindCharInString(text, '/') == 1 || FindCharInString(text, '!') == 1) &&
+		((StrContains(text, sChatTrigger1, false) != -1) ||
+		((checkTriggers >= 2) && (StrContains(text, sChatTrigger2, false) != -1)) || 
+		((checkTriggers >= 3) && (StrContains(text, sChatTrigger3, false) != -1))))
 	{
+		StripQuotes(text);
 		DoTradeChat(client, text);
 		return Plugin_Handled;
 	}
@@ -151,6 +166,16 @@ public Action:Command_TradeChat(client, args)
 	GetCmdArgString(text, sizeof(text));
 	
 	DoTradeChat(client, text);
+	
+	return Plugin_Handled;
+}
+
+public Action:Command_LastTradeChat(client, args)
+{
+	if (strlen(sLastMessage[client]) != 0)
+		DoTradeChat(client, sLastMessage[client]);
+	else	
+		CPrintToChat(client, "%t", "LastMessageIsEmpty");
 	
 	return Plugin_Handled;
 }
@@ -194,6 +219,8 @@ public DoTradeChat(client, String:msg[])
 	
 	SpamCount[client] = 0;
 	LastMessageTime[client] = GetTime();
+	Format(sLastMessage[client], sizeof(sLastMessage[]), "%s", msg);
+	SetClientCookie(client, hLastMsgCookie, msg);
 	
 	for (new i = 1; i <= MaxClients; i++)
 		if (IsClientInGame(i) && !IsFakeClient(i))
@@ -231,11 +258,8 @@ public Action:Command_TradeGag(client, args)
 	
 	for (new i = 0; i < target_count; i++)
 	{
-		new String:name[MAX_NAME_LENGTH], String:clientSID[32], String:targetSID[32];
-		GetClientName(target_list[i], sTarget, sizeof(sTarget));
+		new String:name[MAX_NAME_LENGTH];
 		GetClientName(client, name, sizeof(name));
-		GetClientAuthString(client, clientSID, sizeof(clientSID));
-		GetClientAuthString(target_list[i], targetSID, sizeof(targetSID));
 		TradeChatGag[target_list[i]] = 1;
 
 		CPrintToChatAll("%t", "TradeBan", name, sTarget);
@@ -273,11 +297,8 @@ public Action:Command_TradeUnGag(client, args)
 	
 	for (new i = 0; i < target_count; i++)
 	{
-		new String:name[MAX_NAME_LENGTH], String:clientSID[32], String:targetSID[32];
-		GetClientName(target_list[i], sTarget, sizeof(sTarget));
+		new String:name[MAX_NAME_LENGTH];
 		GetClientName(client, name, sizeof(name));
-		GetClientAuthString(client, clientSID, sizeof(clientSID));
-		GetClientAuthString(target_list[i], targetSID, sizeof(targetSID));
 		TradeChatGag[target_list[i]] = 0;
 		LastMessageTime[target_list[i]] = 0;
 		SpamCount[target_list[i]] = 0;
@@ -322,8 +343,24 @@ public Action:AdTimer(Handle:timer)
 		if (IsClientInGame(i) && !IsFakeClient(i))
 			if (!HideTradeChat[i])
 			{
-				CPrintToChat(i, "%t", "Advert1");
-				CPrintToChat(i, "%t", "Advert2");
+				switch (iNextAdvert)
+				{
+					case 1:
+					{
+						CPrintToChat(i, "%t", "Advert1");
+						iNextAdvert = 2;
+					}
+					case 2:
+					{
+						CPrintToChat(i, "%t", "Advert2");
+						iNextAdvert = 3;
+					}
+					case 3:
+					{
+						CPrintToChat(i, "%t", "Advert3");
+						iNextAdvert = 1;
+					}
+				}
 			}
 	}
 	return Plugin_Continue;
